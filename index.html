@@ -694,6 +694,7 @@
       <span data-i18n="spread_summary_btn">🔮 SUMMARIZE THIS READING</span>
     </button>
     <div class="spread-summary" id="spread-summary">
+      <button class="history-detail-back" id="spread-summary-back">‹ <span data-i18n="history_back">BACK</span></button>
       <div class="meaning-lang">EN</div>
       <p class="meaning-text" id="spread-summary-text-en"></p>
       <div class="meaning-divider"></div>
@@ -1067,6 +1068,35 @@
   var HISTORY_MS = 60 * 60 * 1000;
   var historyRefreshTimer = null;
 
+  // Lets the device/browser back button (and gesture) close an open reading
+  // detail view and return to the history table, instead of leaving the page.
+  // pushState/back are wrapped in try/catch because some environments (e.g.
+  // opening this file directly as file://, some embedded webviews) throw a
+  // SecurityError on pushState — in that case the feature just quietly
+  // no-ops instead of breaking the click that triggered it.
+  var READING_DETAIL_HASH = '#reading';
+
+  function pushReadingState() {
+    if (location.hash === READING_DETAIL_HASH) return;
+    try { history.pushState({ tarotReadingDetail: true }, '', READING_DETAIL_HASH); } catch (e) {}
+  }
+
+  function goBackFromReading(fallback) {
+    if (location.hash === READING_DETAIL_HASH) {
+      try { history.back(); return; } catch (e) {}
+    }
+    fallback();
+  }
+
+  window.addEventListener('popstate', function () {
+    var overlay = document.getElementById('history-overlay');
+    if (!overlay.classList.contains('show') || location.hash === READING_DETAIL_HASH) return;
+    var detail = document.getElementById('history-detail');
+    var summary = document.getElementById('spread-summary');
+    if (detail.style.display !== 'none') { showHistoryTable(); }
+    if (summary.classList.contains('open')) { summary.classList.remove('open'); }
+  });
+
   function loadHistory() {
     var raw = null;
     try { raw = localStorage.getItem(HISTORY_KEY); } catch (e) {}
@@ -1156,7 +1186,10 @@
       tile.className = 'history-card';
       var rotate = (Math.random() * 10 - 5).toFixed(1);
       tile.style.transform = 'rotate(' + rotate + 'deg)';
-      tile.addEventListener('click', function () { showHistoryDetail(entry); });
+      tile.addEventListener('click', function () {
+        pushReadingState();
+        showHistoryDetail(entry);
+      });
 
       var badge = document.createElement('div');
       badge.className = 'history-deck-badge';
@@ -1549,6 +1582,7 @@
   }
 
   function toggleHistoryOverlay(show) {
+    if (!show && location.hash === READING_DETAIL_HASH) { try { history.back(); } catch (e) {} }
     document.getElementById('history-overlay').classList.toggle('show', show);
     if (show) {
       renderHistory();
@@ -2136,12 +2170,23 @@
   document.getElementById('history-overlay').addEventListener('click', function (e) {
     if (e.target.id === 'history-overlay') toggleHistoryOverlay(false);
   });
-  document.getElementById('history-detail-back').addEventListener('click', function () { showHistoryTable(); });
+  document.getElementById('history-detail-back').addEventListener('click', function () {
+    goBackFromReading(showHistoryTable);
+  });
 
   var spreadSummaryBtn = document.getElementById('btn-spread-summary');
   var spreadSummaryAgainBtn = document.getElementById('btn-spread-summary-again');
-  if (spreadSummaryBtn) spreadSummaryBtn.addEventListener('click', function () { renderSpreadSummary(); });
+  var spreadSummaryBackBtn = document.getElementById('spread-summary-back');
+  if (spreadSummaryBtn) spreadSummaryBtn.addEventListener('click', function () {
+    pushReadingState();
+    renderSpreadSummary();
+  });
   if (spreadSummaryAgainBtn) spreadSummaryAgainBtn.addEventListener('click', function () { renderSpreadSummary(); });
+  if (spreadSummaryBackBtn) spreadSummaryBackBtn.addEventListener('click', function () {
+    goBackFromReading(function () {
+      document.getElementById('spread-summary').classList.remove('open');
+    });
+  });
 
   // ---------- DAILY MOTIVATIONAL SLOGANS ----------
 
