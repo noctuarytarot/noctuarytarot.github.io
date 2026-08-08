@@ -419,11 +419,12 @@
   .card-front { transform: rotateY(180deg); padding: 16px 12px; }
   .card-number { font-size: 11px; letter-spacing: 2px; opacity: 0.65; color: var(--accent-color); }
   .card-symbol { font-size: 44px; margin: 8px 0 6px; filter: drop-shadow(0 0 10px var(--accent-color)); }
-  .card-name-en { font-size: 15px; letter-spacing: 1.5px; color: var(--accent-color); text-shadow: 0 0 8px var(--accent-color); }
-  .card-name-cz { font-size: 12px; letter-spacing: 1px; opacity: 0.75; margin-top: 2px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .card-name-en { font-size: 15px; line-height: 1.25; letter-spacing: 1.5px; color: var(--accent-color); text-shadow: 0 0 8px var(--accent-color); }
+  .card-name-cz { font-size: 12px; line-height: 1.25; letter-spacing: 1px; opacity: 0.75; margin-top: 2px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
   .reversed-badge {
-    margin-top: 8px; font-size: 10px; letter-spacing: 1.5px; padding: 3px 8px; border-radius: 20px;
+    margin-top: 8px; font-size: 10px; line-height: 1.4; letter-spacing: 1.2px; padding: 3px 9px; border-radius: 20px;
     border: 1px solid var(--accent-glow); color: #d9b3ff; background: rgba(139,47,224,0.15);
+    max-width: 90%; text-align: center;
   }
   .hidden-countdown {
     position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
@@ -553,7 +554,7 @@
      and everything fits on one screen without scrolling. */
 
   @media (max-height: 900px) {
-    .card-wrap { width: 170px; height: 275px; margin-bottom: 16px; }
+    .card-wrap { width: 188px; height: 275px; margin-bottom: 16px; }
     .page-title { margin-bottom: 16px; }
     .meaning-panel { padding: 12px 14px; margin-bottom: 14px; }
     .slogan-wrap { margin-top: 12px; }
@@ -571,12 +572,12 @@
     .page-title { font-size: 15px; margin: 2px 0 10px; }
     .deck-tabs { margin-bottom: 10px; gap: 6px; }
     .deck-tab { padding: 5px 9px; font-size: 11px; }
-    .card-wrap { width: 138px; height: 224px; margin-bottom: 10px; }
+    .card-wrap { width: 156px; height: 224px; margin-bottom: 10px; }
     .card-front { padding: 10px 8px; }
     .card-symbol { font-size: 32px; margin: 4px 0 4px; }
     .card-name-en { font-size: 13px; }
     .card-name-cz { font-size: 11px; }
-    .reversed-badge { margin-top: 5px; }
+    .reversed-badge { margin-top: 5px; font-size: 9px; padding: 3px 8px; }
     .meaning-panel {
       padding: 10px 12px; margin-bottom: 10px;
       max-height: 32dvh; overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -593,8 +594,12 @@
 
   /* Very small / compact phones */
   @media (max-height: 680px) {
-    .card-wrap { width: 112px; height: 182px; margin-bottom: 8px; }
-    .card-symbol { font-size: 26px; }
+    .card-wrap { width: 132px; height: 182px; margin-bottom: 8px; }
+    .card-symbol { font-size: 26px; margin: 3px 0 3px; }
+    .card-name-en { font-size: 12px; }
+    .card-name-cz { font-size: 10px; }
+    .reversed-badge { font-size: 8.5px; letter-spacing: 1px; padding: 2px 7px; margin-top: 4px; }
+    .year-countdown, .year-countdown-days, .hidden-countdown { display: none; }
     .meaning-panel { max-height: 28dvh; padding: 8px 10px; }
     .meaning-text { font-size: 13px; }
     .page-title { font-size: 14px; margin: 2px 0 8px; }
