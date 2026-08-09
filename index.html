@@ -7,10 +7,10 @@
 <title>Noctuary Tarot — Karta dne zdarma | Online výklad karet</title>
 <meta name="description" content="Noctuary Tarot — tvá karta dne zdarma. Vylož si kartu z klasického 78kartového tarotu, Cosmic Whisper Oracle nebo mystického Night Tarotu a nech se na chvíli zastavit a zamyslet.">
 <meta name="keywords" content="tarot, karta dne, denní tarot, online tarot zdarma, výklad karet, tarotové karty, oracle karty, věštění, tarotová karta dne, Noctuary">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Synthlucida">
 <meta name="language" content="Czech">
-<link rel="canonical" href="https://noctuarytarot.github.io/tarot/">
+<link rel="canonical" href="https://noctuarytarot.github.io/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -18,28 +18,98 @@
 <meta property="og:title" content="Noctuary Tarot — Karta dne zdarma">
 <meta property="og:description" content="Vylož si svoji kartu dne z tarotu, Oracle nebo Night Tarotu. Krátká denní chvíle pro zastavení a reflexi.">
 <meta property="og:locale" content="cs_CZ">
-<meta property="og:url" content="https://noctuarytarot.github.io/tarot/">
+<meta property="og:url" content="https://noctuarytarot.github.io/">
+<meta property="og:image" content="https://noctuarytarot.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Noctuary Tarot — Karta dne zdarma">
 <meta name="twitter:description" content="Vylož si svoji kartu dne z tarotu, Oracle nebo Night Tarotu. Krátká denní chvíle pro zastavení a reflexi.">
+<meta name="twitter:image" content="https://noctuarytarot.github.io/og-image.png">
+
+<!-- Icons / PWA -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Noctuary Tarot">
+<meta name="mobile-web-app-capable" content="yes">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Noctuary Tarot",
+  "alternateName": "Noctuary Tarot — Karta dne zdarma",
+  "url": "https://noctuarytarot.github.io/",
   "applicationCategory": "LifestyleApplication",
-  "operatingSystem": "Any",
+  "operatingSystem": "Any (webový prohlížeč)",
   "description": "Denní tarotová karta zdarma — tři balíčky (Tarot, Cosmic Whisper Oracle, Night Tarot), historie tažených karet a prostor pro reflexi.",
   "inLanguage": "cs",
   "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CZK"
+  },
   "creator": {
     "@type": "Organization",
     "name": "Synthlucida",
     "url": "https://synthlucida.com/player.html"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Co je Noctuary Tarot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Noctuary Tarot je webová aplikace pro karetu dne. Vylož si jednu kartu z klasického 78kartového tarotu, Cosmic Whisper Oracle nebo mystického Night Tarotu a nech si k ní zobrazit výklad v angličtině i češtině."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Je Noctuary Tarot zdarma?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ano, Noctuary Tarot je zcela zdarma a funguje přímo v prohlížeči bez registrace a bez stahování aplikace."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Jaký je rozdíl mezi Tarotem, Oracle a Night Tarotem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tarot je klasický 78kartový balíček s tradičním výkladem. Cosmic Whisper Oracle nabízí volnější, intuitivnější karty bez pevné struktury malé a velké arkány. Night Tarot je autorský mystický balíček s temnější, snovou atmosférou."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Co znamená obrácená karta?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obrácená (reversed) karta obvykle ukazuje na zablokovanou, oslabenou nebo vnitřní podobu významu karty v základní poloze — například váhání místo jistoty, nebo téma, které si teprve žádá pozornost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ukládá si aplikace historii vytažených karet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ano, Noctuary Tarot si v prohlížeči ukládá historii tažených karet, ke které se lze kdykoliv vrátit a podívat se, jaké karty a výklady padly v předchozích dnech."
+      }
+    }
+  ]
 }
 </script>
 
@@ -352,7 +422,7 @@
   .info-lang-toggle:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
   .brand { position: relative; z-index: 1; margin-bottom: 6px; }
-  .brand-name { font-size: 14px; letter-spacing: 4px; opacity: 0.55; }
+  .brand-name { font-size: 14px; letter-spacing: 4px; opacity: 0.55; margin: 0; font-weight: 400; }
 
   .site-footer {
     position: relative; z-index: 1; margin-top: 22px; padding-bottom: 4px;
@@ -635,6 +705,57 @@
     .meaning-text { font-size: 13px; }
     .page-title { font-size: 14px; margin: 2px 0 8px; }
   }
+
+  /* ===== Static SEO content (crawlable, below the interactive app) ===== */
+  .seo-content {
+    position: relative; z-index: 1; width: 100%; max-width: 720px; margin: 48px auto 0;
+    text-align: left; font-family: 'Cormorant Garamond', serif; font-size: 17px; line-height: 1.65;
+    color: rgba(255,255,255,0.82);
+  }
+  .seo-content h2 {
+    font-family: 'Orbitron', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(212,175,55,0.35); margin: 40px 0 14px; text-transform: uppercase;
+  }
+  .seo-content > p.lead {
+    font-size: 19px; font-style: italic; opacity: 0.9; margin-bottom: 0;
+  }
+  .seo-deck-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 10px;
+  }
+  .seo-deck-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.25); border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .seo-deck-card h3 {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 1px; color: var(--accent-color);
+    margin: 0 0 8px;
+  }
+  .seo-deck-card p { margin: 0; font-size: 15px; opacity: 0.85; }
+  .seo-faq-item { margin-bottom: 18px; }
+  .seo-faq-item h3 {
+    font-family: 'Orbitron', sans-serif; font-size: 13.5px; letter-spacing: 0.5px; color: #fff;
+    margin: 0 0 6px; opacity: 0.95;
+  }
+  .seo-faq-item p { margin: 0; font-size: 15px; opacity: 0.8; }
+  .seo-content a { color: var(--accent-color); }
+  .seo-disclaimer { font-size: 13px; opacity: 0.5; margin-top: 30px; font-style: italic; }
+  .seo-player-note { font-size: 12px; opacity: 0.45; margin-top: 14px; }
+  .site-footer-full {
+    position: relative; z-index: 1; width: 100%; max-width: 720px; margin: 40px auto 0; padding: 22px 0 4px;
+    border-top: 1px solid rgba(212,175,55,0.18); text-align: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 12px; letter-spacing: 0.5px; opacity: 0.55;
+  }
+  .site-footer-full a {
+    color: var(--accent-color); text-decoration: none; letter-spacing: 1.5px;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 600; opacity: 0.85;
+  }
+  .site-footer-full a:hover { opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
+  .site-footer-full nav { margin-bottom: 10px; }
+  .site-footer-full nav a { margin: 0 8px; }
+  @media (max-width: 480px) {
+    .seo-content { font-size: 15.5px; padding: 0 4px; }
+    .seo-content > p.lead { font-size: 17px; }
+  }
 </style>
 </head>
 <body id="body">
@@ -820,6 +941,10 @@
         <span><span class="articles-menu-item-title" data-i18n="a11_menu_title">Numbers in Tarot</span><br><span class="articles-menu-item-sub" data-i18n="a11_menu_sub">A short intro to tarot numerology</span></span>
         <span class="articles-menu-item-arrow">›</span>
       </button>
+      <button class="articles-menu-item" data-article="a12">
+        <span><span class="articles-menu-item-title" data-i18n="a12_menu_title">Music and Atmosphere for a Reading</span><br><span class="articles-menu-item-sub" data-i18n="a12_menu_sub">Setting a calmer mood before you draw</span></span>
+        <span class="articles-menu-item-arrow">›</span>
+      </button>
     </div>
 
     <div class="article-detail" id="article-detail">
@@ -831,9 +956,9 @@
 </div>
 
 <div class="clock-display" id="clock-display"></div>
-<div class="brand">
-  <div class="brand-name">NOCTUARY</div>
-</div>
+<header class="brand">
+  <h1 class="brand-name">Noctuary Tarot</h1>
+</header>
 <div class="page-title" data-i18n="page_title">✦ CARD OF THE DAY ✦</div>
 
 <div class="deck-tabs" id="deck-tabs">
@@ -890,6 +1015,71 @@
 <div class="site-footer">
   made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a>
 </div>
+
+<main class="seo-content">
+  <p class="lead" data-i18n="seo_lead">Noctuary Tarot is your free card of the day — a short daily pause for reflection, not a prediction of the future.</p>
+
+  <h2 data-i18n="seo_h_howworks">How Noctuary Tarot Works</h2>
+  <p data-i18n="seo_p_howworks1">Tap "Draw Again" and let the app pull one card from the deck you've chosen. The card flips over to reveal its symbol and name, and below it you'll find the meaning in both English and Czech — for both the upright and reversed position. Each card also comes with a short reflection question to sit with for a moment.</p>
+  <p data-i18n="seo_p_howworks2">The app keeps a history of your drawn cards right in the browser, so you can look back anytime and notice how themes repeat or shift over time. Everything runs in the browser, with no registration and nothing to download.</p>
+  <p class="seo-player-note"><span data-i18n="seo_player_pre">Want something quiet playing while you draw and reflect? Try the </span><a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer" data-i18n="seo_player_link">SYNTHLUCIDA ambient &amp; chillout player</a><span data-i18n="seo_player_post">.</span></p>
+
+  <h2 data-i18n="seo_h_decks">Three Decks</h2>
+  <div class="seo-deck-grid">
+    <div class="seo-deck-card">
+      <h3 data-i18n="seo_deck_tarot_title">🃏 Tarot</h3>
+      <p data-i18n="seo_deck_tarot_desc">The classic 78-card tarot deck — Major and Minor Arcana with their traditional meanings and symbolism.</p>
+    </div>
+    <div class="seo-deck-card">
+      <h3 data-i18n="seo_deck_oracle_title">✨ Cosmic Whisper Oracle</h3>
+      <p data-i18n="seo_deck_oracle_desc">Looser, more intuitive cards with no fixed tarot structure — for a gentler, more open daily message.</p>
+    </div>
+    <div class="seo-deck-card">
+      <h3 data-i18n="seo_deck_night_title">🌙 Night Tarot</h3>
+      <p data-i18n="seo_deck_night_desc">An original mystical deck with a darker, dreamlike atmosphere for deeper moments of reflection.</p>
+    </div>
+  </div>
+
+  <h2 data-i18n="seo_h_reversed">Upright & Reversed</h2>
+  <p data-i18n="seo_p_reversed">Every card can appear upright or reversed. An upright card usually points to a clearer, more direct form of its meaning, while a reversed card often suggests a blocked, weakened, or inward version of the same theme — something still asking for attention, or hidden beneath the surface.</p>
+
+  <h2 data-i18n="seo_h_faq">Frequently Asked Questions</h2>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq1_q">What is Noctuary Tarot?</h3>
+    <p data-i18n="seo_faq1_a">A web app for a card of the day. Draw one card from the Tarot, Oracle, or Night Tarot deck and read its meaning in English and Czech.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq2_q">Is it free?</h3>
+    <p data-i18n="seo_faq2_a">Yes, Noctuary Tarot is completely free, runs right in your browser, with no registration and nothing to download.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq3_q">What's the difference between the decks?</h3>
+    <p data-i18n="seo_faq3_a">Tarot is the classic 78-card deck with traditional meanings, Oracle is looser and more intuitive, and Night Tarot is an original mystical deck with a darker atmosphere.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq4_q">Does the app save my card history?</h3>
+    <p data-i18n="seo_faq4_a">Yes, your drawn card history stays saved in the browser and is always available through the clock icon.</p>
+  </div>
+
+  <p class="seo-disclaimer" data-i18n="seo_disclaimer">Noctuary Tarot is offered as a daily space for pause, reflection, and atmosphere — it is not fortune-telling, a prediction of the future, or a substitute for professional guidance on important life decisions.</p>
+</main>
+
+<footer class="site-footer-full">
+  <nav>
+    <a href="#" id="footer-btn-info" data-i18n="seo_footer_link_howto">How to read cards</a>
+    <a href="#" id="footer-btn-articles" data-i18n="seo_footer_link_articles">Tarot articles</a>
+  </nav>
+  <div><span data-i18n="seo_footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="seo_footer_copy_post"> Noctuary Tarot — free card of the day</span></div>
+  <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
+</footer>
+
+<script>
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+  var fBtnInfo = document.getElementById('footer-btn-info');
+  if (fBtnInfo) fBtnInfo.addEventListener('click', function(e){ e.preventDefault(); var b = document.getElementById('btn-info'); if (b) b.click(); });
+  var fBtnArticles = document.getElementById('footer-btn-articles');
+  if (fBtnArticles) fBtnArticles.addEventListener('click', function(e){ e.preventDefault(); var b = document.getElementById('btn-articles'); if (b) b.click(); });
+</script>
 
 <script>
 (function () {
@@ -1873,8 +2063,38 @@
     p_spread_reversed: { en: 'A reversed card in a spread doesn\u2019t flip its meaning into an opposite — it turns the same energy inward. In a spread, that often points to something not yet ready, something blocked by circumstance, or something you already half-know but haven\u2019t said out loud. Read it as a note on how that position\u2019s energy is currently moving, not as a warning sign.', cz: 'Obrácená karta ve výkladu svůj význam neobrací v opak — obrací stejnou energii dovnitř. Ve výkladu to často ukazuje na něco, co ještě není připravené, něco blokované okolnostmi, nebo něco, co uvnitř už napůl tušíte, ale ještě jste to nevyslovili. Berte ji jako poznámku o tom, jak se energie dané pozice právě teď hýbe, ne jako varovné znamení.' },
     h_spread_patterns: { en: 'READING THE WHOLE LAYOUT', cz: 'ČTENÍ CELÉHO ROZLOŽENÍ' },
     p_spread_patterns: { en: 'Once every card is placed, step back before diving into details. Look for what repeats: several cards from the same suit point to one area of life dominating the picture (Wands = action, Cups = feeling, Swords = thought, Pentacles = the material). Several Major Arcana in one spread signal that bigger, less controllable forces are at play; mostly Minor Arcana suggests it\u2019s more about everyday choices. Repeated numbers across cards are worth noticing too.', cz: 'Jakmile jsou všechny karty položené, než se pustíte do detailů, ustupte o krok zpět. Všímejte si, co se opakuje: několik karet ze stejné barvy ukazuje na jednu oblast života, která v obraze převažuje (Hole = akce, Poháry = cit, Meče = myšlenka, Disky = hmotný svět). Víc velkých arkán v jednom výkladu značí, že jsou ve hře větší, méně ovlivnitelné síly; převaha malých arkán naznačuje, že jde spíš o každodenní volby. Stojí za povšimnutí i opakující se čísla napříč kartami.' },
-    h_spread_story: { en: 'WEAVING THE STORY', cz: 'SLOŽENÍ PŘÍBĚHU' },
-    p_spread_story: { en: 'Read each position on its own first, in plain language, out loud if that helps. Then read the layout left to right, or center outward, as one continuous sentence connecting each card to the next — "this leads to this, which is challenged by this." The final read is always a story, not a checklist. Trust the connections that feel obvious before reaching for a stricter textbook meaning.', cz: 'Nejdřív si v obyčejném jazyce přečtěte každou pozici zvlášť, klidně nahlas, pokud to pomáhá. Pak přečtěte celé rozložení zleva doprava, nebo od středu ven, jako jednu souvislou větu spojující jednu kartu s druhou — „tohle vede k tomuhle, čemu odporuje tohle". Výsledný výklad je vždy příběh, ne checklist. Důvěřujte souvislostem, které jsou zjevné na první pohled, dřív než sáhnete po přísnějším „učebnicovém" významu.' },
+    h_spread_story: { en: 'WEAVING THE STORY', cz: 'SLOŽENÍ PŘÍBĚHU' },    p_spread_story: { en: 'Read each position on its own first, in plain language, out loud if that helps. Then read the layout left to right, or center outward, as one continuous sentence connecting each card to the next — "this leads to this, which is challenged by this." The final read is always a story, not a checklist. Trust the connections that feel obvious before reaching for a stricter textbook meaning.', cz: 'Nejdřív si v obyčejném jazyce přečtěte každou pozici zvlášť, klidně nahlas, pokud to pomáhá. Pak přečtěte celé rozložení zleva doprava, nebo od středu ven, jako jednu souvislou větu spojující jednu kartu s druhou — „tohle vede k tomuhle, čemu odporuje tohle". Výsledný výklad je vždy příběh, ne checklist. Důvěřujte souvislostem, které jsou zjevné na první pohled, dřív než sáhnete po přísnějším „učebnicovém" významu.' },
+
+    seo_lead: { en: 'Noctuary Tarot is your free card of the day — a short daily pause for reflection, not a prediction of the future.', cz: 'Noctuary Tarot je tvá karta dne zdarma — krátká denní zastávka pro reflexi, ne věštění o budoucnosti.' },
+    seo_h_howworks: { en: 'How Noctuary Tarot Works', cz: 'Jak Noctuary Tarot funguje' },
+    seo_p_howworks1: { en: 'Tap "Draw Again" and let the app pull one card from the deck you\u2019ve chosen. The card flips over to reveal its symbol and name, and below it you\u2019ll find the meaning in both English and Czech — for both the upright and reversed position. Each card also comes with a short reflection question to sit with for a moment.', cz: 'Klikni na tlačítko „Draw again" a nech aplikaci vytáhnout jednu kartu ze zvoleného balíčku. Karta se otočí, ukáže svůj symbol a jméno a pod ní se objeví výklad v angličtině i v češtině — jak ve vzpřímené, tak v obrácené poloze. Ke každé kartě je navíc krátká reflexní otázka, u které se můžeš na chvíli zastavit.' },
+    seo_p_howworks2: { en: 'The app keeps a history of your drawn cards right in the browser, so you can look back anytime and notice how themes repeat or shift over time. Everything runs in the browser, with no registration and nothing to download.', cz: 'Aplikace si v prohlížeči ukládá historii tažených karet, takže se kdykoliv můžeš podívat, co ti padlo dřív, a sledovat, jak se témata v čase opakují nebo proměňují. Vše funguje v prohlížeči, bez registrace a bez nutnosti cokoliv stahovat.' },
+    seo_h_decks: { en: 'Three Decks', cz: 'Tři balíčky karet' },
+    seo_deck_tarot_title: { en: '🃏 Tarot', cz: '🃏 Tarot' },
+    seo_deck_tarot_desc: { en: 'The classic 78-card tarot deck — Major and Minor Arcana with their traditional meanings and symbolism.', cz: 'Klasický 78kartový tarotový balíček — velká i malá arkána se svým tradičním výkladem a symbolikou.' },
+    seo_deck_oracle_title: { en: '✨ Cosmic Whisper Oracle', cz: '✨ Cosmic Whisper Oracle' },
+    seo_deck_oracle_desc: { en: 'Looser, more intuitive cards with no fixed tarot structure — for a gentler, more open daily message.', cz: 'Volnější, intuitivní karty bez pevné struktury tarotu — pro jemnější a otevřenější poselství dne.' },
+    seo_deck_night_title: { en: '🌙 Night Tarot', cz: '🌙 Night Tarot' },
+    seo_deck_night_desc: { en: 'An original mystical deck with a darker, dreamlike atmosphere for deeper moments of reflection.', cz: 'Autorský mystický balíček s temnější, snovou atmosférou pro chvíle hlubšího zamyšlení.' },
+    seo_h_reversed: { en: 'Upright & Reversed', cz: 'Vzpřímená a obrácená karta' },
+    seo_p_reversed: { en: 'Every card can appear upright or reversed. An upright card usually points to a clearer, more direct form of its meaning, while a reversed card often suggests a blocked, weakened, or inward version of the same theme — something still asking for attention, or hidden beneath the surface.', cz: 'Každá karta může padnout ve vzpřímené nebo obrácené poloze. Vzpřímená karta obvykle ukazuje na jasnější, přímočařejší podobu svého významu, zatímco obrácená karta často naznačuje zablokovanou, oslabenou nebo vnitřní verzi téhož tématu — něco, co si teprve žádá pozornost nebo je skryté pod povrchem.' },
+    seo_h_faq: { en: 'Frequently Asked Questions', cz: 'Časté dotazy' },
+    seo_faq1_q: { en: 'What is Noctuary Tarot?', cz: 'Co je Noctuary Tarot?' },
+    seo_faq1_a: { en: 'A web app for a card of the day. Draw one card from the Tarot, Oracle, or Night Tarot deck and read its meaning in English and Czech.', cz: 'Webová aplikace pro kartu dne. Vylož si jednu kartu z Tarotu, Oracle nebo Night Tarotu a přečti si výklad v angličtině i češtině.' },
+    seo_faq2_q: { en: 'Is it free?', cz: 'Je to zdarma?' },
+    seo_faq2_a: { en: 'Yes, Noctuary Tarot is completely free, runs right in your browser, with no registration and nothing to download.', cz: 'Ano, Noctuary Tarot je zcela zdarma, funguje přímo v prohlížeči bez registrace a bez stahování aplikace.' },
+    seo_faq3_q: { en: 'What\u2019s the difference between the decks?', cz: 'Jaký je rozdíl mezi balíčky?' },
+    seo_faq3_a: { en: 'Tarot is the classic 78-card deck with traditional meanings, Oracle is looser and more intuitive, and Night Tarot is an original mystical deck with a darker atmosphere.', cz: 'Tarot je klasický 78kartový balíček s tradičním výkladem, Oracle je volnější a intuitivnější, Night Tarot je autorský mystický balíček s temnější atmosférou.' },
+    seo_faq4_q: { en: 'Does the app save my card history?', cz: 'Ukládá si aplikace historii karet?' },
+    seo_faq4_a: { en: 'Yes, your drawn card history stays saved in the browser and is always available through the clock icon.', cz: 'Ano, historie vytažených karet zůstává uložená v prohlížeči a je kdykoliv dostupná přes ikonu hodin.' },
+    seo_disclaimer: { en: 'Noctuary Tarot is offered as a daily space for pause, reflection, and atmosphere — it is not fortune-telling, a prediction of the future, or a substitute for professional guidance on important life decisions.', cz: 'Noctuary Tarot slouží jako každodenní prostor pro zastavení, reflexi a atmosféru — nejde o věštění, předpověď budoucnosti ani náhradu odborné pomoci při důležitých životních rozhodnutích.' },
+    seo_footer_link_howto: { en: 'How to read cards', cz: 'Jak číst karty' },
+    seo_footer_link_articles: { en: 'Tarot articles', cz: 'Články o tarotu' },
+    seo_footer_copy_pre: { en: '© ', cz: '© ' },
+    seo_footer_copy_post: { en: ' Noctuary Tarot — free card of the day', cz: ' Noctuary Tarot — karta dne zdarma online' },
+    seo_player_pre: { en: 'Want something quiet playing while you draw and reflect? Try the ', cz: 'Chceš mít při tažení a zamyšlení puštěné něco tichého na pozadí? Zkus ' },
+    seo_player_link: { en: 'SYNTHLUCIDA ambient & chillout player', cz: 'přehrávač SYNTHLUCIDA' },
+    seo_player_post: { en: '.', cz: '.' },
 
     articles_title: { en: 'TAROT READING', cz: 'ČTENÍ O TAROTU' },
     articles_sub: { en: 'A few short pieces on tarot, for whenever you want to read more than one card a day.', cz: 'Několik krátkých textů o tarotu pro chvíle, kdy chcete přečíst víc než jednu kartu denně.' },
@@ -1899,7 +2119,9 @@
     a10_menu_title: { en: 'Common Tarot Myths, Debunked', cz: 'Časté mýty o tarotu' },
     a10_menu_sub: { en: 'Egypt, superstitions and what\u2019s actually true', cz: 'Egypt, pověry a co je skutečně pravda' },
     a11_menu_title: { en: 'Numbers in Tarot', cz: 'Čísla v tarotu' },
-    a11_menu_sub: { en: 'A short intro to tarot numerology', cz: 'Krátký úvod do tarotové numerologie' }
+    a11_menu_sub: { en: 'A short intro to tarot numerology', cz: 'Krátký úvod do tarotové numerologie' },
+    a12_menu_title: { en: 'Music and Atmosphere for a Reading', cz: 'Hudba a atmosféra pro výklad' },
+    a12_menu_sub: { en: 'Setting a calmer mood before you draw', cz: 'Klidnější nálada, než si vytáhnete kartu' }
   };
 
   var articlesData = {
@@ -2067,6 +2289,26 @@
           'Čtení barvy a čísla dohromady často dá rychlý, užitečný první dojem: Desítka mečů se čte jako konec (Desítka) obtížné, myšlenkově náročné situace (Meče) — zatímco Desítka pohárů se čte jako plné, emocionální naplnění, obvykle šťastné. Berte tato čísla jako výchozí náčrt, ne jako pevný vzorec — poslední slovo má stále obrázek na kartě.'
         ]
       }
+    },
+    a12: {
+      title: { en: 'Music and Atmosphere for a Reading', cz: 'Hudba a atmosféra pro výklad' },
+      body: {
+        en: [
+          'A reading rarely happens in a vacuum \u2014 the room, the light, and especially the sound around you all shape how open and unhurried you feel while you sit with a card. A busy, noisy background tends to pull attention outward, toward whatever\u2019s making the noise, instead of inward toward the card and the question you\u2019re actually holding.',
+          'Slow, wordless music is one of the simplest ways to change that. Without lyrics competing for your attention and without a strong beat pushing you to move at its pace, ambient and chillout tracks tend to fade into the background just enough to soften a room without ever demanding to be listened to \u2014 leaving your focus free for the card itself.',
+          'If you\u2019d like something unobtrusive playing while you draw and reflect, SYNTHLUCIDA\u2019s ambient and chillout player is built for exactly that kind of low-key listening \u2014 long, slow-moving tracks with no vocals, meant to sit quietly under whatever else you\u2019re doing rather than take center stage.'
+        ],
+        cz: [
+          'Výklad se málokdy odehrává ve vzduchoprázdnu — místnost, světlo a hlavně zvuk kolem vás ovlivňují, jak otevření a nespěchaní se u karty cítíte. Rušné, hlučné pozadí obvykle táhne pozornost ven, k tomu, co ten hluk způsobuje, místo dovnitř, ke kartě a otázce, kterou si právě držíte.',
+          'Pomalá hudba beze slov je jeden z nejjednodušších způsobů, jak to změnit. Bez textu, který by soupeřil o pozornost, a bez výrazného rytmu, který by nutil držet jeho tempo, se ambientní a chillout skladby obvykle rozplynou v pozadí právě tak, aby místnost zjemnily, ale nikdy si nevyžádaly plnou pozornost — a nechaly tak prostor pro samotnou kartu.',
+          'Pokud chcete mít u tažení a zamyšlení puštěné něco nenápadného, přehrávač ambientní a chillout hudby SYNTHLUCIDA je přesně na tenhle typ poslechu na pozadí — dlouhé, pomalé skladby bez zpěvu, které mají tiše doprovázet to, co právě děláte, ne strhávat pozornost na sebe.'
+        ]
+      },
+      link: {
+        url: 'https://synthlucida.com/player.html',
+        en: 'Open the SYNTHLUCIDA ambient player \u2192',
+        cz: 'Otevřít přehrávač SYNTHLUCIDA \u2192'
+      }
     }
   };
 
@@ -2116,6 +2358,17 @@
       pEl.textContent = p;
       bodyEl.appendChild(pEl);
     });
+    if (art.link) {
+      var linkP = document.createElement('p');
+      var linkA = document.createElement('a');
+      linkA.href = art.link.url;
+      linkA.target = '_blank';
+      linkA.rel = 'noopener noreferrer';
+      linkA.textContent = art.link[guideLang] || art.link.en;
+      linkA.style.color = 'var(--accent-color)';
+      linkP.appendChild(linkA);
+      bodyEl.appendChild(linkP);
+    }
   }
 
   function showArticleDetail(id) {
