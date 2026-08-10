@@ -248,6 +248,7 @@
   .corner-btn-fs { left: 10px; top: calc(10px + 38px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-history { left: 10px; top: calc(10px + 76px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-articles { left: 10px; top: calc(10px + 114px + env(safe-area-inset-top, 0px)); font-size: 15px; }
+  .corner-btn-contact { left: 10px; top: calc(10px + 152px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
   /* Articles / SEO text menu */
@@ -284,6 +285,33 @@
     background: rgba(0,0,0,0.92); justify-content: center; align-items: center; padding: 20px;
   }
   #history-overlay.show { display: flex; }
+  #contact-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.92); justify-content: center; align-items: center; padding: 20px;
+  }
+  #contact-overlay.show { display: flex; }
+  .contact-panel {
+    background: var(--card-bg-1); border: 1px solid var(--accent-color); border-radius: 12px;
+    max-width: 380px; width: 100%; max-height: 84vh; overflow-y: auto; padding: 26px 18px 20px;
+    position: relative; box-shadow: 0 0 30px rgba(212,175,55,0.25); text-align: center;
+  }
+  .tarot-contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .tarot-contact-input, .tarot-contact-textarea {
+    width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; padding: 10px 12px;
+    color: #fff; font-family: 'Cormorant Garamond', serif; font-size: 14px; resize: vertical;
+  }
+  .tarot-contact-input:focus, .tarot-contact-textarea:focus { outline: none; border-color: var(--accent-color); }
+  .tarot-contact-submit {
+    background: rgba(212,175,55,0.12); border: 1px solid var(--accent-color); color: var(--accent-color);
+    border-radius: 20px; padding: 10px 16px; font-family: 'Orbitron', sans-serif; font-size: 12px;
+    letter-spacing: 1.5px; cursor: pointer; transition: 0.2s;
+  }
+  .tarot-contact-submit:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
+  .tarot-contact-status { margin: 2px 0 0; font-size: 12px; letter-spacing: 0.5px; min-height: 14px; }
+  .tarot-contact-status.sending { color: rgba(255,255,255,0.6); }
+  .tarot-contact-status.error { color: #ff6b6b; }
+  .tarot-contact-thanks { margin: 0; padding: 10px 0; color: var(--accent-color); font-size: 13px; letter-spacing: 0.5px; }
   .history-panel {
     background: var(--card-bg-1); border: 1px solid var(--accent-color); border-radius: 12px;
     max-width: 420px; width: 100%; max-height: 84vh; overflow-y: auto; padding: 26px 18px 20px;
@@ -670,6 +698,7 @@
     .corner-btn-fs { top: calc(10px + 34px + env(safe-area-inset-top, 0px)); }
     .corner-btn-history { top: calc(10px + 68px + env(safe-area-inset-top, 0px)); }
     .corner-btn-articles { top: calc(10px + 102px + env(safe-area-inset-top, 0px)); }
+    .corner-btn-contact { top: calc(10px + 136px + env(safe-area-inset-top, 0px)); }
     .brand { margin-bottom: 2px; }
     .brand-name { font-size: 12px; }
     .page-title { font-size: 15px; margin: 2px 0 10px; }
@@ -766,6 +795,7 @@
 <button class="corner-btn corner-btn-fs" id="btn-fullscreen-toggle" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">⤢</button>
 <button class="corner-btn corner-btn-history" id="btn-history" title="History" aria-label="History">🕐</button>
 <button class="corner-btn corner-btn-articles" id="btn-articles" title="Tarot Articles" aria-label="Tarot Articles">☰</button>
+<button class="corner-btn corner-btn-contact" id="btn-contact" title="Contact" aria-label="Contact">✉</button>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -954,6 +984,24 @@
       <h2 id="article-detail-title"></h2>
       <div id="article-detail-body"></div>
     </div>
+  </div>
+</div>
+
+<div id="contact-overlay">
+  <div class="contact-panel">
+    <button class="history-close" id="btn-contact-close" aria-label="Close">✕</button>
+    <h2>CONTACT</h2>
+    <p class="history-sub">Have a question or feedback? Send a message below.</p>
+    <form class="tarot-contact-form" id="tarot-contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="705e3776-a3bb-44fd-bf3b-d10edd766beb">
+      <input type="hidden" name="subject" value="New message from Noctuary Tarot website">
+      <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="text" name="name" class="tarot-contact-input" placeholder="Your name" required>
+      <input type="email" name="email" class="tarot-contact-input" placeholder="Your email" required>
+      <textarea name="message" class="tarot-contact-textarea" placeholder="Your message" rows="4" required></textarea>
+      <button type="submit" class="tarot-contact-submit">SEND MESSAGE</button>
+      <p class="tarot-contact-status" id="tarot-contact-status" aria-live="polite"></p>
+    </form>
   </div>
 </div>
 
@@ -2398,6 +2446,50 @@
   document.getElementById('articles-overlay').addEventListener('click', function (e) {
     if (e.target.id === 'articles-overlay') toggleArticlesOverlay(false);
   });
+
+  function toggleContactOverlay(show) {
+    document.getElementById('contact-overlay').classList.toggle('show', show);
+  }
+  document.getElementById('btn-contact').addEventListener('click', function () { toggleContactOverlay(true); });
+  document.getElementById('btn-contact-close').addEventListener('click', function () { toggleContactOverlay(false); });
+  document.getElementById('contact-overlay').addEventListener('click', function (e) {
+    if (e.target.id === 'contact-overlay') toggleContactOverlay(false);
+  });
+
+  // Contact form submission via Web3Forms AJAX endpoint (fetch) - the page
+  // never navigates away or reloads, the user just sees an inline
+  // "Sending…" then "Thank you" message right in the panel.
+  (function initTarotContactForm() {
+    var form = document.getElementById('tarot-contact-form');
+    if (!form) return;
+    var statusEl = document.getElementById('tarot-contact-status');
+    var submitBtn = form.querySelector('.tarot-contact-submit');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Sending…';
+      statusEl.className = 'tarot-contact-status sending';
+
+      var formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (!data.success) throw new Error('Send failed');
+          form.innerHTML = '<p class="tarot-contact-thanks">✔ Thank you! Your message has been sent.</p>';
+        })
+        .catch(function () {
+          statusEl.textContent = 'Something went wrong, please try again.';
+          statusEl.className = 'tarot-contact-status error';
+          submitBtn.disabled = false;
+        });
+    });
+  })();
   document.getElementById('article-detail-back').addEventListener('click', function () { showArticlesMenu(); });
   document.querySelectorAll('.articles-menu-item').forEach(function (btn) {
     btn.addEventListener('click', function () { showArticleDetail(btn.getAttribute('data-article')); });
