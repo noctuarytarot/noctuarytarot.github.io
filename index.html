@@ -116,6 +116,9 @@
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<!-- PDF export (used by the 🕐 History panel's 📄 EXPORT TO PDF button) -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root {
     --bg-color-1: #1a0733;
@@ -249,6 +252,7 @@
   .corner-btn-history { left: 10px; top: calc(10px + 76px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-articles { left: 10px; top: calc(10px + 114px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-contact { left: 10px; top: calc(10px + 152px + env(safe-area-inset-top, 0px)); font-size: 15px; }
+  .corner-btn-lang { left: 10px; top: calc(10px + 190px + env(safe-area-inset-top, 0px)); font-size: 12px; font-weight: 600; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
   /* Articles / SEO text menu */
@@ -359,6 +363,15 @@
   }
   .spread-summary-btn:hover { background: rgba(139,47,224,0.24); }
   .spread-summary-btn:disabled { opacity: 0.35; cursor: default; }
+
+  .history-export-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.55); color: var(--accent-color);
+    border-radius: 10px; padding: 10px 14px; font-family: 'Orbitron', sans-serif; font-size: 11px;
+    letter-spacing: 1px; cursor: pointer; transition: 0.2s; margin-bottom: 14px;
+  }
+  .history-export-btn:hover { background: rgba(212,175,55,0.22); }
+  .history-export-btn:disabled { opacity: 0.35; cursor: default; }
   .spread-summary {
     display: none; text-align: left; margin-bottom: 16px; padding: 14px 14px 12px;
     background: radial-gradient(ellipse at center, rgba(139,47,224,0.12), rgba(0,0,0,0.2) 80%);
@@ -699,6 +712,7 @@
     .corner-btn-history { top: calc(10px + 68px + env(safe-area-inset-top, 0px)); }
     .corner-btn-articles { top: calc(10px + 102px + env(safe-area-inset-top, 0px)); }
     .corner-btn-contact { top: calc(10px + 136px + env(safe-area-inset-top, 0px)); }
+    .corner-btn-lang { top: calc(10px + 170px + env(safe-area-inset-top, 0px)); font-size: 11px; }
     .brand { margin-bottom: 2px; }
     .brand-name { font-size: 12px; }
     .page-title { font-size: 15px; margin: 2px 0 10px; }
@@ -805,6 +819,7 @@
 <button class="corner-btn corner-btn-history" id="btn-history" title="History" aria-label="History">🕐</button>
 <button class="corner-btn corner-btn-articles" id="btn-articles" title="Tarot Articles" aria-label="Tarot Articles">☰</button>
 <button class="corner-btn corner-btn-contact" id="btn-contact" title="Contact" aria-label="Contact">✉</button>
+<button class="corner-btn corner-btn-lang" id="btn-lang-toggle" onclick="toggleInfoLanguage()" title="Language / Jazyk" aria-label="Switch language">CZ</button>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -842,6 +857,9 @@
 
     <h3 data-i18n="h_history">🕐 HISTORY</h3>
     <p data-i18n="p_history">Tap the 🕐 button in the top-right corner to see every card you've drawn, laid out on the table. Tap any card there to reopen its full meaning. Cards fade off the table 60 minutes after they were drawn.</p>
+
+    <h3 data-i18n="h_export">📄 EXPORT TO PDF</h3>
+    <p data-i18n="p_export">Inside the 🕐 History panel, tap 📄 EXPORT TO PDF to save every card currently on the table — its name, orientation and full meaning — as a PDF file you can keep or print. The file is generated in whichever language you're currently viewing the site in.</p>
   </div>
 </div>
 
@@ -854,6 +872,9 @@
 
     <button class="spread-summary-btn" id="btn-spread-summary" disabled>
       <span data-i18n="spread_summary_btn">🔮 SUMMARIZE THIS READING</span>
+    </button>
+    <button class="history-export-btn" id="btn-history-export" disabled>
+      <span data-i18n="history_export_btn">📄 EXPORT TO PDF</span>
     </button>
     <div class="spread-summary" id="spread-summary">
       <button class="history-detail-back" id="spread-summary-back">‹ <span data-i18n="history_back">BACK</span></button>
@@ -1428,6 +1449,8 @@
     var summaryPanel = document.getElementById('spread-summary');
     if (summaryBtn) summaryBtn.disabled = list.length === 0;
     if (summaryPanel) summaryPanel.classList.remove('open');
+    var exportBtn = document.getElementById('btn-history-export');
+    if (exportBtn) exportBtn.disabled = list.length === 0;
 
     if (!list.length) {
       var empty = document.createElement('div');
@@ -1476,6 +1499,132 @@
       container.appendChild(tile);
     });
   }
+
+  // ---------- PDF EXPORT (renders the current history table into a PDF) ----------
+  // Builds an offscreen, styled copy of the reading (title + one block per
+  // card: symbol, name, orientation, timestamp, meaning) using the site's own
+  // fonts, rasterizes it with html2canvas so any language/diacritics render
+  // correctly, then slices that image across as many A4 pages as needed with
+  // jsPDF. Both libraries are loaded from CDN and only touched at click time,
+  // so a slow/offline connection just fails gracefully with a translated alert
+  // instead of breaking the rest of the page.
+  window.exportHistoryToPdf = function () {
+    var list = loadHistory();
+    if (!list.length) return;
+
+    var btn = document.getElementById('btn-history-export');
+    var restoreBtn = function () {
+      if (!btn) return;
+      btn.disabled = loadHistory().length === 0;
+      if (btn.dataset.origHtml) btn.innerHTML = btn.dataset.origHtml;
+    };
+
+    if (typeof window.jspdf === 'undefined' || typeof window.html2canvas === 'undefined') {
+      alert(i18nText.history_export_error[guideLang] || i18nText.history_export_error.en);
+      return;
+    }
+
+    if (btn) {
+      btn.dataset.origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span>' + (i18nText.history_export_generating[guideLang] || i18nText.history_export_generating.en) + '</span>';
+    }
+
+    var now = new Date();
+    var localeTag = guideLang === 'cz' ? 'cs-CZ' : 'en-US';
+
+    var sheet = document.createElement('div');
+    sheet.style.position = 'fixed';
+    sheet.style.left = '-9999px';
+    sheet.style.top = '0';
+    sheet.style.width = '760px';
+    sheet.style.background = '#0d0221';
+    sheet.style.color = '#fff';
+    sheet.style.padding = '44px';
+    sheet.style.fontFamily = "'Cormorant Garamond', serif";
+    sheet.style.boxSizing = 'border-box';
+
+    var title = document.createElement('div');
+    title.style.fontFamily = "'Orbitron', sans-serif";
+    title.style.fontSize = '26px';
+    title.style.letterSpacing = '3px';
+    title.style.color = '#d4af37';
+    title.style.marginBottom = '6px';
+    title.textContent = '✦ NOCTUARY TAROT ✦';
+    sheet.appendChild(title);
+
+    var sub = document.createElement('div');
+    sub.style.fontSize = '14px';
+    sub.style.opacity = '0.7';
+    sub.style.marginBottom = '30px';
+    sub.textContent = (i18nText.history_export_pdf_title[guideLang] || i18nText.history_export_pdf_title.en) + ' \u2014 ' + now.toLocaleString(localeTag);
+    sheet.appendChild(sub);
+
+    list.slice().reverse().forEach(function (entry) {
+      var block = document.createElement('div');
+      block.style.borderTop = '1px solid rgba(212,175,55,0.3)';
+      block.style.padding = '18px 0';
+
+      var head = document.createElement('div');
+      head.style.fontFamily = "'Orbitron', sans-serif";
+      head.style.fontSize = '17px';
+      head.style.color = '#d4af37';
+      head.style.marginBottom = '4px';
+      var name = guideLang === 'cz' ? entry.cz : entry.en;
+      head.textContent = entry.sym + '  ' + name + (entry.reversed ? '   \u00b7 ' + (i18nText.history_reversed[guideLang] || i18nText.history_reversed.en) : '');
+      block.appendChild(head);
+
+      var time = document.createElement('div');
+      time.style.fontSize = '12px';
+      time.style.opacity = '0.55';
+      time.style.marginBottom = '10px';
+      time.textContent = new Date(entry.ts).toLocaleString(localeTag);
+      block.appendChild(time);
+
+      var meaning = document.createElement('div');
+      meaning.style.fontSize = '15px';
+      meaning.style.lineHeight = '1.6';
+      meaning.textContent = (guideLang === 'cz' ? entry.meaningCz : entry.meaningEn) || '';
+      block.appendChild(meaning);
+
+      sheet.appendChild(block);
+    });
+
+    document.body.appendChild(sheet);
+
+    window.html2canvas(sheet, { backgroundColor: '#0d0221', scale: 2, useCORS: true }).then(function (canvas) {
+      if (sheet.parentNode) sheet.parentNode.removeChild(sheet);
+
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ unit: 'pt', format: 'a4' });
+      var pageWidth = pdf.internal.pageSize.getWidth();
+      var pageHeight = pdf.internal.pageSize.getHeight();
+      var imgWidth = pageWidth;
+      var imgHeight = (canvas.height * imgWidth) / canvas.width;
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+      var heightLeft = imgHeight;
+      var position = 0;
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      var filenameBase = i18nText.history_export_filename[guideLang] || i18nText.history_export_filename.en;
+      pdf.save(filenameBase + '-' + now.toISOString().slice(0, 10) + '.pdf');
+      restoreBtn();
+    }).catch(function (err) {
+      console.warn('[Noctuary] PDF export failed:', err);
+      if (sheet.parentNode) sheet.parentNode.removeChild(sheet);
+      alert(i18nText.history_export_error[guideLang] || i18nText.history_export_error.en);
+      restoreBtn();
+    });
+  };
 
   // ---------- SPREAD SUMMARY (algorithmic reading of the cards on the table) ----------
   // Looks at every card currently in history (not just the last draw) and
@@ -2090,6 +2239,8 @@
     p_spirit: { en: 'This is offered as a small daily moment for reflection and atmosphere, not as prediction or advice.', cz: 'Toto je nabízeno jako malá každodenní chvilka pro zamyšlení a atmosféru, nikoli jako předpověď nebo rada.' },
     h_history: { en: '🕐 HISTORY', cz: '🕐 HISTORIE' },
     p_history: { en: 'Tap the 🕐 button in the top-right corner to see every card you\u2019ve drawn, laid out on the table. Tap any card there to reopen its full meaning, or tap 🔮 SUMMARIZE THIS READING to weave the whole spread \u2014 dominant suit, Major/Minor balance, reversed cards and all \u2014 into one reading; tap 🔄 A DIFFERENT ANGLE for a fresh take on the same cards. Cards fade off the table 60 minutes after they were drawn.', cz: 'Klepnutím na tlačítko 🕐 v pravém horním rohu uvidíte všechny karty, které jste vytáhli, položené na stole. Klepnutím na kteroukoli z nich znovu otevřete její plný výklad, nebo klepněte na 🔮 SHRNOUT TENTO VÝKLAD a nechte celý výklad \u2014 dominantní barvu, poměr velkých a malých arkán, obrácené karty a další \u2014 spojit do jednoho čtení; klepnutím na 🔄 JINÝ ÚHEL POHLEDU dostanete k týmž kartám nový pohled. Karty ze stolu zmizí 60 minut po vytažení.' },
+    h_export: { en: '📄 EXPORT TO PDF', cz: '📄 EXPORT DO PDF' },
+    p_export: { en: 'Inside the 🕐 History panel, tap 📄 EXPORT TO PDF to save every card currently on the table \u2014 its name, orientation and full meaning \u2014 as a PDF file you can keep or print. The file is generated in whichever language you\u2019re currently viewing the site in.', cz: 'V panelu 🕐 Historie klepněte na 📄 EXPORT DO PDF a uložte všechny karty aktuálně na stole \u2014 jejich jméno, polohu a plný výklad \u2014 jako soubor PDF, který si můžete uschovat nebo vytisknout. Soubor se vygeneruje v jazyce, ve kterém si stránku právě prohlížíte.' },
     page_title: { en: '✦ CARD OF THE DAY ✦', cz: '✦ KARTA DNE ✦' },
     btn_draw: { en: 'DRAW AGAIN', cz: 'TÁHNOUT ZNOVU' },
     reflect_label: { en: 'REFLECT', cz: 'K ZAMYŠLENÍ' },
@@ -2102,6 +2253,11 @@
     history_back: { en: 'BACK', cz: 'ZPĚT' },
     spread_summary_btn: { en: '🔮 SUMMARIZE THIS READING', cz: '🔮 SHRNOUT TENTO VÝKLAD' },
     spread_summary_again: { en: '🔄 A DIFFERENT ANGLE', cz: '🔄 JINÝ ÚHEL POHLEDU' },
+    history_export_btn: { en: '📄 EXPORT TO PDF', cz: '📄 EXPORTOVAT DO PDF' },
+    history_export_generating: { en: '⏳ PREPARING PDF\u2026', cz: '⏳ PŘIPRAVUJI PDF\u2026' },
+    history_export_error: { en: 'PDF export could not start \u2014 please check your connection and try again.', cz: 'Export do PDF se nepodařilo spustit \u2014 zkontrolujte prosím připojení a zkuste to znovu.' },
+    history_export_pdf_title: { en: 'Card History Export', cz: 'Export historie karet' },
+    history_export_filename: { en: 'noctuary-tarot-history', cz: 'noctuary-tarot-historie' },
     spread_guide_toggle: { en: '📖 SPREAD READING GUIDE', cz: '📖 NÁVOD NA VÝKLAD S VÍCE KARTAMI' },
     h_spread_intro: { en: 'READING MULTIPLE CARDS', cz: 'VÝKLAD S VÍCE KARTAMI' },
     p_spread_intro: { en: 'A single card gives one thought for the day. A spread — several cards laid out in chosen positions — lets you ask a real question and see how its parts relate: where you\u2019ve come from, what\u2019s happening now, what\u2019s asking to be noticed.', cz: 'Jedna karta dává jednu myšlenku na den. Výklad — několik karet položených na zvolené pozice — vám dovolí položit skutečnou otázku a vidět, jak spolu její části souvisí: odkud jste přišli, co se děje teď, a co si žádá vaši pozornost.' },
@@ -2391,6 +2547,8 @@
     if (historyBtn) historyBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
     var articlesBtn = document.getElementById('articles-lang-toggle');
     if (articlesBtn) articlesBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
+    var cornerLangBtn = document.getElementById('btn-lang-toggle');
+    if (cornerLangBtn) cornerLangBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
     if (typeof renderCurrentArticle === 'function') renderCurrentArticle();
   }
 
@@ -2532,6 +2690,7 @@
 
   document.getElementById('btn-history').addEventListener('click', function () { toggleHistoryOverlay(true); });
   document.getElementById('btn-history-close').addEventListener('click', function () { toggleHistoryOverlay(false); });
+  document.getElementById('btn-history-export').addEventListener('click', function () { exportHistoryToPdf(); });
   document.getElementById('history-overlay').addEventListener('click', function (e) {
     if (e.target.id === 'history-overlay') toggleHistoryOverlay(false);
   });
