@@ -783,6 +783,15 @@
   .site-footer-full a:hover { opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
   .site-footer-full nav { margin-bottom: 10px; }
   .site-footer-full nav a { margin: 0 8px; }
+  .site-stats {
+    margin-top: 8px; font-size: 11px; letter-spacing: 0.5px; opacity: 0.55;
+    display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
+  }
+  .site-stats .dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: #3ddc73; box-shadow: 0 0 6px #3ddc73; margin-right: 3px; vertical-align: middle;
+  }
+  .site-stats .sep { opacity: 0.4; }
   @media (max-width: 480px) {
     .seo-content { font-size: 15.5px; padding: 0 4px; }
     .seo-content > p.lead { font-size: 17px; }
@@ -1122,6 +1131,11 @@
   <div><span data-i18n="seo_footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="seo_footer_copy_post"> Noctuary Tarot — free card of the day</span></div>
   <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
   <div style="margin-top:4px;"><a href="privacy.html" data-i18n="seo_footer_link_privacy">Privacy Policy</a></div>
+  <div class="site-stats" id="site-stats">
+    <span><span data-i18n="seo_footer_stats_visits">Návštěv:</span> <strong id="stat-total">–</strong></span>
+    <span class="sep">·</span>
+    <span><span class="dot"></span><span data-i18n="seo_footer_stats_online">Online:</span> <strong id="stat-online">–</strong></span>
+  </div>
 </footer>
 
 <script>
@@ -2144,6 +2158,8 @@
     seo_footer_copy_pre: { en: '© ', cz: '© ' },
     seo_footer_copy_post: { en: ' Noctuary Tarot — free card of the day', cz: ' Noctuary Tarot — karta dne zdarma online' },
     seo_footer_link_privacy: { en: 'Privacy Policy', cz: 'Zásady ochrany soukromí' },
+    seo_footer_stats_visits: { en: 'Visits:', cz: 'Návštěv:' },
+    seo_footer_stats_online: { en: 'Online:', cz: 'Online:' },
     seo_player_pre: { en: 'Want something quiet playing while you draw and reflect? Try the ', cz: 'Chceš mít při tažení a zamyšlení puštěné něco tichého na pozadí? Zkus ' },
     seo_player_link: { en: 'SYNTHLUCIDA ambient & chillout player', cz: 'přehrávač SYNTHLUCIDA' },
     seo_player_post: { en: '.', cz: '.' },
@@ -2922,6 +2938,70 @@
   startSloganCountdown(10000);
 
 })();
+</script>
+<!-- Firebase — počítadlo návštěv a online uživatelů -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+  import {
+    getDatabase, ref, onValue, runTransaction,
+    onDisconnect, push, set, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
+
+  // Tvoje Firebase konfigurace
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYbP8bi5OhVjhCFmSvV4FuoWe1jjFAMvY",
+    authDomain: "noctuarytarot.firebaseapp.com",
+    // POZOR: databaseURL zatím neznáme — je potřeba zapnout Realtime Database
+    // v konzoli (Build -> Realtime Database -> Create database) a URL odsud
+    // zkopírovat. Výchozí tvar bývá jeden z těchto dvou:
+    //   https://noctuarytarot-default-rtdb.firebaseio.com
+    //   https://noctuarytarot-default-rtdb.europe-west1.firebasedatabase.app
+    databaseURL: "https://noctuarytarot-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "noctuarytarot",
+    storageBucket: "noctuarytarot.firebasestorage.app",
+    messagingSenderId: "932926825488",
+    appId: "1:932926825488:web:37b46964003ae43dc21695",
+    measurementId: "G-ZWJTJ27JGE"
+  };
+
+  const totalEl = document.getElementById('stat-total');
+  const onlineEl = document.getElementById('stat-online');
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 1) Celkové návštěvy — započítá se max. jednou za prohlížečovou session
+    try {
+      if (!sessionStorage.getItem('noctuary_visit_counted')) {
+        runTransaction(ref(db, 'stats/totalVisits'), function (current) {
+          return (current || 0) + 1;
+        });
+        sessionStorage.setItem('noctuary_visit_counted', '1');
+      }
+    } catch (e) { /* sessionStorage nemusí být dostupný (např. v inkognito) */ }
+
+    onValue(ref(db, 'stats/totalVisits'), function (snap) {
+      if (totalEl) totalEl.textContent = (snap.val() || 0).toLocaleString('cs-CZ');
+    });
+
+    // 2) Online právě teď — presence přes onDisconnect
+    onValue(ref(db, '.info/connected'), function (snap) {
+      if (snap.val() === true) {
+        const myPresenceRef = push(ref(db, 'presence'));
+        onDisconnect(myPresenceRef).remove();
+        set(myPresenceRef, serverTimestamp());
+      }
+    });
+
+    onValue(ref(db, 'presence'), function (snap) {
+      if (onlineEl) onlineEl.textContent = snap.size;
+    });
+  } catch (e) {
+    console.warn('[Noctuary] Firebase se nepodařilo inicializovat:', e);
+    const statsBox = document.getElementById('site-stats');
+    if (statsBox) statsBox.style.display = 'none';
+  }
 </script>
 </body>
 </html>
