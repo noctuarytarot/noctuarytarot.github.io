@@ -3003,5 +3003,14 @@
     if (statsBox) statsBox.style.display = 'none';
   }
 </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function (err) {
+        console.warn('[Noctuary] Service worker se nepodařilo zaregistrovat:', err);
+      });
+    });
+  }
+</script>
 </body>
 </html>
