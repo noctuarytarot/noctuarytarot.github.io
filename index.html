@@ -669,8 +669,6 @@
     color: var(--accent-color); text-shadow: 0 0 8px rgba(212,175,55,0.35); opacity: 0; transition: opacity 1.2s ease;
   }
   .slogan-text.visible { opacity: 0.8; }
-  .slogan-text-cz { font-size: 14px; opacity: 0; margin-top: 3px; color: #fff; text-shadow: none; }
-  .slogan-text-cz.visible { opacity: 0.6; }
 
   .slogan-countdown {
     display: none;
@@ -733,7 +731,6 @@
     .btn-draw { padding: 8px 16px; font-size: 11px; }
     .slogan-wrap { margin-top: 8px; min-height: 24px; }
     .slogan-text { font-size: 13px; }
-    .slogan-text-cz { font-size: 12px; }
     .slogan-countdown { margin-top: 6px; }
     .slogan-countdown-num { font-size: 10px; margin-top: 4px; }
   }
@@ -1087,7 +1084,6 @@
 
 <div class="slogan-wrap">
   <div class="slogan-text" id="slogan-text-en"></div>
-  <div class="slogan-text slogan-text-cz" id="slogan-text-cz"></div>
   <div class="slogan-countdown" id="slogan-countdown"><div class="slogan-countdown-bar" id="slogan-countdown-bar"></div></div>
   <div class="slogan-countdown-num" id="slogan-countdown-num"></div>
 </div>
@@ -2348,6 +2344,39 @@
     a12_menu_sub: { en: 'Setting a calmer mood before you draw', cz: 'Klidnější nálada, než si vytáhnete kartu' }
   };
 
+  // Page title, meta description/keywords, and <html lang> — kept in sync with the
+  // language toggle so the browser tab / SEO fields match whatever the visitor
+  // is currently viewing. The "cz" values are the site's original head tags.
+  var seoText = {
+    title: {
+      en: 'Noctuary Tarot — Free Card of the Day | Online Tarot Reading',
+      cz: 'Noctuary Tarot — Karta dne zdarma | Online výklad karet'
+    },
+    description: {
+      en: 'Noctuary Tarot — your free card of the day. Draw a card from the classic 78-card Tarot, the Cosmic Whisper Oracle, or the mystical Night Tarot, and take a moment to pause and reflect.',
+      cz: 'Noctuary Tarot — tvá karta dne zdarma. Vylož si kartu z klasického 78kartového tarotu, Cosmic Whisper Oracle nebo mystického Night Tarotu a nech se na chvíli zastavit a zamyslet.'
+    },
+    keywords: {
+      en: 'tarot, card of the day, daily tarot, free online tarot, tarot reading, tarot cards, oracle cards, divination, tarot card of the day, Noctuary',
+      cz: 'tarot, karta dne, denní tarot, online tarot zdarma, výklad karet, tarotové karty, oracle karty, věštění, tarotová karta dne, Noctuary'
+    }
+  };
+
+  function applySeoLanguage() {
+    if (!seoText) return;
+    var t = seoText.title[guideLang] || seoText.title.en;
+    var d = seoText.description[guideLang] || seoText.description.en;
+    var k = seoText.keywords[guideLang] || seoText.keywords.en;
+    document.title = t;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', d);
+    var metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) metaKeywords.setAttribute('content', k);
+    var metaLang = document.querySelector('meta[name="language"]');
+    if (metaLang) metaLang.setAttribute('content', guideLang === 'cz' ? 'Czech' : 'English');
+    document.documentElement.setAttribute('lang', guideLang === 'cz' ? 'cs' : 'en');
+  }
+
   var articlesData = {
     a1: {
       title: { en: 'What Is Tarot?', cz: 'Co je tarot?' },
@@ -2550,6 +2579,8 @@
     var cornerLangBtn = document.getElementById('btn-lang-toggle');
     if (cornerLangBtn) cornerLangBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
     if (typeof renderCurrentArticle === 'function') renderCurrentArticle();
+    if (typeof applySeoLanguage === 'function') applySeoLanguage();
+    if (typeof renderCurrentSlogan === 'function') renderCurrentSlogan();
   }
 
   window.toggleInfoLanguage = function () {
@@ -3003,7 +3034,6 @@
   }
 
   var sloganEnEl = document.getElementById('slogan-text-en');
-  var sloganCzEl = document.getElementById('slogan-text-cz');
   var sloganCountdownEl = document.getElementById('slogan-countdown');
   var sloganCountdownBarEl = document.getElementById('slogan-countdown-bar');
   var sloganCountdownNumEl = document.getElementById('slogan-countdown-num');
@@ -3067,16 +3097,23 @@
     return next;
   }
 
+  var currentSloganIdx = null;
+
+  // Re-renders whichever slogan is currently on screen in the newly selected
+  // language, without restarting its fade-in/out or picking a new slogan.
+  function renderCurrentSlogan() {
+    if (currentSloganIdx === null || !sloganEnEl) return;
+    var arr = guideLang === 'cz' ? tarotSlogansCz : tarotSlogans;
+    sloganEnEl.textContent = arr[currentSloganIdx];
+  }
+
   function showTarotSlogan() {
     stopSloganCountdown();
-    var idx = nextSloganIndex();
-    sloganEnEl.textContent = tarotSlogans[idx];
-    sloganCzEl.textContent = tarotSlogansCz[idx];
+    currentSloganIdx = nextSloganIndex();
+    renderCurrentSlogan();
     sloganEnEl.classList.add('visible');
-    sloganCzEl.classList.add('visible');
     setTimeout(function () {
       sloganEnEl.classList.remove('visible');
-      sloganCzEl.classList.remove('visible');
     }, 8000);
   }
 
