@@ -1165,9 +1165,11 @@
   <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
   <div style="margin-top:4px;"><a href="privacy.html" data-i18n="seo_footer_link_privacy">Privacy Policy</a></div>
   <div class="site-stats" id="site-stats">
-    <span><span data-i18n="seo_footer_stats_visits">Návštěv:</span> <strong id="stat-total">–</strong></span>
+    <span><strong id="stat-total">–</strong></span>
     <span class="sep">·</span>
-    <span><span class="dot"></span><span data-i18n="seo_footer_stats_online">Online:</span> <strong id="stat-online">–</strong></span>
+    <span><strong id="stat-today">–</strong></span>
+    <span class="sep">·</span>
+    <span><span class="dot"></span><strong id="stat-online">–</strong></span>
   </div>
 </footer>
 
@@ -2326,7 +2328,8 @@
     seo_footer_copy_pre: { en: '© ', cz: '© ' },
     seo_footer_copy_post: { en: ' Noctuary Tarot — free card of the day', cz: ' Noctuary Tarot — karta dne zdarma online' },
     seo_footer_link_privacy: { en: 'Privacy Policy', cz: 'Zásady ochrany soukromí' },
-    seo_footer_stats_visits: { en: 'Visits:', cz: 'Návštěv:' },
+    seo_footer_stats_visits: { en: 'Total visits:', cz: 'Návštěv celkem:' },
+    seo_footer_stats_today: { en: 'Today:', cz: 'Dnes:' },
     seo_footer_stats_online: { en: 'Online:', cz: 'Online:' },
     seo_player_pre: { en: 'Want something quiet playing while you draw and reflect? Try the ', cz: 'Chceš mít při tažení a zamyšlení puštěné něco tichého na pozadí? Zkus ' },
     seo_player_link: { en: 'SYNTHLUCIDA ambient & chillout player', cz: 'přehrávač SYNTHLUCIDA' },
@@ -3151,7 +3154,7 @@
 
 })();
 </script>
-<!-- Firebase — počítadlo návštěv a online uživatelů -->
+<!-- Firebase — počítadlo návštěv (celkem / dnes) a online uživatelů -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
   import {
@@ -3159,45 +3162,61 @@
     onDisconnect, push, set, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
-  // Tvoje Firebase konfigurace
+  // ⚠️ VLOŽ SEM SVOU NOVOU FIREBASE KONFIGURACI
+  // (Firebase Console -> Project settings -> tvoje web app -> SDK setup and configuration)
   const firebaseConfig = {
-    apiKey: "AIzaSyAYbP8bi5OhVjhCFmSvV4FuoWe1jjFAMvY",
-    authDomain: "noctuarytarot.firebaseapp.com",
-    // POZOR: databaseURL zatím neznáme — je potřeba zapnout Realtime Database
-    // v konzoli (Build -> Realtime Database -> Create database) a URL odsud
-    // zkopírovat. Výchozí tvar bývá jeden z těchto dvou:
-    //   https://noctuarytarot-default-rtdb.firebaseio.com
-    //   https://noctuarytarot-default-rtdb.europe-west1.firebasedatabase.app
-    databaseURL: "https://noctuarytarot-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "noctuarytarot",
-    storageBucket: "noctuarytarot.firebasestorage.app",
-    messagingSenderId: "932926825488",
-    appId: "1:932926825488:web:37b46964003ae43dc21695",
-    measurementId: "G-ZWJTJ27JGE"
+    apiKey: "AIzaSyCAa1JqhlQzWFYb-xFBFbaGgom3Pbamw-I",
+    authDomain: "tarot-10438.firebaseapp.com",
+    databaseURL: "https://tarot-10438-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "tarot-10438",
+    storageBucket: "tarot-10438.firebasestorage.app",
+    messagingSenderId: "838255066439",
+    appId: "1:838255066439:web:d9086967af74c97fce2062"
   };
 
   const totalEl = document.getElementById('stat-total');
+  const todayEl = document.getElementById('stat-today');
   const onlineEl = document.getElementById('stat-online');
+
+  // datum ve formátu YYYY-MM-DD podle lokálního času návštěvníka
+  function todayKey() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
 
   try {
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+    const key = todayKey();
 
-    // 1) Celkové návštěvy — započítá se max. jednou za prohlížečovou session
+    // Připočti návštěvu max. jednou za den (i napříč sessions) —
+    // uloženo v localStorage, takže i více sessions ve stejný den se
+    // počítá jen jednou; nový den = nová návštěva se připočte znovu.
     try {
-      if (!sessionStorage.getItem('noctuary_visit_counted')) {
+      const lastCountedDay = localStorage.getItem('noctuary_visit_day');
+      if (lastCountedDay !== key) {
         runTransaction(ref(db, 'stats/totalVisits'), function (current) {
           return (current || 0) + 1;
         });
-        sessionStorage.setItem('noctuary_visit_counted', '1');
+        runTransaction(ref(db, 'stats/dailyVisits/' + key), function (current) {
+          return (current || 0) + 1;
+        });
+        localStorage.setItem('noctuary_visit_day', key);
       }
-    } catch (e) { /* sessionStorage nemusí být dostupný (např. v inkognito) */ }
+    } catch (e) { /* localStorage nemusí být dostupný (např. v inkognito) */ }
 
     onValue(ref(db, 'stats/totalVisits'), function (snap) {
       if (totalEl) totalEl.textContent = (snap.val() || 0).toLocaleString('cs-CZ');
     });
 
-    // 2) Online právě teď — presence přes onDisconnect
+    onValue(ref(db, 'stats/dailyVisits/' + key), function (snap) {
+      if (todayEl) todayEl.textContent = (snap.val() || 0).toLocaleString('cs-CZ');
+    });
+
+    // Online právě teď — presence přes onDisconnect
     onValue(ref(db, '.info/connected'), function (snap) {
       if (snap.val() === true) {
         const myPresenceRef = push(ref(db, 'presence'));
