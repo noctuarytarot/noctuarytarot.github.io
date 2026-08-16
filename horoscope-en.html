@@ -371,22 +371,20 @@
     });
   }
 
-  // corsproxy.io is the only outbound channel that actually reaches the
-  // network in some browsers/networks (direct calls and other proxies get
-  // silently blocked). So: prefer corsproxy.io, and route it to several
-  // independent backends in turn — if one backend blocks proxy traffic
-  // (e.g. a 403 from anti-bot protection), the next one is tried.
+  // Try a direct call first (freehoroscopeapi.com supports CORS directly),
+  // and fall back to CORS proxies only if the direct call fails — e.g. on a
+  // network/browser combo that blocks it.
   function fetchHoroscopeText(period, sign) {
     var freehoroscopeUrl = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + sign;
     var corsproxy = function (url) { return 'https://corsproxy.io/?url=' + encodeURIComponent(url); };
 
     var attempts = [
-      // proven-working transport first, against each backend in turn
-      function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); }
+      // direct call first
+      function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); }
     ];
 
-    // last-resort: in case this browser/network isn't blocking these after all
-    attempts.push(function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); });
+    // fallbacks, in case the direct call gets blocked
+    attempts.push(function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); });
     attempts.push(function () {
       return fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(freehoroscopeUrl)).then(parseFreeHoroscopeApi);
     });

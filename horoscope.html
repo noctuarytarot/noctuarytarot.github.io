@@ -281,12 +281,7 @@
     fetchHoroscopeText(PERIOD, s.en)
       .then(function (text) {
         if (mySeq !== requestSeq) return null; // a newer request has already taken over
-        return translateToCzech(text)
-          .then(function (translated) { return { text: translated, translated: true }; })
-          .catch(function (err) {
-            console.warn('Překlad se nezdařil, zobrazuji originál v angličtině:', err);
-            return { text: text, translated: false };
-          });
+        return { text: text };
       })
       .then(function (result) {
         if (!result || mySeq !== requestSeq) return; // a newer request has already taken over
@@ -310,42 +305,20 @@
     });
   }
 
-  // MyMemory translation API supports CORS directly (no proxy needed) and
-  // needs no API key. Free tier has a daily character quota, so translation
-  // can occasionally fail — in that case selectSign() falls back to showing
-  // the original English text (see the .catch above).
-  function translateToCzech(text) {
-    var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=en|cs';
-    return fetch(url).then(function (res) {
-      if (!res.ok) throw new Error('mymemory bad response: ' + res.status);
-      return res.json();
-    }).then(function (data) {
-      var translated = data && data.responseData && data.responseData.translatedText;
-      if (!translated) throw new Error('mymemory: no translated text in response');
-      // mymemory returns an English fallback string (wrapped as an error-ish
-      // notice) when its quota is exhausted instead of actually failing the
-      // request, so treat that case as a translation failure too.
-      if (/QUOTA|MYMEMORY WARNING/i.test(translated)) throw new Error('mymemory: quota exceeded');
-      return translated;
-    });
-  }
-
-  // corsproxy.io is the only outbound channel that actually reaches the
-  // network in some browsers/networks (direct calls and other proxies get
-  // silently blocked). So: prefer corsproxy.io, and route it to several
-  // independent backends in turn — if one backend blocks proxy traffic
-  // (e.g. a 403 from anti-bot protection), the next one is tried.
+  // Try a direct call first (freehoroscopeapi.com supports CORS directly),
+  // and fall back to CORS proxies only if the direct call fails — e.g. on a
+  // network/browser combo that blocks it.
   function fetchHoroscopeText(period, sign) {
     var freehoroscopeUrl = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + sign;
     var corsproxy = function (url) { return 'https://corsproxy.io/?url=' + encodeURIComponent(url); };
 
     var attempts = [
-      // proven-working transport first, against each backend in turn
-      function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); }
+      // direct call first
+      function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); }
     ];
 
-    // last-resort: in case this browser/network isn't blocking these after all
-    attempts.push(function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); });
+    // fallbacks, in case the direct call gets blocked
+    attempts.push(function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); });
     attempts.push(function () {
       return fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(freehoroscopeUrl)).then(parseFreeHoroscopeApi);
     });
@@ -360,9 +333,7 @@
 
 
   function renderText(result) {
-    var note = result.translated
-      ? 'Text je automaticky přeložen z angličtiny a aktualizuje se automaticky.'
-      : 'Text je zdrojován v angličtině z externí služby a aktualizuje se automaticky (překlad se teď nezdařil).';
+    var note = 'Text je zdrojován v angličtině z externí služby a aktualizuje se automaticky.';
     panelBody.innerHTML =
       '<div class="horoscope-panel-text">' + result.text + '</div>' +
       '<div class="horoscope-panel-note">' + note + '</div>';
