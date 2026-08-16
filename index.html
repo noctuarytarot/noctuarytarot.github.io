@@ -3281,10 +3281,10 @@
 <!-- AI Horoskop měsíce — volá Gemini API přímo z prohlížeče (žádný backend) -->
 <script>
 (function () {
-  // ⚠️ UPRAV: vlož svůj Gemini API klíč z aistudio.google.com/app/apikey
+  // ⚠️ UPRAV: vlož svůj NOVÝ Gemini API klíč z aistudio.google.com/app/apikey
   // Klíč MUSÍ mít v Google Cloud Console nastavené omezení na tvou doménu
-  // (HTTP referrer restriction) — viz navod-zdarma-bez-backendu.md.
-  var GEMINI_API_KEY = "AQ.Ab8RN6Kc5f9oVWgLn3knyT6kVwrIqQXEk8Li2UsylZqdAcvmPw";
+  // (HTTP referrer restriction), jinak ho Google/scannery zase odhalí a zneplatní.
+  var GEMINI_API_KEY = "AIzaSyDSP5VTfTcrHDxKPZ7tbdIoTHMIHorB6CI";
   // Google čas od času mění/ruší názvy modelů (např. gemini-2.0-flash byl
   // vyřazen). Místo jednoho pevného názvu zkoušíme postupně několik, dokud
   // jeden nezafunguje — web tak nepřestane fungovat hned při další změně.
