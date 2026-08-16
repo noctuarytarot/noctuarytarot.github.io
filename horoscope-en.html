@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0d0221">
-<title>Free Horoscope — Daily, Weekly & Monthly Horoscopes for All Zodiac Signs</title>
-<meta name="description" content="Free horoscope for all 12 zodiac signs. Read your daily, weekly, and monthly horoscope, updated automatically — no sign-up required.">
-<meta name="keywords" content="horoscope, daily horoscope, weekly horoscope, monthly horoscope, free horoscope, zodiac signs, astrology, star sign predictions">
+<title>Free Horoscope — Monthly Horoscopes for All Zodiac Signs</title>
+<meta name="description" content="Free horoscope for all 12 zodiac signs. Read your monthly horoscope, updated automatically — no sign-up required.">
+<meta name="keywords" content="horoscope, monthly horoscope, free horoscope, zodiac signs, astrology, star sign predictions">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Synthlucida">
 <meta name="language" content="English">
@@ -16,14 +16,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Noctuary Tarot">
 <meta property="og:title" content="Free Horoscope — Noctuary Tarot">
-<meta property="og:description" content="Read your free daily, weekly, and monthly horoscope for all 12 zodiac signs. Automatically updated — no sign-up required.">
+<meta property="og:description" content="Read your free monthly horoscope for all 12 zodiac signs. Automatically updated — no sign-up required.">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://noctuarytarot.com/horoscope-en.html">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Free Horoscope — Daily, Weekly & Monthly Predictions">
-<meta name="twitter:description" content="Read your free daily, weekly, and monthly horoscope for all 12 zodiac signs. Automatically updated — no sign-up required.">
+<meta name="twitter:title" content="Free Horoscope — Monthly Predictions">
+<meta name="twitter:description" content="Read your free monthly horoscope for all 12 zodiac signs. Automatically updated — no sign-up required.">
 <meta name="twitter:image" content="https://noctuarytarot.com/og-image.png">
 
 <script type="application/ld+json">
@@ -31,11 +31,11 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Free Horoscope — Noctuary Tarot",
-  "alternateName": "Free Daily, Weekly & Monthly Horoscope",
+  "alternateName": "Free Monthly Horoscope",
   "url": "https://noctuarytarot.com/horoscope-en.html",
   "applicationCategory": "LifestyleApplication",
   "operatingSystem": "Any (web browser)",
-  "description": "A free horoscope web app covering all 12 zodiac signs, with daily, weekly, and monthly predictions that update automatically.",
+  "description": "A free horoscope web app covering all 12 zodiac signs, with monthly predictions that update automatically.",
   "inLanguage": "en",
   "isAccessibleForFree": true,
   "isPartOf": {
@@ -73,7 +73,7 @@
       "name": "How often is the horoscope updated?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The daily horoscope updates every day, the weekly horoscope updates every week, and the monthly horoscope updates at the start of each new month, all automatically."
+        "text": "The monthly horoscope updates automatically at the start of each new month."
       }
     },
     {
@@ -89,7 +89,7 @@
       "name": "Do I need to create an account to read my horoscope?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No account or registration is needed. Simply choose your zodiac sign and the time period you want to read."
+        "text": "No account or registration is needed. Simply choose your zodiac sign to read your monthly horoscope."
       }
     }
   ]
@@ -164,19 +164,6 @@
     font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px;
     opacity: 0.8; margin: 0;
   }
-
-  /* period toggle */
-  .period-tabs {
-    position: relative; z-index: 1; display: flex; gap: 8px; margin: 20px 0 26px;
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 24px; padding: 5px;
-  }
-  .period-tab {
-    background: transparent; border: none; color: #fff; opacity: 0.6;
-    padding: 8px 16px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px;
-    cursor: pointer; transition: 0.2s;
-  }
-  .period-tab.active { opacity: 1; background: rgba(212,175,55,0.15); color: var(--accent-color); box-shadow: 0 0 10px rgba(212,175,55,0.3); }
 
   /* zodiac grid */
   .sign-grid {
@@ -257,12 +244,6 @@
   <p class="subtitle">Choose your zodiac sign and let the stars guide you</p>
 </header>
 
-<div class="period-tabs" role="tablist" aria-label="Horoscope period">
-  <button class="period-tab active" data-period="daily">DAILY</button>
-  <button class="period-tab" data-period="weekly">WEEKLY</button>
-  <button class="period-tab" data-period="monthly">MONTHLY</button>
-</div>
-
 <div class="sign-grid" id="sign-grid"></div>
 
 <div class="horoscope-panel" id="horoscope-panel">
@@ -278,7 +259,7 @@
 
 <section class="about-section">
   <h2>About this horoscope</h2>
-  <p>This page brings you free daily, weekly, and monthly horoscopes for all 12 zodiac signs. Pick a time period above, tap your sign, and read what the stars have in store for you. Predictions refresh automatically, so there's always something new to check back for.</p>
+  <p>This page brings you a free monthly horoscope for all 12 zodiac signs. Tap your sign and read what the stars have in store for you this month. Predictions refresh automatically at the start of each month, so there's always something new to check back for.</p>
 </section>
 
 <footer>
@@ -303,7 +284,8 @@
     { key: 'pisces', name: 'Pisces', dates: 'Feb 19 – Mar 20', symbol: '♓' }
   ];
 
-  var PERIOD_LABEL = { daily: "Today's horoscope", weekly: 'Horoscope for this week', monthly: 'Horoscope for this month' };
+  var PERIOD_LABEL = 'Horoscope for this month';
+  var PERIOD = 'monthly';
 
   var grid = document.getElementById('sign-grid');
   var panel = document.getElementById('horoscope-panel');
@@ -312,9 +294,8 @@
   var panelSub = document.getElementById('panel-sub');
   var panelBody = document.getElementById('panel-body');
 
-  var currentPeriod = 'daily';
   var currentSign = null;
-  var cache = {}; // key: period|sign|date -> text
+  var cache = {}; // key: sign|date -> text
   var requestSeq = 0; // guards against a stale/duplicate request overwriting a newer result
 
   SIGNS.forEach(function (s) {
@@ -335,15 +316,6 @@
     grid.appendChild(card);
   });
 
-  document.querySelectorAll('.period-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.period-tab').forEach(function (t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      currentPeriod = tab.dataset.period;
-      if (currentSign) selectSign(currentSign);
-    });
-  });
-
   function todayKey() {
     var d = new Date();
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -358,9 +330,9 @@
     panel.classList.add('visible');
     panelSymbol.textContent = s.symbol;
     panelTitle.textContent = s.name.toUpperCase();
-    panelSub.textContent = PERIOD_LABEL[currentPeriod];
+    panelSub.textContent = PERIOD_LABEL;
 
-    var cacheKey = currentPeriod + '|' + s.key + '|' + todayKey();
+    var cacheKey = s.key + '|' + todayKey();
 
     // Every call gets its own sequence number. If a newer call starts before
     // this one's fetch resolves, its result is discarded instead of
@@ -376,7 +348,7 @@
 
     panelBody.innerHTML = '<div class="horoscope-panel-loading">Reading the stars…</div>';
 
-    fetchHoroscopeText(currentPeriod, s.key)
+    fetchHoroscopeText(PERIOD, s.key)
       .then(function (text) {
         if (mySeq !== requestSeq) return; // a newer request has already taken over
         cache[cacheKey] = text;
@@ -399,25 +371,6 @@
     });
   }
 
-  function parseAztro(res) {
-    if (!res.ok) throw new Error('aztro bad response: ' + res.status);
-    return res.json().then(function (data) {
-      var text = data && data.description;
-      if (!text) throw new Error('aztro: no text in response');
-      return text;
-    });
-  }
-
-  function parseOhmanda(res) {
-    if (!res.ok) throw new Error('ohmanda bad response: ' + res.status);
-    return res.json().then(function (data) {
-      var text = data && data.horoscope;
-      // ohmanda sometimes returns an empty array instead of text when it's down
-      if (!text || typeof text !== 'string') throw new Error('ohmanda: no text in response');
-      return text;
-    });
-  }
-
   // corsproxy.io is the only outbound channel that actually reaches the
   // network in some browsers/networks (direct calls and other proxies get
   // silently blocked). So: prefer corsproxy.io, and route it to several
@@ -431,15 +384,6 @@
       // proven-working transport first, against each backend in turn
       function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); }
     ];
-
-    if (period === 'daily') {
-      attempts.push(function () {
-        return fetch(corsproxy('https://ohmanda.com/api/horoscope/' + sign + '/')).then(parseOhmanda);
-      });
-      attempts.push(function () {
-        return fetch(corsproxy('https://aztro.sameerkumar.website/?sign=' + sign + '&day=today'), { method: 'POST' }).then(parseAztro);
-      });
-    }
 
     // last-resort: in case this browser/network isn't blocking these after all
     attempts.push(function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); });
@@ -458,7 +402,7 @@
   function renderText(text) {
     panelBody.innerHTML =
       '<div class="horoscope-panel-text">' + text + '</div>' +
-      '<div class="horoscope-panel-note">Updates automatically for the selected time period.</div>';
+      '<div class="horoscope-panel-note">Updates automatically each month.</div>';
   }
 })();
 </script>

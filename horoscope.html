@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0d0221">
-<title>Horoskop zdarma — Noctuary Tarot | Denní, týdenní a měsíční horoskop</title>
-<meta name="description" content="Horoskop zdarma pro všech 12 znamení zvěrokruhu od Noctuary Tarot. Denní, týdenní i měsíční předpověď, automaticky aktualizovaná.">
-<meta name="keywords" content="horoskop, denní horoskop, týdenní horoskop, měsíční horoskop, horoskop zdarma, znamení zvěrokruhu, Noctuary Tarot">
+<title>Horoskop zdarma — Noctuary Tarot | Měsíční horoskop</title>
+<meta name="description" content="Horoskop zdarma pro všech 12 znamení zvěrokruhu od Noctuary Tarot. Měsíční předpověď, automaticky aktualizovaná.">
+<meta name="keywords" content="horoskop, měsíční horoskop, horoskop zdarma, znamení zvěrokruhu, Noctuary Tarot">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Synthlucida">
 <meta name="language" content="Czech">
@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Noctuary Tarot">
 <meta property="og:title" content="Horoskop zdarma — Noctuary Tarot">
-<meta property="og:description" content="Denní, týdenní i měsíční horoskop zdarma pro všech 12 znamení. Automaticky aktualizováno.">
+<meta property="og:description" content="Měsíční horoskop zdarma pro všech 12 znamení. Automaticky aktualizováno.">
 <meta property="og:locale" content="cs_CZ">
 <meta property="og:url" content="https://noctuarytarot.com/horoscope.html">
 
@@ -28,7 +28,7 @@
   "url": "https://noctuarytarot.com/horoscope.html",
   "applicationCategory": "LifestyleApplication",
   "operatingSystem": "Any (webový prohlížeč)",
-  "description": "Horoskop zdarma pro všech 12 znamení zvěrokruhu — denní, týdenní i měsíční předpověď, automaticky aktualizovaná.",
+  "description": "Horoskop zdarma pro všech 12 znamení zvěrokruhu — měsíční předpověď, automaticky aktualizovaná.",
   "inLanguage": "cs",
   "isAccessibleForFree": true,
   "isPartOf": {
@@ -113,19 +113,6 @@
     opacity: 0.8; margin: 0;
   }
 
-  /* period toggle */
-  .period-tabs {
-    position: relative; z-index: 1; display: flex; gap: 8px; margin: 20px 0 26px;
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 24px; padding: 5px;
-  }
-  .period-tab {
-    background: transparent; border: none; color: #fff; opacity: 0.6;
-    padding: 8px 16px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px;
-    cursor: pointer; transition: 0.2s;
-  }
-  .period-tab.active { opacity: 1; background: rgba(212,175,55,0.15); color: var(--accent-color); box-shadow: 0 0 10px rgba(212,175,55,0.3); }
-
   /* zodiac grid */
   .sign-grid {
     position: relative; z-index: 1; display: grid;
@@ -196,12 +183,6 @@
   <p class="subtitle">Vyber si znamení a nech se vést hvězdami</p>
 </header>
 
-<div class="period-tabs">
-  <button class="period-tab active" data-period="daily">DENNÍ</button>
-  <button class="period-tab" data-period="weekly">TÝDENNÍ</button>
-  <button class="period-tab" data-period="monthly">MĚSÍČNÍ</button>
-</div>
-
 <div class="sign-grid" id="sign-grid"></div>
 
 <div class="horoscope-panel" id="horoscope-panel">
@@ -237,7 +218,8 @@
     { en: 'pisces', cz: 'Ryby', symbol: '♓' }
   ];
 
-  var PERIOD_LABEL = { daily: 'Dnešní horoskop', weekly: 'Horoskop na tento týden', monthly: 'Horoskop na tento měsíc' };
+  var PERIOD_LABEL = 'Horoskop na tento měsíc';
+  var PERIOD = 'monthly';
 
   var grid = document.getElementById('sign-grid');
   var panel = document.getElementById('horoscope-panel');
@@ -246,9 +228,8 @@
   var panelSub = document.getElementById('panel-sub');
   var panelBody = document.getElementById('panel-body');
 
-  var currentPeriod = 'daily';
   var currentSign = null;
-  var cache = {}; // key: period|sign|date -> text
+  var cache = {}; // key: sign|date -> text
   var requestSeq = 0; // guards against a stale/duplicate request overwriting a newer result
 
   SIGNS.forEach(function (s) {
@@ -265,15 +246,6 @@
     grid.appendChild(card);
   });
 
-  document.querySelectorAll('.period-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.period-tab').forEach(function (t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      currentPeriod = tab.dataset.period;
-      if (currentSign) selectSign(currentSign);
-    });
-  });
-
   function todayKey() {
     var d = new Date();
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -288,9 +260,9 @@
     panel.classList.add('visible');
     panelSymbol.textContent = s.symbol;
     panelTitle.textContent = s.cz.toUpperCase();
-    panelSub.textContent = PERIOD_LABEL[currentPeriod];
+    panelSub.textContent = PERIOD_LABEL;
 
-    var cacheKey = currentPeriod + '|' + s.en + '|' + todayKey();
+    var cacheKey = s.en + '|' + todayKey();
 
     // Every call gets its own sequence number. If a newer call starts before
     // this one's fetch resolves, its result is discarded instead of
@@ -306,7 +278,7 @@
 
     panelBody.innerHTML = '<div class="horoscope-panel-loading">Čtu hvězdy…</div>';
 
-    fetchHoroscopeText(currentPeriod, s.en)
+    fetchHoroscopeText(PERIOD, s.en)
       .then(function (text) {
         if (mySeq !== requestSeq) return; // a newer request has already taken over
         cache[cacheKey] = text;
@@ -329,25 +301,6 @@
     });
   }
 
-  function parseAztro(res) {
-    if (!res.ok) throw new Error('aztro bad response: ' + res.status);
-    return res.json().then(function (data) {
-      var text = data && data.description;
-      if (!text) throw new Error('aztro: no text in response');
-      return text;
-    });
-  }
-
-  function parseOhmanda(res) {
-    if (!res.ok) throw new Error('ohmanda bad response: ' + res.status);
-    return res.json().then(function (data) {
-      var text = data && data.horoscope;
-      // ohmanda sometimes returns an empty array instead of text when it's down
-      if (!text || typeof text !== 'string') throw new Error('ohmanda: no text in response');
-      return text;
-    });
-  }
-
   // corsproxy.io is the only outbound channel that actually reaches the
   // network in some browsers/networks (direct calls and other proxies get
   // silently blocked). So: prefer corsproxy.io, and route it to several
@@ -361,15 +314,6 @@
       // proven-working transport first, against each backend in turn
       function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); }
     ];
-
-    if (period === 'daily') {
-      attempts.push(function () {
-        return fetch(corsproxy('https://ohmanda.com/api/horoscope/' + sign + '/')).then(parseOhmanda);
-      });
-      attempts.push(function () {
-        return fetch(corsproxy('https://aztro.sameerkumar.website/?sign=' + sign + '&day=today'), { method: 'POST' }).then(parseAztro);
-      });
-    }
 
     // last-resort: in case this browser/network isn't blocking these after all
     attempts.push(function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); });
