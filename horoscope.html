@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d0221">
+<title>Horoskop zdarma — Noctuary Tarot | Denní, týdenní a měsíční horoskop</title>
+<meta name="description" content="Horoskop zdarma pro všech 12 znamení zvěrokruhu od Noctuary Tarot. Denní, týdenní i měsíční předpověď, automaticky aktualizovaná.">
+<meta name="keywords" content="horoskop, denní horoskop, týdenní horoskop, měsíční horoskop, horoskop zdarma, znamení zvěrokruhu, Noctuary Tarot">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Synthlucida">
+<meta name="language" content="Czech">
+<link rel="canonical" href="https://noctuarytarot.com/horoscope.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Noctuary Tarot">
+<meta property="og:title" content="Horoskop zdarma — Noctuary Tarot">
+<meta property="og:description" content="Denní, týdenní i měsíční horoskop zdarma pro všech 12 znamení. Automaticky aktualizováno.">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:url" content="https://noctuarytarot.com/horoscope.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Horoskop — Noctuary Tarot",
+  "url": "https://noctuarytarot.com/horoscope.html",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Any (webový prohlížeč)",
+  "description": "Horoskop zdarma pro všech 12 znamení zvěrokruhu — denní, týdenní i měsíční předpověď, automaticky aktualizovaná.",
+  "inLanguage": "cs",
+  "isAccessibleForFree": true,
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Noctuary Tarot",
+    "url": "https://noctuarytarot.com/"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Synthlucida",
+    "url": "https://synthlucida.com/player.html"
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color-1: #1a0733;
+    --bg-color-2: #05010f;
+    --accent-color: #d4af37;
+    --accent-glow: #8b2fe0;
+    --card-bg-1: #1c0f38;
+    --card-bg-2: #0a0518;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: radial-gradient(ellipse at 50% 20%, var(--bg-color-1), var(--bg-color-2) 70%, #000000);
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 28px 16px calc(40px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+  }
+  button { font-family: inherit; }
+
+  /* twinkling starfield */
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 88% 22%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 80% 45%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 35% 70%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 90% 80%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 10% 85%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 50% 55%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 75% 65%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 25% 15%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 55% 8%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 5% 50%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 95% 60%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 42% 90%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 15% 5%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 68% 35%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 30% 92%, #fff 100%, transparent);
+    background-size: 100% 100%;
+    opacity: 0.55;
+    animation: twinkle 4.5s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { 0% { opacity: 0.25; } 100% { opacity: 0.7; } }
+
+  .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.25; z-index: 0; animation: floatBlobs 22s ease-in-out infinite; pointer-events: none; will-change: transform; transform: translateZ(0); }
+  .blob-1 { width: 280px; height: 280px; background: var(--accent-glow); top: -8%; left: -10%; }
+  .blob-2 { width: 320px; height: 320px; background: var(--accent-color); bottom: -12%; right: -10%; animation-delay: -6s; animation-duration: 26s; }
+  @keyframes floatBlobs { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px, -25px); } }
+
+  header { position: relative; z-index: 1; max-width: 640px; margin-bottom: 22px; }
+  h1 {
+    font-size: 26px; letter-spacing: 3px; margin: 6px 0 4px;
+    color: var(--accent-color); text-shadow: 0 0 12px var(--accent-color);
+  }
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px;
+    opacity: 0.8; margin: 0;
+  }
+
+  /* period toggle */
+  .period-tabs {
+    position: relative; z-index: 1; display: flex; gap: 8px; margin: 20px 0 26px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 24px; padding: 5px;
+  }
+  .period-tab {
+    background: transparent; border: none; color: #fff; opacity: 0.6;
+    padding: 8px 16px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px;
+    cursor: pointer; transition: 0.2s;
+  }
+  .period-tab.active { opacity: 1; background: rgba(212,175,55,0.15); color: var(--accent-color); box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+
+  /* zodiac grid */
+  .sign-grid {
+    position: relative; z-index: 1; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px; max-width: 900px; width: 100%;
+  }
+  .sign-card {
+    background: var(--card-bg-1); border: 1px solid rgba(212,175,55,0.4); border-radius: 14px;
+    padding: 18px 12px 16px; cursor: pointer; transition: 0.2s;
+    box-shadow: 0 0 18px rgba(139,47,224,0.15);
+  }
+  .sign-card:hover, .sign-card.active {
+    border-color: var(--accent-color); box-shadow: 0 0 22px rgba(212,175,55,0.35);
+    transform: translateY(-2px);
+  }
+  .sign-symbol { font-size: 30px; color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
+  .sign-name-cz { font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 1px; margin-top: 6px; }
+  .sign-name-en { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; opacity: 0.55; margin-top: 2px; }
+
+  /* horoscope panel */
+  .horoscope-panel {
+    position: relative; z-index: 1; max-width: 640px; width: 100%;
+    margin-top: 26px; background: var(--card-bg-1); border: 1px solid var(--accent-color);
+    border-radius: 14px; padding: 22px 20px; box-shadow: 0 0 30px rgba(212,175,55,0.25);
+    display: none; text-align: left;
+  }
+  .horoscope-panel.visible { display: block; }
+  .horoscope-panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .horoscope-panel-symbol { font-size: 26px; color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
+  .horoscope-panel-title { font-size: 15px; letter-spacing: 1.5px; color: var(--accent-color); }
+  .horoscope-panel-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; opacity: 0.6; margin-top: 2px; }
+  .horoscope-panel-text {
+    font-family: 'Cormorant Garamond', serif; font-size: 17px; line-height: 1.65; opacity: 0.95;
+  }
+  .horoscope-panel-loading, .horoscope-panel-error {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; opacity: 0.7;
+  }
+  .horoscope-panel-note {
+    margin-top: 14px; font-family: 'Cormorant Garamond', serif; font-size: 12px; opacity: 0.45;
+  }
+
+  footer {
+    position: relative; z-index: 1; margin-top: 40px;
+    font-family: 'Cormorant Garamond', serif; font-size: 12px; opacity: 0.4;
+  }
+  .site-nav-back {
+    position: relative; z-index: 1; display: flex; gap: 14px; align-items: center;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 1px; margin-bottom: 18px;
+  }
+  .site-nav-back a { color: var(--accent-color); text-decoration: none; opacity: 0.85; }
+  .site-nav-back a:hover { opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
+  .site-nav-back span.sep { opacity: 0.3; }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<nav class="site-nav-back">
+  <a href="index.html">← Zpět na Noctuary Tarot</a>
+  <span class="sep">·</span>
+  <a href="horoscope-en.html">EN</a>
+</nav>
+
+<header>
+  <h1>✦ HOROSKOP ✦</h1>
+  <p class="subtitle">Vyber si znamení a nech se vést hvězdami</p>
+</header>
+
+<div class="period-tabs">
+  <button class="period-tab active" data-period="daily">DENNÍ</button>
+  <button class="period-tab" data-period="weekly">TÝDENNÍ</button>
+  <button class="period-tab" data-period="monthly">MĚSÍČNÍ</button>
+</div>
+
+<div class="sign-grid" id="sign-grid"></div>
+
+<div class="horoscope-panel" id="horoscope-panel">
+  <div class="horoscope-panel-header">
+    <div class="horoscope-panel-symbol" id="panel-symbol"></div>
+    <div>
+      <div class="horoscope-panel-title" id="panel-title"></div>
+      <div class="horoscope-panel-sub" id="panel-sub"></div>
+    </div>
+  </div>
+  <div id="panel-body"></div>
+</div>
+
+<footer>
+  Horoskopy se aktualizují automaticky · zdroj: freehoroscopeapi.com<br>
+  součást <a href="index.html" style="color: var(--accent-color);">Noctuary Tarot</a> · made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">SYNTHLUCIDA</a>
+</footer>
+
+<script>
+(function () {
+  var SIGNS = [
+    { en: 'aries', cz: 'Beran', symbol: '♈' },
+    { en: 'taurus', cz: 'Býk', symbol: '♉' },
+    { en: 'gemini', cz: 'Blíženci', symbol: '♊' },
+    { en: 'cancer', cz: 'Rak', symbol: '♋' },
+    { en: 'leo', cz: 'Lev', symbol: '♌' },
+    { en: 'virgo', cz: 'Panna', symbol: '♍' },
+    { en: 'libra', cz: 'Váhy', symbol: '♎' },
+    { en: 'scorpio', cz: 'Štír', symbol: '♏' },
+    { en: 'sagittarius', cz: 'Střelec', symbol: '♐' },
+    { en: 'capricorn', cz: 'Kozoroh', symbol: '♑' },
+    { en: 'aquarius', cz: 'Vodnář', symbol: '♒' },
+    { en: 'pisces', cz: 'Ryby', symbol: '♓' }
+  ];
+
+  var PERIOD_LABEL = { daily: 'Dnešní horoskop', weekly: 'Horoskop na tento týden', monthly: 'Horoskop na tento měsíc' };
+
+  var grid = document.getElementById('sign-grid');
+  var panel = document.getElementById('horoscope-panel');
+  var panelSymbol = document.getElementById('panel-symbol');
+  var panelTitle = document.getElementById('panel-title');
+  var panelSub = document.getElementById('panel-sub');
+  var panelBody = document.getElementById('panel-body');
+
+  var currentPeriod = 'daily';
+  var currentSign = null;
+  var cache = {}; // key: period|sign|date -> text
+
+  SIGNS.forEach(function (s) {
+    var card = document.createElement('div');
+    card.className = 'sign-card';
+    card.dataset.sign = s.en;
+    card.innerHTML =
+      '<div class="sign-symbol">' + s.symbol + '</div>' +
+      '<div class="sign-name-cz">' + s.cz.toUpperCase() + '</div>' +
+      '<div class="sign-name-en">' + s.en + '</div>';
+    card.addEventListener('click', function () {
+      selectSign(s);
+    });
+    grid.appendChild(card);
+  });
+
+  document.querySelectorAll('.period-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.period-tab').forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      currentPeriod = tab.dataset.period;
+      if (currentSign) selectSign(currentSign);
+    });
+  });
+
+  function todayKey() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function selectSign(s) {
+    currentSign = s;
+    document.querySelectorAll('.sign-card').forEach(function (c) {
+      c.classList.toggle('active', c.dataset.sign === s.en);
+    });
+
+    panel.classList.add('visible');
+    panelSymbol.textContent = s.symbol;
+    panelTitle.textContent = s.cz.toUpperCase();
+    panelSub.textContent = PERIOD_LABEL[currentPeriod];
+
+    var cacheKey = currentPeriod + '|' + s.en + '|' + todayKey();
+    if (cache[cacheKey]) {
+      renderText(cache[cacheKey]);
+      return;
+    }
+
+    panelBody.innerHTML = '<div class="horoscope-panel-loading">Čtu hvězdy…</div>';
+
+    var url = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + currentPeriod + '?sign=' + s.en;
+
+    fetch(url)
+      .then(function (res) {
+        if (!res.ok) throw new Error('bad response');
+        return res.json();
+      })
+      .then(function (data) {
+        var text = data && data.data && data.data.horoscope;
+        if (!text) throw new Error('no text');
+        cache[cacheKey] = text;
+        renderText(text);
+      })
+      .catch(function () {
+        panelBody.innerHTML =
+          '<div class="horoscope-panel-error">Hvězdy jsou dnes zamlžené — horoskop se nepodařilo načíst. Zkus to prosím za chvíli znovu.</div>';
+      });
+  }
+
+  function renderText(text) {
+    panelBody.innerHTML =
+      '<div class="horoscope-panel-text">' + text + '</div>' +
+      '<div class="horoscope-panel-note">Text je zdrojován v angličtině z externí služby a aktualizuje se automaticky.</div>';
+  }
+})();
+</script>
+</body>
+</html>
