@@ -2837,7 +2837,7 @@
 
   function updateHoroMonthLabel() {
     var el = document.getElementById('horo-month-label');
-    if (!el) return;
+    if (!el || !HORO_MONTH_NAMES_EN) return;
     var now = new Date();
     var names = guideLang === 'cz' ? HORO_MONTH_NAMES_CZ : HORO_MONTH_NAMES_EN;
     var name = names[now.getMonth()];
@@ -2848,7 +2848,7 @@
 
   function renderZodiacGrid() {
     var grid = document.getElementById('horo-grid');
-    if (!grid) return;
+    if (!grid || !ZODIAC_SIGNS) return;
     grid.innerHTML = '';
     ZODIAC_SIGNS.forEach(function (sign) {
       var btn = document.createElement('button');
