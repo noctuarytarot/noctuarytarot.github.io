@@ -2664,6 +2664,7 @@
 
   window.toggleInfoLanguage = function () {
     guideLang = guideLang === 'en' ? 'cz' : 'en';
+    window.guideLang = guideLang;
     try { localStorage.setItem(GUIDE_LANG_KEY, guideLang); } catch (e) {}
     applyGuideLanguage();
     updateClock();
@@ -2675,6 +2676,7 @@
     var savedLang = localStorage.getItem(GUIDE_LANG_KEY);
     if (savedLang === 'cz' || savedLang === 'en') guideLang = savedLang;
   } catch (e) {}
+  window.guideLang = guideLang;
   applyGuideLanguage();
   updateClock();
 
@@ -3331,7 +3333,7 @@
   var lastResult = null; // { cz: "...", en: "..." } pro aktuálně zobrazené znamení
 
   function getLang() {
-    return (typeof guideLang !== "undefined" && guideLang === "cz") ? "cz" : "en";
+    return (typeof window.guideLang !== "undefined" && window.guideLang === "cz") ? "cz" : "en";
   }
 
   function renderGrid() {
