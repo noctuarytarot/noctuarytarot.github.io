@@ -3313,7 +3313,10 @@
   // Google čas od času mění/ruší názvy modelů (např. gemini-2.0-flash byl
   // vyřazen). Místo jednoho pevného názvu zkoušíme postupně několik, dokud
   // jeden nezafunguje — web tak nepřestane fungovat hned při další změně.
-  var GEMINI_MODELS = ["gemini-2.5-flash", "gemini-3.5-flash", "gemini-2.5-flash-lite"];
+  // Google Gemini 2.5 Flash a 2.5 Flash-Lite se v říjnu 2026 ruší, takže je
+  // dobré mít v poli i novější 3.x modely — když je jeden model přetížený
+  // (HTTP 500 "high demand") nebo zrušený, zkusí se automaticky další.
+  var GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.7-flash"];
 
   var SIGNS = {
     beran:    { en: "Aries",       cz: "Beran" },
@@ -3445,16 +3448,20 @@
       var model = GEMINI_MODELS[index];
       var url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
 
+      // Modely řady Gemini 3.x už nepoužívají "thinkingBudget", ale
+      // "thinkingLevel" (a doporučuje se neměnit temperature). U starších
+      // 2.5 modelů necháváme původní nastavení.
+      var isGemini3 = /^gemini-3/.test(model);
+      var generationConfig = isGemini3
+        ? { maxOutputTokens: 1600, thinkingConfig: { thinkingLevel: "low" } }
+        : { temperature: 0.9, maxOutputTokens: 1600, thinkingConfig: { thinkingBudget: 0 } };
+
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: buildPrompt(sign) }] }],
-          generationConfig: {
-            temperature: 0.9,
-            maxOutputTokens: 1600,
-            thinkingConfig: { thinkingBudget: 0 }
-          }
+          generationConfig: generationConfig
         })
       })
         .then(function (r) {
