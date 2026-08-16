@@ -810,6 +810,51 @@
     .seo-content > p.lead { font-size: 17px; }
   }
 </style>
+<style>
+  /* ==== AI Horoskop měsíce ==== */
+  .horoscope-section {
+    position: relative; z-index: 1; max-width: 720px; width: 100%;
+    margin: 32px auto 0; padding: 0 16px;
+  }
+  .horoscope-title {
+    font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 15px;
+    letter-spacing: 2px; color: var(--accent-color); text-align: center;
+    text-shadow: 0 0 8px var(--accent-color); margin-bottom: 4px; text-transform: uppercase;
+  }
+  .horoscope-subtitle {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+    color: rgba(255,255,255,0.55); text-align: center; margin-bottom: 18px;
+  }
+  .zodiac-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 520px) { .zodiac-grid { grid-template-columns: repeat(4, 1fr); } }
+  .zodiac-btn {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px; padding: 10px 4px; color: #fff; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif; font-size: 12px; letter-spacing: 0.3px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    transition: 0.2s;
+  }
+  .zodiac-btn .sym { font-size: 20px; }
+  .zodiac-btn:hover, .zodiac-btn.active {
+    border-color: var(--accent-color); color: var(--accent-color);
+    background: rgba(212,175,55,0.10); box-shadow: 0 0 10px rgba(212,175,55,0.25);
+  }
+  .horoscope-result {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 14px; padding: 18px 20px; min-height: 60px;
+    font-family: 'Cormorant Garamond', serif; font-size: 16px; line-height: 1.7;
+    color: rgba(255,255,255,0.9); white-space: pre-line;
+  }
+  .horoscope-result.empty { color: rgba(255,255,255,0.4); font-style: italic; text-align: center; }
+  .horoscope-disclaimer {
+    font-size: 11.5px; color: rgba(255,255,255,0.45); text-align: center;
+    margin-top: 10px; line-height: 1.5;
+  }
+  .horoscope-disclaimer a { color: rgba(255,255,255,0.6); }
+</style>
 </head>
 <body id="body">
 
@@ -1093,6 +1138,23 @@
 <div class="site-footer">
   made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a>
 </div>
+
+<section class="horoscope-section" id="horoscope-section">
+  <div class="horoscope-title" data-i18n="h_title">AI Horoskop měsíce</div>
+  <div class="horoscope-subtitle" data-i18n="h_subtitle">Klikni na své znamení</div>
+
+  <div class="zodiac-grid" id="zodiac-grid"></div>
+
+  <div class="horoscope-result empty" id="horoscope-result" data-i18n="h_placeholder">
+    Vyber si znamení a AI ti připraví horoskop na tento měsíc.
+  </div>
+
+  <div class="horoscope-disclaimer" data-i18n="h_disclaimer">
+    Text generuje umělá inteligence (Google Gemini) přímo ve tvém prohlížeči a slouží čistě pro
+    zábavu a inspiraci. Nejde o věštění ani o odbornou, finanční, právní či zdravotní radu. Více v
+    <a href="privacy.html">zásadách ochrany soukromí</a>.
+  </div>
+</section>
 
 <main class="seo-content">
   <p class="lead" data-i18n="seo_lead">Noctuary Tarot is your free card of the day — a short daily pause for reflection, not a prediction of the future.</p>
@@ -2597,6 +2659,7 @@
     if (typeof renderCurrentArticle === 'function') renderCurrentArticle();
     if (typeof applySeoLanguage === 'function') applySeoLanguage();
     if (typeof renderCurrentSlogan === 'function') renderCurrentSlogan();
+    if (typeof applyHoroscopeTexts === 'function') applyHoroscopeTexts();
   }
 
   window.toggleInfoLanguage = function () {
@@ -3214,6 +3277,162 @@
     const statsBox = document.getElementById('site-stats');
     if (statsBox) statsBox.style.display = 'none';
   }
+</script>
+<!-- AI Horoskop měsíce — volá Gemini API přímo z prohlížeče (žádný backend) -->
+<script>
+(function () {
+  // ⚠️ UPRAV: vlož svůj Gemini API klíč z aistudio.google.com/app/apikey
+  // Klíč MUSÍ mít v Google Cloud Console nastavené omezení na tvou doménu
+  // (HTTP referrer restriction) — viz navod-zdarma-bez-backendu.md.
+  var GEMINI_API_KEY = "VLOZ_SVUJ_KLIC_SEM";
+  // Google čas od času mění/ruší názvy modelů (např. gemini-2.0-flash byl
+  // vyřazen). Místo jednoho pevného názvu zkoušíme postupně několik, dokud
+  // jeden nezafunguje — web tak nepřestane fungovat hned při další změně.
+  var GEMINI_MODELS = ["gemini-2.5-flash", "gemini-3.5-flash", "gemini-2.5-flash-lite"];
+
+  var SIGNS = {
+    beran:    { en: "Aries",       cz: "Beran" },
+    byk:      { en: "Taurus",      cz: "Býk" },
+    blizenci: { en: "Gemini",      cz: "Blíženci" },
+    rak:      { en: "Cancer",      cz: "Rak" },
+    lev:      { en: "Leo",         cz: "Lev" },
+    panna:    { en: "Virgo",       cz: "Panna" },
+    vahy:     { en: "Libra",       cz: "Váhy" },
+    stir:     { en: "Scorpio",     cz: "Štír" },
+    strelec:  { en: "Sagittarius", cz: "Střelec" },
+    kozoroh:  { en: "Capricorn",   cz: "Kozoroh" },
+    vodnar:   { en: "Aquarius",    cz: "Vodnář" },
+    ryby:     { en: "Pisces",      cz: "Ryby" }
+  };
+
+  var ZODIAC_LIST = [
+    { id: "beran", sym: "♈" }, { id: "byk", sym: "♉" }, { id: "blizenci", sym: "♊" },
+    { id: "rak", sym: "♋" }, { id: "lev", sym: "♌" }, { id: "panna", sym: "♍" },
+    { id: "vahy", sym: "♎" }, { id: "stir", sym: "♏" }, { id: "strelec", sym: "♐" },
+    { id: "kozoroh", sym: "♑" }, { id: "vodnar", sym: "♒" }, { id: "ryby", sym: "♓" }
+  ];
+
+  var horoscopeI18n = {
+    h_title:       { en: "AI Horoscope of the Month", cz: "AI Horoskop měsíce" },
+    h_subtitle:    { en: "Tap your sign", cz: "Klikni na své znamení" },
+    h_placeholder: { en: "Pick your sign and AI will prepare this month's horoscope.", cz: "Vyber si znamení a AI ti připraví horoskop na tento měsíc." },
+    h_loading:     { en: "Reading the stars…", cz: "Čtu ve hvězdách…" },
+    h_error:       { en: "The horoscope couldn't be generated. Please try again in a moment.", cz: "Horoskop se nepodařilo vygenerovat. Zkus to prosím za chvíli znovu." },
+    h_disclaimer:  {
+      en: "Generated by AI (Google Gemini) directly in your browser, for entertainment and inspiration only. Not fortune-telling or professional, financial, legal or medical advice. See our <a href=\"privacy.html\">privacy policy</a>.",
+      cz: "Text generuje umělá inteligence (Google Gemini) přímo ve tvém prohlížeči a slouží čistě pro zábavu a inspiraci. Nejde o věštění ani o odbornou, finanční, právní či zdravotní radu. Více v <a href=\"privacy.html\">zásadách ochrany soukromí</a>."
+    }
+  };
+
+  var grid = document.getElementById("zodiac-grid");
+  var resultEl = document.getElementById("horoscope-result");
+  var activeBtn = null;
+
+  function getLang() {
+    return (typeof guideLang !== "undefined" && guideLang === "cz") ? "cz" : "en";
+  }
+
+  function renderGrid() {
+    var lang = getLang();
+    grid.innerHTML = "";
+    ZODIAC_LIST.forEach(function (z) {
+      var label = SIGNS[z.id][lang];
+      var btn = document.createElement("button");
+      btn.className = "zodiac-btn";
+      btn.innerHTML = '<span class="sym">' + z.sym + '</span><span>' + label + '</span>';
+      btn.addEventListener("click", function () { loadHoroscope(z.id, btn); });
+      grid.appendChild(btn);
+    });
+  }
+
+  window.applyHoroscopeTexts = function () {
+    var lang = getLang();
+    document.querySelectorAll('#horoscope-section [data-i18n]').forEach(function (el) {
+      var entry = horoscopeI18n[el.getAttribute('data-i18n')];
+      if (entry) el.innerHTML = entry[lang] || entry.en;
+    });
+    renderGrid();
+  };
+
+  function cacheKey(sign, lang) {
+    var d = new Date();
+    return "noctuary_horo_" + d.getFullYear() + "_" + (d.getMonth() + 1) + "_" + sign + "_" + lang;
+  }
+
+  function buildPrompt(sign, lang) {
+    var monthLabel = new Date().toLocaleDateString(lang === "cz" ? "cs-CZ" : "en-US", { month: "long", year: "numeric" });
+    var signCz = SIGNS[sign].cz, signEn = SIGNS[sign].en;
+
+    if (lang === "cz") {
+      return "Napiš krátký, atmosférický měsíční horoskop pro znamení " + signCz + " na měsíc " + monthLabel + ", v češtině. " +
+        "Tón: mysteriózní, ale laskavý a pozitivně naladěný, ve stylu meditativní tarotové aplikace. " +
+        "Rozsah: 90–130 slov, 3–4 krátké odstavce (láska/vztahy, práce/směr, energie/well-being, jedna praktická myšlenka). " +
+        "Nepiš konkrétní předpovědi událostí, data, jména, finanční ani zdravotní rady. Bez nadpisů a markdownu, jen čistý text.";
+    }
+    return "Write a short, atmospheric monthly horoscope for " + signEn + " for " + monthLabel + ", in English. " +
+      "Tone: mysterious but kind and grounded, in the style of a meditative tarot app. " +
+      "Length: 90-130 words, 3-4 short paragraphs (love/relationships, work/direction, energy/wellbeing, one practical thought). " +
+      "No specific event predictions, dates, names, financial or medical advice. No headings or markdown, plain text only.";
+  }
+
+  function loadHoroscope(sign, btn) {
+    var lang = getLang();
+
+    if (activeBtn) activeBtn.classList.remove("active");
+    btn.classList.add("active");
+    activeBtn = btn;
+
+    var cached = null;
+    try { cached = localStorage.getItem(cacheKey(sign, lang)); } catch (e) {}
+    if (cached) {
+      resultEl.textContent = cached;
+      resultEl.classList.remove("empty");
+      return;
+    }
+
+    resultEl.classList.remove("empty");
+    resultEl.textContent = horoscopeI18n.h_loading[lang];
+
+    function tryModel(index) {
+      if (index >= GEMINI_MODELS.length) {
+        resultEl.textContent = horoscopeI18n.h_error[lang];
+        return;
+      }
+      var model = GEMINI_MODELS[index];
+      var url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
+
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: buildPrompt(sign, lang) }] }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 400 }
+        })
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error("model unavailable: " + model);
+          return r.json();
+        })
+        .then(function (data) {
+          var text = data && data.candidates && data.candidates[0] && data.candidates[0].content
+            && data.candidates[0].content.parts && data.candidates[0].content.parts[0]
+            && data.candidates[0].content.parts[0].text;
+          if (!text) throw new Error("empty response from: " + model);
+          text = text.trim();
+          resultEl.textContent = text;
+          try { localStorage.setItem(cacheKey(sign, lang), text); } catch (e) {}
+        })
+        .catch(function (err) {
+          console.warn("[Noctuary Horoscope]", err.message || err, "— zkouším další model…");
+          tryModel(index + 1);
+        });
+    }
+
+    tryModel(0);
+  }
+
+  applyHoroscopeTexts();
+})();
 </script>
 <script>
   if ('serviceWorker' in navigator) {
