@@ -367,35 +367,67 @@
 
     panelBody.innerHTML = '<div class="horoscope-panel-loading">Reading the stars…</div>';
 
-    var url = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + currentPeriod + '?sign=' + s.key;
-
-    fetchWithFallback(url)
-      .then(function (res) {
-        if (!res.ok) throw new Error('bad response: ' + res.status);
-        return res.json();
-      })
-      .then(function (data) {
-        var text = data && data.data && data.data.horoscope;
-        if (!text) throw new Error('no text in response');
+    fetchHoroscopeText(currentPeriod, s.key)
+      .then(function (text) {
         cache[cacheKey] = text;
         renderText(text);
       })
       .catch(function (err) {
-        console.error('Failed to load horoscope:', err);
+        console.error('Failed to load horoscope from any source:', err);
         panelBody.innerHTML =
           '<div class="horoscope-panel-error">The stars are a little cloudy right now — we couldn\'t load this horoscope. Please try again in a moment.</div>';
       });
   }
 
-  // Some browsers/hosts block direct cross-origin calls to freehoroscopeapi.com
-  // (no CORS headers on their end). If the direct call fails, retry once
-  // through a public CORS proxy before giving up.
-  function fetchWithFallback(url) {
-    return fetch(url).catch(function (err) {
-      console.warn('Direct horoscope API request failed, retrying via CORS proxy…', err);
-      var proxied = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-      return fetch(proxied);
+  function parseFreeHoroscopeApi(res) {
+    if (!res.ok) throw new Error('freehoroscopeapi bad response: ' + res.status);
+    return res.json().then(function (data) {
+      var text = data && data.data && data.data.horoscope;
+      if (!text) throw new Error('freehoroscopeapi: no text in response');
+      return text;
     });
+  }
+
+  function parseAztro(res) {
+    if (!res.ok) throw new Error('aztro bad response: ' + res.status);
+    return res.json().then(function (data) {
+      var text = data && data.description;
+      if (!text) throw new Error('aztro: no text in response');
+      return text;
+    });
+  }
+
+  // Tries several independent sources in order, so a single API's outage or
+  // CORS misconfiguration doesn't take down the whole feature. Each source
+  // is tried directly first, then (for the primary API) through a couple of
+  // public CORS proxies, in case the direct browser call is being blocked.
+  function fetchHoroscopeText(period, sign) {
+    var primaryUrl = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + sign;
+
+    var attempts = [
+      function () { return fetch(primaryUrl).then(parseFreeHoroscopeApi); },
+      function () {
+        return fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(primaryUrl)).then(parseFreeHoroscopeApi);
+      },
+      function () {
+        return fetch('https://corsproxy.io/?url=' + encodeURIComponent(primaryUrl)).then(parseFreeHoroscopeApi);
+      }
+    ];
+
+    // aztro is a fully independent, unrelated API/host — only covers "today",
+    // so it's used as a last-resort fallback for the daily tab.
+    if (period === 'daily') {
+      attempts.push(function () {
+        return fetch('https://aztro.sameerkumar.website/?sign=' + sign + '&day=today', { method: 'POST' }).then(parseAztro);
+      });
+    }
+
+    return attempts.reduce(function (chain, attempt, i) {
+      return chain.catch(function (err) {
+        if (i > 0) console.warn('Horoscope source #' + i + ' failed, trying next…', err);
+        return attempt();
+      });
+    }, Promise.reject(new Error('start')));
   }
 
   function renderText(text) {
