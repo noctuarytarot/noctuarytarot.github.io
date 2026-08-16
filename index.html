@@ -3313,10 +3313,23 @@
   // Google čas od času mění/ruší názvy modelů (např. gemini-2.0-flash byl
   // vyřazen). Místo jednoho pevného názvu zkoušíme postupně několik, dokud
   // jeden nezafunguje — web tak nepřestane fungovat hned při další změně.
-  // Google Gemini 2.5 Flash a 2.5 Flash-Lite se v říjnu 2026 ruší, takže je
-  // dobré mít v poli i novější 3.x modely — když je jeden model přetížený
-  // (HTTP 500 "high demand") nebo zrušený, zkusí se automaticky další.
-  var GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.7-flash"];
+  // "gemini-flash-latest" je alias, který Google sám průběžně přesměrovává
+  // na aktuální doporučený produkční model - dává se první, protože bývá
+  // dostupný spolehlivěji než pevně zadané verze (viz web "Uklidni To",
+  // kde stejné pořadí funguje). Pevné 3.x/2.x názvy jsou pak záloha.
+  var GEMINI_MODELS = ["gemini-flash-latest", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"];
+  var HOROSCOPE_MODEL_STORAGE_KEY = "noctuary_horoscope_working_model";
+
+  // Sestaví pořadí zkoušení: nejdřív model, co naposledy fungoval (uložený
+  // v localStorage z předchozí návštěvy), pak zbytek seznamu - stejný
+  // princip jako u "Rady a poradna" na Uklidni To.
+  function getHoroscopeModelOrder() {
+    var remembered = null;
+    try { remembered = localStorage.getItem(HOROSCOPE_MODEL_STORAGE_KEY); } catch (e) {}
+    if (!remembered || GEMINI_MODELS.indexOf(remembered) === -1) return GEMINI_MODELS.slice();
+    var rest = GEMINI_MODELS.filter(function (m) { return m !== remembered; });
+    return [remembered].concat(rest);
+  }
 
   var SIGNS = {
     beran:    { en: "Aries",       cz: "Beran" },
@@ -3460,21 +3473,28 @@
       return null;
     }
 
+    var modelOrder = getHoroscopeModelOrder();
+
     function tryModel(index, isRetry) {
-      if (index >= GEMINI_MODELS.length) {
+      if (index >= modelOrder.length) {
         resultEl.textContent = horoscopeI18n.h_error[lang];
         return;
       }
-      var model = GEMINI_MODELS[index];
+      var model = modelOrder[index];
       var url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
 
       // Modely řady Gemini 3.x už nepoužívají "thinkingBudget", ale
       // "thinkingLevel" (a doporučuje se neměnit temperature). U starších
-      // 2.5 modelů necháváme původní nastavení.
+      // 2.x modelů necháváme původní nastavení. U aliasu "gemini-flash-latest"
+      // nevíme dopředu, na jakou rodinu zrovna ukazuje, takže mu posíláme
+      // jen základní nastavení bez specifické thinkingConfig.
       var isGemini3 = /^gemini-3/.test(model);
+      var isGemini2 = /^gemini-2/.test(model);
       var generationConfig = isGemini3
         ? { maxOutputTokens: 1600, thinkingConfig: { thinkingLevel: "low" } }
-        : { temperature: 0.9, maxOutputTokens: 1600, thinkingConfig: { thinkingBudget: 0 } };
+        : isGemini2
+          ? { temperature: 0.9, maxOutputTokens: 1600, thinkingConfig: { thinkingBudget: 0 } }
+          : { maxOutputTokens: 1600 };
 
       fetch(url, {
         method: "POST",
@@ -3504,6 +3524,9 @@
             console.warn("[Noctuary Horoscope] prázdná odpověď, celá data:", data);
             throw new Error("empty response from: " + model);
           }
+
+          // Tenhle model funguje - zapamatuj si ho, ať se příště zkusí první.
+          try { localStorage.setItem(HOROSCOPE_MODEL_STORAGE_KEY, model); } catch (e) {}
 
           // Tolerantní rozdělení na CZ/EN — model může oddělovač napsat s mezerami,
           // hvězdičkami, uvnitř code-fence apod.
