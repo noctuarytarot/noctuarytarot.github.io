@@ -369,21 +369,33 @@
 
     var url = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + currentPeriod + '?sign=' + s.key;
 
-    fetch(url)
+    fetchWithFallback(url)
       .then(function (res) {
-        if (!res.ok) throw new Error('bad response');
+        if (!res.ok) throw new Error('bad response: ' + res.status);
         return res.json();
       })
       .then(function (data) {
         var text = data && data.data && data.data.horoscope;
-        if (!text) throw new Error('no text');
+        if (!text) throw new Error('no text in response');
         cache[cacheKey] = text;
         renderText(text);
       })
-      .catch(function () {
+      .catch(function (err) {
+        console.error('Failed to load horoscope:', err);
         panelBody.innerHTML =
           '<div class="horoscope-panel-error">The stars are a little cloudy right now — we couldn\'t load this horoscope. Please try again in a moment.</div>';
       });
+  }
+
+  // Some browsers/hosts block direct cross-origin calls to freehoroscopeapi.com
+  // (no CORS headers on their end). If the direct call fails, retry once
+  // through a public CORS proxy before giving up.
+  function fetchWithFallback(url) {
+    return fetch(url).catch(function (err) {
+      console.warn('Direct horoscope API request failed, retrying via CORS proxy…', err);
+      var proxied = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+      return fetch(proxied);
+    });
   }
 
   function renderText(text) {
