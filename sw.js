@@ -1,171 +1,81 @@
-// ==========================================
-// SYNTHLUCIDA Service Worker
-// v34 - app shell (HTML/CSS/JS/ikony) je teď NETWORK-FIRST: vždy se nejdřív
-// zkusí čerstvá verze ze sítě a teprve když síť selže (offline), použije se
-// poslední zacachovaná verze. Dřív to bylo cache-first, takže dokud se ručně
-// nezměnil obsah TOHOTO souboru (a tím se nespustila nová instalace SW),
-// appka uživatelům pořád servírovala starou zacachovanou verzi player.html
-// atd., i když byl na serveru už nahraný nový soubor.
-// Zároveň: cache.put() u audia se teď čeká (await), takže když appka řekne
-// "staženo", skladba už je opravdu bezpečně uložená v Cache Storage.
-// ==========================================
+// Noctuary Tarot — Service Worker
+// Zvyš toto číslo při každé větší aktualizaci webu, aby si prohlížeče
+// stáhly novou verzi a zahodily starou cache.
+const CACHE_VERSION = 'v406';
+const CACHE_NAME = 'noctuary-tarot-' + CACHE_VERSION;
 
-const APP_CACHE_NAME = 'synthlucida-app-v713';
-const AUDIO_CACHE_NAME = 'synthlucida-audio-v1'; // separate cache, survives app shell updates
-
-// App shell files cached on install (a jako offline záloha)
-const ASSETS_TO_CACHE = [
+// Statické soubory, které má smysl mít offline hned od instalace.
+const PRECACHE_URLS = [
   './',
   './index.html',
-  './player.html',
-  './game.html',
-  './relax.html',
-  './draw.html',
-  './tarot.html',
   './manifest.json',
-  './icon.png',
-  './favicon.png',
-  './logo.jpg'
+  './favicon.ico',
+  './favicon-16.png',
+  './favicon-32.png',
+  './apple-touch-icon.png'
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', function (event) {
   event.waitUntil(
-    caches.open(APP_CACHE_NAME).then((cache) => {
-      console.log('[SW] Caching app shell');
-      // Nepoužíváme cache.addAll() - ten je "vše nebo nic": kdyby se
-      // nepodařilo stáhnout byť jediný soubor (404, chyba sítě, špatný
-      // název/case na GitHub Pages...), celá instalace by selhala a
-      // appka by zůstala navždy na staré verzi, i přes zvýšení čísla cache.
-      // Místo toho přidáváme soubory jednotlivě a chybu jednoho souboru
-      // jen zalogujeme, ale instalaci to nezastaví.
-      return Promise.all(
-        ASSETS_TO_CACHE.map((url) =>
-          cache.add(url).catch((err) => {
-            console.log('[SW] Nepodařilo se zacachovat:', url, err);
-          })
-        )
-      );
+    caches.open(CACHE_NAME).then(function (cache) {
+      return cache.addAll(PRECACHE_URLS);
+    }).then(function () {
+      return self.skipWaiting();
     })
   );
-  self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', function (event) {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(function (keys) {
       return Promise.all(
-        cacheNames.map((name) => {
-          if (name !== APP_CACHE_NAME && name !== AUDIO_CACHE_NAME) {
-            console.log('[SW] Deleting old cache:', name);
-            return caches.delete(name);
-          }
-        })
+        keys
+          .filter(function (key) { return key.startsWith('noctuary-tarot-') && key !== CACHE_NAME; })
+          .map(function (key) { return caches.delete(key); })
       );
+    }).then(function () {
+      return self.clients.claim();
     })
   );
-  self.clients.claim();
 });
 
-function isAudioRequest(url) {
-  return /\.mp3($|\?)/i.test(url.pathname);
-}
+self.addEventListener('fetch', function (event) {
+  var req = event.request;
 
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-
-  if (isAudioRequest(url)) {
-    event.respondWith(handleAudioRequest(event.request));
+  // Jen GET požadavky a jen náš vlastní origin (Firebase, fonty apod. necháváme jít normálně na síť).
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) {
     return;
   }
 
-  // Vše ostatní (HTML, JS, CSS, ikony...) - NETWORK-FIRST s cache jako
-  // offline zálohou, aby se nová verze appky projevila hned při dalším
-  // načtení, ne až po ruční změně APP_CACHE_NAME.
-  event.respondWith(handleAppShellRequest(event.request));
-});
+  // HTML stránku (hlavní dokument) preferuj vždy čerstvou ze sítě,
+  // ať se karta dne a texty aktualizují — offline fallback jde z cache.
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req)
+        .then(function (res) {
+          var resClone = res.clone();
+          caches.open(CACHE_NAME).then(function (cache) { cache.put(req, resClone); });
+          return res;
+        })
+        .catch(function () {
+          return caches.match(req).then(function (cached) {
+            return cached || caches.match('./index.html');
+          });
+        })
+    );
+    return;
+  }
 
-async function handleAppShellRequest(request) {
-  const cache = await caches.open(APP_CACHE_NAME);
-  try {
-    // cache: 'no-cache' vynutí, aby si prohlížeč vždy ověřil u serveru, jestli
-    // má nejnovější verzi (podmíněný požadavek), místo aby v rámci
-    // Cache-Control max-age vrátil starý soubor rovnou ze svého HTTP cache
-    // bez kontaktování serveru.
-    const networkResponse = await fetch(request, { cache: 'no-cache' });
-    if (networkResponse && networkResponse.ok) {
-      cache.put(request, networkResponse.clone()).catch((err) => {
-        console.log('[SW] Could not cache app shell file:', err);
+  // Ostatní statické soubory (ikony, manifest...) — cache first, síť jako fallback.
+  event.respondWith(
+    caches.match(req).then(function (cached) {
+      return cached || fetch(req).then(function (res) {
+        var resClone = res.clone();
+        caches.open(CACHE_NAME).then(function (cache) { cache.put(req, resClone); });
+        return res;
+      }).catch(function () {
+        // offline a nic v cache — necháme selhat potichu
       });
-    }
-    return networkResponse;
-  } catch (err) {
-    const cached = await cache.match(request);
-    if (cached) return cached;
-    throw err;
-  }
-}
-
-async function handleAudioRequest(request) {
-  const cache = await caches.open(AUDIO_CACHE_NAME);
-
-  // Always match by plain URL, ignoring any Range header on the incoming request,
-  // so we always find (and return) the full cached file if we have it.
-  const cached = await cache.match(request.url);
-  if (cached) {
-    return cached;
-  }
-
-  try {
-    // Build a clean request with the SAME mode/credentials as the original
-    // (important: audio elements load cross-origin files in "no-cors" mode,
-    // and we must preserve that or the fetch gets blocked by CORS).
-    const cleanRequest = new Request(request.url, {
-      method: 'GET',
-      mode: request.mode,
-      credentials: request.credentials,
-      redirect: 'follow'
-    });
-
-    const networkResponse = await fetch(cleanRequest);
-
-    // Cache it even if it's an "opaque" response (no CORS headers from the
-    // server) - that's normal for cross-origin media and still works fine
-    // for playback, we just can't read its bytes in JS.
-    // IMPORTANT: we now AWAIT this before returning, so that by the time the
-    // page's fetch() promise resolves, the file is *guaranteed* to already be
-    // fully written into Cache Storage - not just "probably done in the
-    // background". Without this await, the page could think a track is
-    // downloaded (and show "OFFLINE") a moment before it's actually saved.
-    if (networkResponse) {
-      try {
-        await cache.put(request.url, networkResponse.clone());
-      } catch (err) {
-        console.log('[SW] Could not cache audio:', err);
-      }
-    }
-
-    return networkResponse;
-  } catch (err) {
-    return new Response('Offline - this track is not cached.', {
-      status: 503,
-      statusText: 'Offline',
-      headers: { 'Content-Type': 'text/plain' }
-    });
-  }
-}
-
-// ==========================================
-// Kliknutí na lokální notifikaci (připomínky) - zavře notifikaci a přepne
-// na už otevřenou appku, nebo ji otevře, pokud zrovna neběží.
-// ==========================================
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((allClients) => {
-      if (allClients.length > 0) {
-        return allClients[0].focus();
-      }
-      return self.clients.openWindow('./player.html');
     })
   );
 });

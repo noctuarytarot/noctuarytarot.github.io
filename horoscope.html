@@ -249,6 +249,7 @@
   var currentPeriod = 'daily';
   var currentSign = null;
   var cache = {}; // key: period|sign|date -> text
+  var requestSeq = 0; // guards against a stale/duplicate request overwriting a newer result
 
   SIGNS.forEach(function (s) {
     var card = document.createElement('div');
@@ -290,6 +291,14 @@
     panelSub.textContent = PERIOD_LABEL[currentPeriod];
 
     var cacheKey = currentPeriod + '|' + s.en + '|' + todayKey();
+
+    // Every call gets its own sequence number. If a newer call starts before
+    // this one's fetch resolves, its result is discarded instead of
+    // overwriting whatever the newer call already rendered (this is what
+    // caused the "shows briefly, then reverts to loading/error" symptom —
+    // a slower, stale request finishing after a faster/newer one).
+    var mySeq = ++requestSeq;
+
     if (cache[cacheKey]) {
       renderText(cache[cacheKey]);
       return;
@@ -299,10 +308,12 @@
 
     fetchHoroscopeText(currentPeriod, s.en)
       .then(function (text) {
+        if (mySeq !== requestSeq) return; // a newer request has already taken over
         cache[cacheKey] = text;
         renderText(text);
       })
       .catch(function (err) {
+        if (mySeq !== requestSeq) return; // a newer request has already taken over
         console.error('Horoskop se nepodařilo načíst ze žádného zdroje:', err);
         panelBody.innerHTML =
           '<div class="horoscope-panel-error">Hvězdy jsou dnes zamlžené — horoskop se nepodařilo načíst. Zkus to prosím za chvíli znovu.</div>';
