@@ -3406,7 +3406,11 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: buildPrompt(sign, lang) }] }],
-          generationConfig: { temperature: 0.9, maxOutputTokens: 400 }
+          generationConfig: {
+            temperature: 0.9,
+            maxOutputTokens: 1000,
+            thinkingConfig: { thinkingBudget: 0 }
+          }
         })
       })
         .then(function (r) {
