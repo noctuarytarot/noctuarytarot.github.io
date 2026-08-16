@@ -1,7 +1,7 @@
 // Noctuary Tarot — Service Worker
 // Zvyš toto číslo při každé větší aktualizaci webu, aby si prohlížeče
 // stáhly novou verzi a zahodily starou cache.
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v20';
 const CACHE_NAME = 'noctuary-tarot-' + CACHE_VERSION;
 
 // Statické soubory, které má smysl mít offline hned od instalace.
