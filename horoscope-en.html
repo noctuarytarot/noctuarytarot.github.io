@@ -397,30 +397,44 @@
     });
   }
 
-  // Tries several independent sources in order, so a single API's outage or
-  // CORS misconfiguration doesn't take down the whole feature. Each source
-  // is tried directly first, then (for the primary API) through a couple of
-  // public CORS proxies, in case the direct browser call is being blocked.
+  function parseOhmanda(res) {
+    if (!res.ok) throw new Error('ohmanda bad response: ' + res.status);
+    return res.json().then(function (data) {
+      var text = data && data.horoscope;
+      // ohmanda sometimes returns an empty array instead of text when it's down
+      if (!text || typeof text !== 'string') throw new Error('ohmanda: no text in response');
+      return text;
+    });
+  }
+
+  // corsproxy.io is the only outbound channel that actually reaches the
+  // network in some browsers/networks (direct calls and other proxies get
+  // silently blocked). So: prefer corsproxy.io, and route it to several
+  // independent backends in turn — if one backend blocks proxy traffic
+  // (e.g. a 403 from anti-bot protection), the next one is tried.
   function fetchHoroscopeText(period, sign) {
-    var primaryUrl = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + sign;
+    var freehoroscopeUrl = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + sign;
+    var corsproxy = function (url) { return 'https://corsproxy.io/?url=' + encodeURIComponent(url); };
 
     var attempts = [
-      function () { return fetch(primaryUrl).then(parseFreeHoroscopeApi); },
-      function () {
-        return fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(primaryUrl)).then(parseFreeHoroscopeApi);
-      },
-      function () {
-        return fetch('https://corsproxy.io/?url=' + encodeURIComponent(primaryUrl)).then(parseFreeHoroscopeApi);
-      }
+      // proven-working transport first, against each backend in turn
+      function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); }
     ];
 
-    // aztro is a fully independent, unrelated API/host — only covers "today",
-    // so it's used as a last-resort fallback for the daily tab.
     if (period === 'daily') {
       attempts.push(function () {
-        return fetch('https://aztro.sameerkumar.website/?sign=' + sign + '&day=today', { method: 'POST' }).then(parseAztro);
+        return fetch(corsproxy('https://ohmanda.com/api/horoscope/' + sign + '/')).then(parseOhmanda);
+      });
+      attempts.push(function () {
+        return fetch(corsproxy('https://aztro.sameerkumar.website/?sign=' + sign + '&day=today'), { method: 'POST' }).then(parseAztro);
       });
     }
+
+    // last-resort: in case this browser/network isn't blocking these after all
+    attempts.push(function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); });
+    attempts.push(function () {
+      return fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(freehoroscopeUrl)).then(parseFreeHoroscopeApi);
+    });
 
     return attempts.reduce(function (chain, attempt, i) {
       return chain.catch(function (err) {
