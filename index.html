@@ -3327,6 +3327,8 @@
   var grid = document.getElementById("zodiac-grid");
   var resultEl = document.getElementById("horoscope-result");
   var activeBtn = null;
+  var activeSign = null;
+  var lastResult = null; // { cz: "...", en: "..." } pro aktuálně zobrazené znamení
 
   function getLang() {
     return (typeof guideLang !== "undefined" && guideLang === "cz") ? "cz" : "en";
@@ -3352,27 +3354,37 @@
       if (entry) el.innerHTML = entry[lang] || entry.en;
     });
     renderGrid();
+    if (activeBtn) {
+      var label = SIGNS[activeSign][lang];
+      activeBtn.innerHTML = '<span class="sym">' + ZODIAC_LIST.filter(function(z){return z.id===activeSign;})[0].sym + '</span><span>' + label + '</span>';
+      activeBtn.classList.add("active");
+    }
+    // Pokud už máme vygenerovaný text pro aktuální znamení, jen přepneme jazyk zobrazení (bez nového volání API).
+    if (lastResult && lastResult[lang]) {
+      resultEl.textContent = lastResult[lang];
+      resultEl.classList.remove("empty");
+    }
   };
 
-  function cacheKey(sign, lang) {
+  function cacheKey(sign) {
     var d = new Date();
-    return "noctuary_horo_" + d.getFullYear() + "_" + (d.getMonth() + 1) + "_" + sign + "_" + lang;
+    return "noctuary_horo_" + d.getFullYear() + "_" + (d.getMonth() + 1) + "_" + sign;
   }
 
-  function buildPrompt(sign, lang) {
-    var monthLabel = new Date().toLocaleDateString(lang === "cz" ? "cs-CZ" : "en-US", { month: "long", year: "numeric" });
+  function buildPrompt(sign) {
+    var monthLabelCz = new Date().toLocaleDateString("cs-CZ", { month: "long", year: "numeric" });
+    var monthLabelEn = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
     var signCz = SIGNS[sign].cz, signEn = SIGNS[sign].en;
 
-    if (lang === "cz") {
-      return "Napiš krátký, atmosférický měsíční horoskop pro znamení " + signCz + " na měsíc " + monthLabel + ", v češtině. " +
-        "Tón: mysteriózní, ale laskavý a pozitivně naladěný, ve stylu meditativní tarotové aplikace. " +
-        "Rozsah: 90–130 slov, 3–4 krátké odstavce (láska/vztahy, práce/směr, energie/well-being, jedna praktická myšlenka). " +
-        "Nepiš konkrétní předpovědi událostí, data, jména, finanční ani zdravotní rady. Bez nadpisů a markdownu, jen čistý text.";
-    }
-    return "Write a short, atmospheric monthly horoscope for " + signEn + " for " + monthLabel + ", in English. " +
-      "Tone: mysterious but kind and grounded, in the style of a meditative tarot app. " +
-      "Length: 90-130 words, 3-4 short paragraphs (love/relationships, work/direction, energy/wellbeing, one practical thought). " +
-      "No specific event predictions, dates, names, financial or medical advice. No headings or markdown, plain text only.";
+    return "Napiš krátký, atmosférický měsíční horoskop pro znamení " + signCz + " na měsíc " + monthLabelCz + ", v češtině. " +
+      "Tón: mysteriózní, ale laskavý a pozitivně naladěný, ve stylu meditativní tarotové aplikace. " +
+      "Rozsah: 90–130 slov, 3–4 krátké odstavce (láska/vztahy, práce/směr, energie/well-being, jedna praktická myšlenka). " +
+      "Nepiš konkrétní předpovědi událostí, data, jména, finanční ani zdravotní rady. Bez nadpisů a markdownu, jen čistý text.\n\n" +
+      "Poté napiš přesně stejný horoskop znovu, ale v angličtině, pro sign " + signEn + " for " + monthLabelEn + ". " +
+      "Same tone, same length (90-130 words), same structure, no headings or markdown, plain text only.\n\n" +
+      "Odděl obě verze PŘESNĚ tímto oddělovačem na samostatném řádku, nic jiného na ten řádek nepiš: ###EN###\n" +
+      "Formát výstupu (bez uvozovek, bez popisků 'CZ:'/'EN:'):\n" +
+      "<český text>\n###EN###\n<english text>";
   }
 
   function loadHoroscope(sign, btn) {
@@ -3381,13 +3393,20 @@
     if (activeBtn) activeBtn.classList.remove("active");
     btn.classList.add("active");
     activeBtn = btn;
+    activeSign = sign;
 
-    var cached = null;
-    try { cached = localStorage.getItem(cacheKey(sign, lang)); } catch (e) {}
-    if (cached) {
-      resultEl.textContent = cached;
-      resultEl.classList.remove("empty");
-      return;
+    var cachedRaw = null;
+    try { cachedRaw = localStorage.getItem(cacheKey(sign)); } catch (e) {}
+    if (cachedRaw) {
+      try {
+        var cachedObj = JSON.parse(cachedRaw);
+        if (cachedObj && cachedObj.cz && cachedObj.en) {
+          lastResult = cachedObj;
+          resultEl.textContent = cachedObj[lang];
+          resultEl.classList.remove("empty");
+          return;
+        }
+      } catch (e) {}
     }
 
     resultEl.classList.remove("empty");
@@ -3405,10 +3424,10 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: buildPrompt(sign, lang) }] }],
+          contents: [{ parts: [{ text: buildPrompt(sign) }] }],
           generationConfig: {
             temperature: 0.9,
-            maxOutputTokens: 1000,
+            maxOutputTokens: 1600,
             thinkingConfig: { thinkingBudget: 0 }
           }
         })
@@ -3422,9 +3441,15 @@
             && data.candidates[0].content.parts && data.candidates[0].content.parts[0]
             && data.candidates[0].content.parts[0].text;
           if (!text) throw new Error("empty response from: " + model);
-          text = text.trim();
-          resultEl.textContent = text;
-          try { localStorage.setItem(cacheKey(sign, lang), text); } catch (e) {}
+
+          var parts = text.split("###EN###");
+          if (parts.length < 2) throw new Error("missing EN separator from: " + model);
+          var result = { cz: parts[0].trim(), en: parts[1].trim() };
+          if (!result.cz || !result.en) throw new Error("empty cz/en part from: " + model);
+
+          lastResult = result;
+          resultEl.textContent = result[lang];
+          try { localStorage.setItem(cacheKey(sign), JSON.stringify(result)); } catch (e) {}
         })
         .catch(function (err) {
           console.warn("[Noctuary Horoscope]", err.message || err, "— zkouším další model…");
