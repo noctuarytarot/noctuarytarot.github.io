@@ -3,7 +3,7 @@ on:
   schedule:
     # Times are UTC. Roughly spread across the day (GitHub may delay
     # scheduled runs by a few minutes during high load).
-    - cron: '0 4 * * *'   # ~06:00 CEST / 05:00 CET
+    - cron: '0 5 * * *'   # ~06:00 CEST / 05:00 CET
     - cron: '0 12 * * *'  # ~14:00 CEST / 13:00 CET
     - cron: '0 20 * * *'  # ~22:00 CEST / 21:00 CET
   workflow_dispatch: {}   # lets you trigger a run manually from the Actions tab
