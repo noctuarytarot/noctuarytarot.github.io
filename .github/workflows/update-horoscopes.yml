@@ -17,15 +17,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Start LibreTranslate
-        run: |
-          docker run -d -p 5000:5000 --name libretranslate \
-            libretranslate/libretranslate --load-only en,cs
       - name: Fetch fresh horoscopes
         run: node update-horoscopes.js
-      - name: Debug LibreTranslate on failure
-        if: failure()
-        run: docker logs libretranslate || true
       - name: Commit and push if changed
         if: always()
         run: |
