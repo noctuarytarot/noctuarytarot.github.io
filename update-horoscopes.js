@@ -1,7 +1,8 @@
 // Fetches the monthly horoscope text for all 12 zodiac signs from
-// freehoroscopeapi.com and writes the result to horoscopes.json at the
-// repo root. Run by .github/workflows/update-horoscopes.yml three times
-// a day. Requires Node 18+ (uses the built-in fetch).
+// freehoroscopeapi.com and writes the result to horoscopes.json (same
+// folder as this script — repo root). Run by
+// .github/workflows/update-horoscopes.yml three times a day.
+// Requires Node 18+ (uses the built-in fetch).
 
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +12,7 @@ const SIGNS = [
   'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'
 ];
 
-const OUT_PATH = path.join(__dirname, '..', 'horoscopes.json');
+const OUT_PATH = path.join(__dirname, 'horoscopes.json');
 
 async function fetchSign(sign) {
   const url = 'https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=' + sign;
