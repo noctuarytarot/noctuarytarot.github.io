@@ -793,28 +793,46 @@
   .seo-disclaimer { font-size: 13px; opacity: 0.5; margin-top: 30px; font-style: italic; }
   .seo-player-note { font-size: 12px; opacity: 0.45; margin-top: 14px; }
   .site-footer-full {
-    position: relative; z-index: 1; width: 100%; max-width: 720px; margin: 40px auto 0; padding: 22px 0 4px;
+    position: relative; z-index: 1; width: 100%; max-width: 720px; margin: 40px auto 0; padding: 26px 20px 6px;
     border-top: 1px solid rgba(212,175,55,0.18); text-align: center;
     font-family: 'Cormorant Garamond', serif; font-size: 12px; letter-spacing: 0.5px; opacity: 0.55;
   }
   .site-footer-full a {
     color: var(--accent-color); text-decoration: none; letter-spacing: 1.5px;
     font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 600; opacity: 0.85;
+    transition: opacity 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
   }
   .site-footer-full a:hover { opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
-  .site-footer-full nav { margin-bottom: 10px; }
+  .site-footer-full nav { margin-bottom: 14px; }
   .site-footer-full nav a { margin: 0 8px; }
-  .footer-articles-nav { margin: 4px 0 16px; line-height: 2.4; max-width: 640px; margin-left: auto; margin-right: auto; }
-  .footer-articles-nav a { margin: 0 7px; display: inline-block; }
-  .site-stats {
-    margin-top: 8px; font-size: 11px; letter-spacing: 0.5px; opacity: 0.55;
-    display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
+  .footer-articles-label {
+    display: block; font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 12px; letter-spacing: 1px; opacity: 0.4; margin-bottom: 10px;
   }
+  .footer-articles-nav {
+    margin: 0 0 20px; max-width: 640px; margin-left: auto; margin-right: auto;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  }
+  .footer-articles-nav a {
+    margin: 0; padding: 6px 13px; border: 1px solid rgba(212,175,55,0.22);
+    border-radius: 20px; background: rgba(212,175,55,0.05);
+  }
+  .footer-articles-nav a:hover {
+    background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.5); transform: translateY(-1px);
+  }
+  .site-stats {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(212,175,55,0.1);
+    font-size: 11px; letter-spacing: 0.5px; opacity: 0.6;
+    display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+  }
+  .site-stats .stat-item { display: inline-flex; align-items: center; gap: 5px; }
+  .site-stats .stat-label { font-family: 'Cormorant Garamond', serif; font-style: italic; opacity: 0.75; }
+  .site-stats strong { color: var(--accent-color); font-weight: 600; }
   .site-stats .dot {
     display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: #3ddc73; box-shadow: 0 0 6px #3ddc73; margin-right: 3px; vertical-align: middle;
+    background: #3ddc73; box-shadow: 0 0 6px #3ddc73; vertical-align: middle;
   }
-  .site-stats .sep { opacity: 0.4; }
+  .site-stats .sep { opacity: 0.3; }
   @media (max-width: 480px) {
     .seo-content { font-size: 15.5px; padding: 0 4px; }
     .seo-content > p.lead { font-size: 17px; }
@@ -1166,6 +1184,7 @@
     <a href="#" id="footer-btn-articles" data-i18n="seo_footer_link_articles">Tarot articles</a>
     <a href="horoscope.html" data-i18n="seo_footer_link_horoscope">Free Horoscope</a>
   </nav>
+  <span class="footer-articles-label" data-i18n="seo_footer_articles_label">Tarot articles &amp; guides</span>
   <nav class="footer-articles-nav" aria-label="Tarot articles">
     <a href="what-is-tarot.html" data-i18n="a1_menu_title">What Is Tarot?</a>
     <a href="history-of-tarot.html" data-i18n="a2_menu_title">A Short History of Tarot</a>
@@ -1184,11 +1203,11 @@
   <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
   <div style="margin-top:4px;"><a href="privacy.html" data-i18n="seo_footer_link_privacy">Privacy Policy</a></div>
   <div class="site-stats" id="site-stats">
-    <span><strong id="stat-total">–</strong></span>
+    <span class="stat-item"><span class="stat-label" data-i18n="seo_footer_stats_visits">Total visits:</span><strong id="stat-total">–</strong></span>
     <span class="sep">·</span>
-    <span><strong id="stat-today">–</strong></span>
+    <span class="stat-item"><span class="stat-label" data-i18n="seo_footer_stats_today">Today:</span><strong id="stat-today">–</strong></span>
     <span class="sep">·</span>
-    <span><span class="dot"></span><strong id="stat-online">–</strong></span>
+    <span class="stat-item"><span class="dot"></span><span class="stat-label" data-i18n="seo_footer_stats_online">Online:</span><strong id="stat-online">–</strong></span>
   </div>
 </footer>
 
@@ -2350,6 +2369,7 @@
     seo_disclaimer: { en: 'Noctuary Tarot is offered as a daily space for pause, reflection, and atmosphere — it is not fortune-telling, a prediction of the future, or a substitute for professional guidance on important life decisions.', cz: 'Noctuary Tarot slouží jako každodenní prostor pro zastavení, reflexi a atmosféru — nejde o věštění, předpověď budoucnosti ani náhradu odborné pomoci při důležitých životních rozhodnutích.' },
     seo_footer_link_howto: { en: 'How to read cards', cz: 'Jak číst karty' },
     seo_footer_link_articles: { en: 'Tarot articles', cz: 'Články o tarotu' },
+    seo_footer_articles_label: { en: 'Tarot articles & guides', cz: 'Články a rady o tarotu' },
     seo_footer_copy_pre: { en: '© ', cz: '© ' },
     seo_footer_copy_post: { en: ' Noctuary Tarot — free card of the day', cz: ' Noctuary Tarot — karta dne zdarma online' },
     seo_footer_link_privacy: { en: 'Privacy Policy', cz: 'Zásady ochrany soukromí' },
