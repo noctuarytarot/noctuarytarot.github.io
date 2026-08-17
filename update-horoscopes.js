@@ -38,7 +38,7 @@ async function waitForLibreTranslate(maxWaitMs) {
     }
     await new Promise(function (resolve) { setTimeout(resolve, 2000); });
   }
-  throw new Error('LibreTranslate did not become ready within ' + maxWaitMs + 'ms');
+  throw new Error('LibreTranslate did not become ready within ' + maxWaitMs + 'ms — check "Debug LibreTranslate on failure" step logs');
 }
 
 async function translateToCzech(text) {
@@ -65,7 +65,7 @@ async function main() {
   const translateFailed = []; // translation failures (English text still fetched OK)
 
   try {
-    await waitForLibreTranslate(120000);
+    await waitForLibreTranslate(240000);
     console.log('OK   LibreTranslate ready');
   } catch (err) {
     // No point trying per-sign translation if the container never came up —
