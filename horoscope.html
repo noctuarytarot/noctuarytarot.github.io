@@ -105,12 +105,17 @@
 
   header { position: relative; z-index: 1; max-width: 640px; margin-bottom: 22px; }
   h1 {
-    font-size: 26px; letter-spacing: 3px; margin: 6px 0 4px;
+    font-size: clamp(20px, 6vw, 26px); letter-spacing: clamp(1.5px, 0.8vw, 3px); margin: 6px 0 4px;
     color: var(--accent-color); text-shadow: 0 0 12px var(--accent-color);
+    white-space: nowrap;
   }
   .subtitle {
     font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px;
     opacity: 0.8; margin: 0;
+  }
+  .current-month {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 1.5px;
+    color: var(--accent-color); opacity: 0.75; margin: 10px 0 0; text-transform: uppercase;
   }
 
   /* zodiac grid */
@@ -150,6 +155,21 @@
   .horoscope-panel-loading, .horoscope-panel-error {
     font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; opacity: 0.7;
   }
+  .loading-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 14px 0 8px;
+  }
+  .spinner {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 3px solid rgba(212,175,55,0.22); border-top-color: var(--accent-color);
+    animation: spin 0.85s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-percent {
+    font-family: 'Orbitron', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--accent-color);
+  }
+  .loading-label {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; opacity: 0.65;
+  }
   .horoscope-panel-note {
     margin-top: 14px; font-family: 'Cormorant Garamond', serif; font-size: 12px; opacity: 0.45;
   }
@@ -181,6 +201,7 @@
 <header>
   <h1>✦ HOROSKOP ✦</h1>
   <p class="subtitle">Vyber si znamení a nech se vést hvězdami</p>
+  <p class="current-month" id="current-month"></p>
 </header>
 
 <div class="sign-grid" id="sign-grid"></div>
@@ -218,8 +239,19 @@
     { en: 'pisces', cz: 'Ryby', symbol: '♓' }
   ];
 
-  var PERIOD_LABEL = 'Horoskop na tento měsíc';
   var PERIOD = 'monthly';
+
+  var MONTHS_GENITIVE = ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'];
+
+  function currentMonthName() {
+    var d = new Date();
+    return MONTHS_GENITIVE[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  var PERIOD_LABEL = 'Horoskop na měsíc ' + currentMonthName();
+
+  var monthEl = document.getElementById('current-month');
+  if (monthEl) monthEl.textContent = 'Zobrazen horoskop na měsíc ' + currentMonthName();
 
   var grid = document.getElementById('sign-grid');
   var panel = document.getElementById('horoscope-panel');
@@ -231,6 +263,30 @@
   var currentSign = null;
   var cache = {}; // key: sign|date -> text
   var requestSeq = 0; // guards against a stale/duplicate request overwriting a newer result
+  var progressTimer = null;
+
+  function startLoadingUI() {
+    if (progressTimer) clearInterval(progressTimer);
+    var pct = 0;
+    panelBody.innerHTML =
+      '<div class="loading-wrap">' +
+        '<div class="spinner"></div>' +
+        '<div class="loading-percent" id="loading-percent">0%</div>' +
+        '<div class="loading-label">Čtu hvězdy…</div>' +
+      '</div>';
+    var pctEl = document.getElementById('loading-percent');
+    progressTimer = setInterval(function () {
+      // Blíží se k 90 % a dokončení nikdy nepředstírá, dokud se fetch
+      // opravdu nevrátí — posledních 10 % doplní až úspěšná odpověď.
+      pct += Math.max(1, (90 - pct) * 0.12);
+      if (pct > 90) pct = 90;
+      if (pctEl) pctEl.textContent = Math.round(pct) + '%';
+    }, 200);
+  }
+
+  function stopLoadingUI() {
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+  }
 
   SIGNS.forEach(function (s) {
     var card = document.createElement('div');
@@ -276,7 +332,7 @@
       return;
     }
 
-    panelBody.innerHTML = '<div class="horoscope-panel-loading">Čtu hvězdy…</div>';
+    startLoadingUI();
 
     fetchHoroscopeText(PERIOD, s.en)
       .then(function (text) {
@@ -285,50 +341,46 @@
       })
       .then(function (result) {
         if (!result || mySeq !== requestSeq) return; // a newer request has already taken over
+        stopLoadingUI();
         cache[cacheKey] = result;
         renderText(result);
       })
       .catch(function (err) {
         if (mySeq !== requestSeq) return; // a newer request has already taken over
+        stopLoadingUI();
         console.error('Horoskop se nepodařilo načíst ze žádného zdroje:', err);
         panelBody.innerHTML =
-          '<div class="horoscope-panel-error">Hvězdy jsou dnes zamlžené — horoskop se nepodařilo načíst. Zkus to prosím za chvíli znovu.</div>';
+          '<div class="horoscope-panel-error">Tento horoskop ještě není připravený — zkus to prosím později znovu.</div>';
       });
   }
 
-  function parseFreeHoroscopeApi(res) {
-    if (!res.ok) throw new Error('freehoroscopeapi bad response: ' + res.status);
-    return res.json().then(function (data) {
-      var text = data && data.data && data.data.horoscope;
-      if (!text) throw new Error('freehoroscopeapi: no text in response');
+  var horoscopesDataPromise = null;
+
+  // Načte statický horoscopes.json vygenerovaný GitHub Actions workflow
+  // (scripts/update-horoscopes.js), který se aktualizuje 3x denně. Výsledek
+  // se cachuje po dobu života stránky, aby se při přepínání znamení
+  // znovu nestahoval.
+  function getHoroscopesData() {
+    if (!horoscopesDataPromise) {
+      horoscopesDataPromise = fetch('horoscopes.json', { cache: 'no-store' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('horoscopes.json bad response: ' + res.status);
+          return res.json();
+        })
+        .catch(function (err) {
+          horoscopesDataPromise = null; // umožní zkusit to znovu
+          throw err;
+        });
+    }
+    return horoscopesDataPromise;
+  }
+
+  function fetchHoroscopeText(period, sign) {
+    return getHoroscopesData().then(function (data) {
+      var text = data && data.signs && data.signs[sign];
+      if (!text) throw new Error('pro znamení zatím není horoskop v cache: ' + sign);
       return text;
     });
-  }
-
-  // Try a direct call first (freehoroscopeapi.com supports CORS directly),
-  // and fall back to CORS proxies only if the direct call fails — e.g. on a
-  // network/browser combo that blocks it.
-  function fetchHoroscopeText(period, sign) {
-    var freehoroscopeUrl = 'https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + sign;
-    var corsproxy = function (url) { return 'https://corsproxy.io/?url=' + encodeURIComponent(url); };
-
-    var attempts = [
-      // direct call first
-      function () { return fetch(freehoroscopeUrl).then(parseFreeHoroscopeApi); }
-    ];
-
-    // fallbacks, in case the direct call gets blocked
-    attempts.push(function () { return fetch(corsproxy(freehoroscopeUrl)).then(parseFreeHoroscopeApi); });
-    attempts.push(function () {
-      return fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(freehoroscopeUrl)).then(parseFreeHoroscopeApi);
-    });
-
-    return attempts.reduce(function (chain, attempt, i) {
-      return chain.catch(function (err) {
-        if (i > 0) console.warn('Zdroj horoskopu č. ' + i + ' selhal, zkouším další…', err);
-        return attempt();
-      });
-    }, Promise.reject(new Error('start')));
   }
 
 
