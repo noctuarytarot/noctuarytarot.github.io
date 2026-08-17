@@ -23,7 +23,11 @@ jobs:
             libretranslate/libretranslate --load-only en,cs
       - name: Fetch fresh horoscopes
         run: node update-horoscopes.js
+      - name: Debug LibreTranslate on failure
+        if: failure()
+        run: docker logs libretranslate || true
       - name: Commit and push if changed
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
