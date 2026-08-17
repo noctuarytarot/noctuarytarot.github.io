@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
+<meta charset="UTF-8">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2599270563466963"
      crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0d0221">
 <title>Night Rain — Free Online Card Game | Noctuary Tarot</title>
 <meta name="description" content="Night Rain (Noční liják) — a free browser card game inspired by classic shedding card games. Play against the computer, no download, no sign-up. Available in English and Czech.">
@@ -348,7 +348,7 @@
 
 <a class="corner-btn corner-btn-home" href="index.html" title="Back to Noctuary Tarot / Zpět na Noctuary Tarot" aria-label="Back to homepage">🏠</a>
 <button class="corner-btn corner-btn-info" id="btn-info" title="Rules / Pravidla" aria-label="Rules">i</button>
-<button class="corner-btn corner-btn-lang" id="btn-lang-toggle" title="Language / Jazyk" aria-label="Switch language">CZ</button>
+<button class="corner-btn corner-btn-lang" id="btn-lang-toggle" title="Language / Jazyk" aria-label="Switch language">EN</button>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -356,12 +356,12 @@
 <div class="brand">
   <div class="brand-name">NOCTUARY TAROT</div>
 </div>
-<h1 class="page-title" data-i18n="game_title">NIGHT RAIN</h1>
-<p class="page-subtitle" data-i18n="game_subtitle">A free shedding card game — first to empty your hand wins. Watch out for the rain.</p>
+<h1 class="page-title" data-i18n="game_title">NOČNÍ LIJÁK</h1>
+<p class="page-subtitle" data-i18n="game_subtitle">Volná karetní hra na zbavování se karet — kdo první vyloží všechny karty, vyhrává. Dejte si pozor na déšť.</p>
 
 <div class="board">
   <div class="opponent-row">
-    <div class="hand-label" data-i18n="opponent_label">OPPONENT</div>
+    <div class="hand-label" data-i18n="opponent_label">SOUPEŘ</div>
     <div class="card-backs" id="ai-card-backs"></div>
   </div>
 
@@ -369,29 +369,29 @@
 
   <div class="table-row">
     <div class="pile-wrap">
-      <div class="pile-label" data-i18n="draw_label">DRAW</div>
+      <div class="pile-label" data-i18n="draw_label">BALÍČEK</div>
       <div class="draw-pile" id="draw-pile" role="button" tabindex="0" aria-label="Draw a card">🂠</div>
     </div>
     <div class="pile-wrap">
-      <div class="pile-label" data-i18n="discard_label">DISCARD</div>
+      <div class="pile-label" data-i18n="discard_label">ODHOZ</div>
       <div class="play-card" id="discard-top"></div>
       <div class="active-suit-badge" id="active-suit-badge"></div>
     </div>
   </div>
 
   <div class="player-row">
-    <div class="hand-label" data-i18n="your_hand_label">YOUR HAND</div>
+    <div class="hand-label" data-i18n="your_hand_label">VAŠE KARTY</div>
     <div class="player-hand" id="player-hand"></div>
   </div>
 
   <div class="action-row">
-    <button class="btn-newgame" id="btn-newgame" data-i18n="btn_newgame">NEW GAME</button>
+    <button class="btn-newgame" id="btn-newgame" data-i18n="btn_newgame">NOVÁ HRA</button>
   </div>
 </div>
 
 <div id="suit-overlay">
   <div class="modal-panel">
-    <h2 data-i18n="suit_pick_title">CHOOSE THE NEXT SUIT</h2>
+    <h2 data-i18n="suit_pick_title">VYBERTE DALŠÍ BARVU</h2>
     <div class="suit-choices" id="suit-choices"></div>
   </div>
 </div>
@@ -400,89 +400,89 @@
   <div class="modal-panel" style="text-align:center;">
     <div class="result-title" id="result-title"></div>
     <p class="modal-panel-sub" id="result-sub" style="font-family:'Cormorant Garamond',serif; opacity:0.85;"></p>
-    <button class="btn-newgame" id="btn-result-newgame" data-i18n="btn_playagain">PLAY AGAIN</button>
+    <button class="btn-newgame" id="btn-result-newgame" data-i18n="btn_playagain">HRÁT ZNOVU</button>
   </div>
 </div>
 
 <div id="info-overlay">
   <div class="modal-panel">
     <button class="modal-close" id="btn-info-close" aria-label="Close">✕</button>
-    <button class="info-lang-toggle" id="info-lang-toggle" aria-label="Switch language">CZ</button>
-    <h2 data-i18n="rules_title">HOW TO PLAY</h2>
-    <p data-i18n="rules_intro">Night Rain is played with a 40-card deck — four suits (Moon, Star, Flame, Drop), each numbered 1 to 10. Be the first to play every card from your hand.</p>
-    <h3 data-i18n="rules_h_match">MATCHING</h3>
-    <p data-i18n="rules_p_match">On your turn, play a card that shares either the suit or the number with the top card of the discard pile. If you have nothing to play, draw one card — if it can be played, you may play it right away.</p>
-    <h3 data-i18n="rules_h_downpour">7 — DOWNPOUR</h3>
-    <p data-i18n="rules_p_downpour">Playing a 7 sends the Downpour to your opponent: they must draw two cards and lose their turn, unless they play a 7 of their own to send it back and add two more.</p>
-    <h3 data-i18n="rules_h_eclipse">1 — ECLIPSE</h3>
-    <p data-i18n="rules_p_eclipse">Playing a 1 covers the table in an Eclipse: your opponent's next turn is skipped and play returns straight to you.</p>
-    <h3 data-i18n="rules_h_fullmoon">10 — FULL MOON</h3>
-    <p data-i18n="rules_p_fullmoon">A 10 is a Full Moon — it can be played on anything, and lets you choose which suit comes next.</p>
-    <h3 data-i18n="rules_h_win">WINNING</h3>
-    <p data-i18n="rules_p_win">The first player to run out of cards wins the round. Tap NEW GAME any time to shuffle and start over.</p>
+    <button class="info-lang-toggle" id="info-lang-toggle" aria-label="Switch language">EN</button>
+    <h2 data-i18n="rules_title">PRAVIDLA HRY</h2>
+    <p data-i18n="rules_intro">Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Vyhrává ten, kdo první vyloží všechny své karty.</p>
+    <h3 data-i18n="rules_h_match">PŘIHAZOVÁNÍ</h3>
+    <p data-i18n="rules_p_match">Na tahu přihoďte kartu, která se shoduje barvou nebo hodnotou s vrchní kartou na odhazovacím balíčku. Pokud nemáte co přihodit, líznete si jednu kartu — pokud jde zahrát, můžete ji rovnou přihodit.</p>
+    <h3 data-i18n="rules_h_downpour">7 — LIJÁK</h3>
+    <p data-i18n="rules_p_downpour">Sedmička sesílá na soupeře Liják: musí si líznout dvě karty a ztrácí tah, pokud nemá vlastní sedmičku, kterou liják pošle zpátky a přidá další dvě karty.</p>
+    <h3 data-i18n="rules_h_eclipse">1 — ZATMĚNÍ</h3>
+    <p data-i18n="rules_p_eclipse">Jednička zahalí stůl do Zatmění: soupeři propadne příští tah a hra se vrací rovnou k vám.</p>
+    <h3 data-i18n="rules_h_fullmoon">10 — ÚPLNĚK</h3>
+    <p data-i18n="rules_p_fullmoon">Desítka je Úplněk — lze ji přihodit na cokoliv a vy si vyberete, jaká barva bude platit dál.</p>
+    <h3 data-i18n="rules_h_win">VÝHRA</h3>
+    <p data-i18n="rules_p_win">Vyhrává ten, komu první dojdou karty. Kdykoliv můžete kartami zamíchat a začít znovu tlačítkem NOVÁ HRA.</p>
   </div>
 </div>
 
 <main class="seo-content">
-  <p class="lead" data-i18n="seo_lead">Night Rain is a free browser card game — no download, no account, just you against the computer.</p>
+  <p class="lead" data-i18n="seo_lead">Noční liják je volná karetní hra do prohlížeče — bez stahování, bez registrace, jen vy proti počítači.</p>
 
-  <h2 data-i18n="seo_h_about">About Night Rain</h2>
-  <p data-i18n="seo_p_about1">Night Rain (Noční liják) is an original card game from the makers of Noctuary Tarot, built for anyone who enjoys quick, tactical shedding games — the kind of family card game played across many countries under many different names, including the Czech classic Prší. Night Rain keeps that same easy-to-learn, hard-to-put-down spirit, with its own four-suit deck and its own set of special cards.</p>
-  <p data-i18n="seo_p_about2">The whole match runs in your browser. There is nothing to install, no account to create, and no time limit — deal a new hand whenever you like.</p>
+  <h2 data-i18n="seo_h_about">O hře Noční liják</h2>
+  <p data-i18n="seo_p_about1">Noční liják je originální karetní hra od tvůrců Noctuary Tarot, určená každému, kdo má rád rychlé, taktické hry na zbavování se karet — tedy rodinné karetní hry hrané v mnoha zemích pod mnoha různými jmény, včetně české klasiky Prší. Noční liják si zachovává stejného snadno pochopitelného a návykového ducha, ale s vlastní čtyřbarevnou sadou karet a vlastními speciálními kartami.</p>
+  <p data-i18n="seo_p_about2">Celá partie běží přímo ve vašem prohlížeči. Není třeba nic instalovat, zakládat účet, ani hlídat čas — novou partii si rozdejte, kdykoliv budete chtít.</p>
 
-  <h2 data-i18n="seo_h_rules">Rules at a Glance</h2>
+  <h2 data-i18n="seo_h_rules">Pravidla ve zkratce</h2>
   <div class="seo-rules-grid">
     <div class="seo-rule-card">
-      <h3 data-i18n="seo_rule1_h">🌧️ 7 — Downpour</h3>
-      <p data-i18n="seo_rule1_p">Forces the next player to draw two cards, unless they answer with a 7 of their own.</p>
+      <h3 data-i18n="seo_rule1_h">🌧️ 7 — Liják</h3>
+      <p data-i18n="seo_rule1_p">Přinutí dalšího hráče líznout si dvě karty, pokud neodpoví vlastní sedmičkou.</p>
     </div>
     <div class="seo-rule-card">
-      <h3 data-i18n="seo_rule2_h">🌑 1 — Eclipse</h3>
-      <p data-i18n="seo_rule2_p">Skips the other player's turn completely.</p>
+      <h3 data-i18n="seo_rule2_h">🌑 1 — Zatmění</h3>
+      <p data-i18n="seo_rule2_p">Úplně přeskočí tah druhého hráče.</p>
     </div>
     <div class="seo-rule-card">
-      <h3 data-i18n="seo_rule3_h">🌕 10 — Full Moon</h3>
-      <p data-i18n="seo_rule3_p">A wild card — play it on anything and pick the next suit.</p>
+      <h3 data-i18n="seo_rule3_h">🌕 10 — Úplněk</h3>
+      <p data-i18n="seo_rule3_p">Divoká karta — lze ji přihodit na cokoliv a vybrat si další barvu.</p>
     </div>
     <div class="seo-rule-card">
-      <h3 data-i18n="seo_rule4_h">🏆 Empty hand wins</h3>
-      <p data-i18n="seo_rule4_p">Play your last card before your opponent does and you win the round.</p>
+      <h3 data-i18n="seo_rule4_h">🏆 Prázdná ruka vyhrává</h3>
+      <p data-i18n="seo_rule4_p">Zahrajte svou poslední kartu dřív než soupeř a vyhráváte kolo.</p>
     </div>
   </div>
 
-  <h2 data-i18n="seo_h_faq">Frequently Asked Questions</h2>
+  <h2 data-i18n="seo_h_faq">Časté dotazy</h2>
   <div class="seo-faq-item">
-    <h3 data-i18n="seo_faq1_q">What is Night Rain?</h3>
-    <p data-i18n="seo_faq1_a">A free browser card game inspired by classic shedding card games such as Prší. Match the suit or number of the top card and be the first to empty your hand.</p>
+    <h3 data-i18n="seo_faq1_q">Co je Noční liják?</h3>
+    <p data-i18n="seo_faq1_a">Volná karetní hra do prohlížeče inspirovaná klasickými hrami na zbavování se karet, jako je Prší. Přihazujte podle barvy nebo hodnoty vrchní karty a vyložte karty jako první.</p>
   </div>
   <div class="seo-faq-item">
-    <h3 data-i18n="seo_faq2_q">Is it free to play?</h3>
-    <p data-i18n="seo_faq2_a">Yes, completely free, with no download, account or sign-up required.</p>
+    <h3 data-i18n="seo_faq2_q">Je hra zdarma?</h3>
+    <p data-i18n="seo_faq2_a">Ano, zcela zdarma, bez stahování, účtu nebo registrace.</p>
   </div>
   <div class="seo-faq-item">
-    <h3 data-i18n="seo_faq3_q">How many players are supported?</h3>
-    <p data-i18n="seo_faq3_a">This version is single-player — you play one on one against a computer opponent.</p>
+    <h3 data-i18n="seo_faq3_q">Kolik hráčů hra podporuje?</h3>
+    <p data-i18n="seo_faq3_a">Tato verze je pro jednoho hráče — hrajete jeden na jednoho proti počítačovému soupeři.</p>
   </div>
   <div class="seo-faq-item">
-    <h3 data-i18n="seo_faq4_q">What do the special cards do?</h3>
-    <p data-i18n="seo_faq4_a">A 7 is a Downpour that makes the next player draw two, a 1 is an Eclipse that skips a turn, and a 10 is a Full Moon wild card that lets you choose the next suit.</p>
+    <h3 data-i18n="seo_faq4_q">Co dělají speciální karty?</h3>
+    <p data-i18n="seo_faq4_a">Sedmička je Liják, díky kterému si další hráč líznek dvě karty, jednička je Zatmění, které přeskočí tah, a desítka je divoká karta Úplněk, kterou si vyberete další barvu.</p>
   </div>
   <div class="seo-faq-item">
-    <h3 data-i18n="seo_faq5_q">Is Night Rain the same game as Prší?</h3>
-    <p data-i18n="seo_faq5_a">Night Rain is an original reskin inspired by the same family of games as Prší, with its own four suits, a 1-10 deck and renamed special cards, rather than a direct copy.</p>
+    <h3 data-i18n="seo_faq5_q">Je Noční liják stejná hra jako Prší?</h3>
+    <p data-i18n="seo_faq5_a">Noční liják je původní zpracování inspirované stejnou rodinou her jako Prší, s vlastními čtyřmi barvami, sadou karet 1 až 10 a přejmenovanými speciálními kartami, nikoliv přímou kopií.</p>
   </div>
 
-  <p class="seo-disclaimer" data-i18n="seo_disclaimer">Night Rain is offered as a free, light-hearted diversion — there is no real-money play involved and no data is required to play.</p>
+  <p class="seo-disclaimer" data-i18n="seo_disclaimer">Noční liják je nabízen jako volné, odlehčené zpestření dne — nejde o hru o peníze a ke hraní nejsou potřeba žádná data.</p>
 </main>
 
 <footer class="site-footer-full">
   <nav>
-    <a href="index.html" data-i18n="footer_link_home">Card of the Day</a>
-    <a href="horoscope.html" data-i18n="footer_link_horoscope">Free Horoscope</a>
-    <a href="index.html#" id="footer-btn-info" data-i18n="footer_link_rules">How to play</a>
-    <a href="privacy.html" data-i18n="footer_link_privacy">Privacy Policy</a>
+    <a href="index.html" data-i18n="footer_link_home">Karta dne</a>
+    <a href="horoscope.html" data-i18n="footer_link_horoscope">Horoskop zdarma</a>
+    <a href="index.html#" id="footer-btn-info" data-i18n="footer_link_rules">Jak hrát</a>
+    <a href="privacy.html" data-i18n="footer_link_privacy">Zásady ochrany soukromí</a>
   </nav>
-  <div><span data-i18n="footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="footer_copy_post"> Noctuary Tarot — Night Rain, a free card game</span></div>
+  <div><span data-i18n="footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="footer_copy_post"> Noctuary Tarot — Noční liják, volná karetní hra</span></div>
   <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
 </footer>
 
@@ -811,7 +811,13 @@
       var s2 = document.createElement('div'); s2.className = 'hc-symbol'; s2.textContent = SUIT_SYMBOL[card.suit];
       el.appendChild(v2); el.appendChild(s2);
       if (isPlayable) {
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('aria-label', card.value + ' ' + card.suit);
         el.addEventListener('click', function () { onPlayerPlay(i); });
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPlayerPlay(i); }
+        });
       }
       handWrap.appendChild(el);
     });
@@ -856,13 +862,20 @@
     SUITS.forEach(function (s) {
       var btn = document.createElement('div');
       btn.className = 'suit-choice suit-' + s;
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('tabindex', '0');
       var icon = document.createElement('span'); icon.textContent = SUIT_SYMBOL[s];
       var label = document.createElement('span'); label.className = 'label';
       label.textContent = (SUIT_LABEL[s][lang] || SUIT_LABEL[s].en);
+      btn.setAttribute('aria-label', label.textContent);
       btn.appendChild(icon); btn.appendChild(label);
-      btn.addEventListener('click', function () {
+      var choose = function () {
         document.getElementById('suit-overlay').classList.remove('show');
         callback(s);
+      };
+      btn.addEventListener('click', choose);
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(); }
       });
       wrap.appendChild(btn);
     });
