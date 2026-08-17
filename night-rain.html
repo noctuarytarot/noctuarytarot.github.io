@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2599270563466963"
+     crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d0221">
+<title>Night Rain — Free Online Card Game | Noctuary Tarot</title>
+<meta name="description" content="Night Rain (Noční liják) — a free browser card game inspired by classic shedding card games. Play against the computer, no download, no sign-up. Available in English and Czech.">
+<meta name="keywords" content="night rain, noční liják, card game, karetní hra zdarma, prší online, online card game free, shedding card game, browser card game, Noctuary">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Synthlucida">
+<meta name="language" content="Czech">
+<link rel="canonical" href="https://noctuarytarot.github.io/night-rain.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Noctuary Tarot">
+<meta property="og:title" content="Night Rain — Free Online Card Game">
+<meta property="og:description" content="A free browser card game inspired by classic shedding card games. Play against the computer — no download, no sign-up.">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:url" content="https://noctuarytarot.github.io/night-rain.html">
+<meta property="og:image" content="https://noctuarytarot.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Night Rain — Free Online Card Game">
+<meta name="twitter:description" content="A free browser card game inspired by classic shedding card games. Play against the computer — no download, no sign-up.">
+<meta name="twitter:image" content="https://noctuarytarot.github.io/og-image.png">
+
+<!-- Icons / PWA -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Night Rain">
+<meta name="mobile-web-app-capable" content="yes">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Night Rain",
+  "alternateName": "Noční liják",
+  "url": "https://noctuarytarot.github.io/night-rain.html",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any (web browser)",
+  "description": "A free browser card game inspired by classic shedding card games such as Prší. Play a full match against the computer directly in your browser, in English or Czech.",
+  "inLanguage": "cs",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CZK"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Synthlucida",
+    "url": "https://synthlucida.com/player.html"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Noctuary Tarot",
+    "url": "https://noctuarytarot.github.io/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Night Rain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Night Rain is a free browser card game inspired by classic shedding card games such as Prší. Match the suit or number of the top card, use special cards to change the flow of the game, and be the first to empty your hand."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Night Rain free to play?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, Night Rain is completely free, runs directly in your browser, and needs no download, account or sign-up."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many players can play Night Rain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This version is single-player — you play one on one against a computer opponent."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do the special cards do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 7 is a Downpour: the next player draws two cards and can only escape it by playing a 7 of their own. A 1 is an Eclipse: it skips the other player's turn. A 10 is a Full Moon: a wild card that lets you choose the next suit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Night Rain the same as Prší?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Night Rain is an original reskin inspired by the same family of shedding card games as Prší, with its own four suits, a 1-10 deck, and renamed special cards, rather than a direct copy."
+      }
+    }
+  ]
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color-1: #1a0733;
+    --bg-color-2: #05010f;
+    --accent-color: #d4af37;
+    --accent-glow: #8b2fe0;
+    --card-bg-1: #1c0f38;
+    --card-bg-2: #0a0518;
+    --suit-moon: #cfd8ff;
+    --suit-star: #d4af37;
+    --suit-flame: #ff7a4d;
+    --suit-drop: #5fd0e0;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: radial-gradient(ellipse at 50% 20%, var(--bg-color-1), var(--bg-color-2) 70%, #000000);
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px 14px calc(20px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+  }
+  button { font-family: inherit; }
+  a { color: var(--accent-color); }
+
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 88% 22%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 80% 45%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 35% 70%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 90% 80%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 10% 85%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 50% 55%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 75% 65%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 25% 15%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 55% 8%, #fff 100%, transparent);
+    background-size: 100% 100%;
+    opacity: 0.5;
+    animation: twinkle 4.5s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { 0% { opacity: 0.22; } 100% { opacity: 0.65; } }
+  @media (prefers-reduced-motion: reduce) { body::before, .blob { animation: none !important; } }
+
+  .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.22; z-index: 0; animation: floatBlobs 22s ease-in-out infinite; pointer-events: none; will-change: transform; transform: translateZ(0); }
+  .blob-1 { width: 260px; height: 260px; background: var(--accent-glow); top: -8%; left: -10%; }
+  .blob-2 { width: 300px; height: 300px; background: var(--accent-color); bottom: -12%; right: -10%; animation-delay: -6s; animation-duration: 26s; }
+  @keyframes floatBlobs { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px, -25px); } }
+
+  .corner-btn {
+    position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 210;
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    background: rgba(0,0,0,0.5); border: 1px solid var(--accent-color); color: var(--accent-color);
+    display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif;
+    font-size: 15px; text-decoration: none; transition: 0.2s;
+  }
+  .corner-btn:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
+  .corner-btn:active { transform: scale(0.92); }
+  .corner-btn-home { left: 10px; }
+  .corner-btn-info { left: 10px; top: calc(10px + 38px + env(safe-area-inset-top, 0px)); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+  .corner-btn-lang { left: 10px; top: calc(10px + 76px + env(safe-area-inset-top, 0px)); font-size: 12px; font-weight: 600; }
+
+  .brand { position: relative; z-index: 1; margin: 46px 0 4px; }
+  .brand-name { font-size: 12px; letter-spacing: 3px; opacity: 0.55; }
+  .page-title {
+    position: relative; z-index: 1; font-size: 24px; letter-spacing: 3px; margin: 4px 0 4px;
+    color: var(--accent-color); text-shadow: 0 0 16px rgba(212,175,55,0.4);
+  }
+  .page-subtitle {
+    position: relative; z-index: 1; font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 15px; opacity: 0.75; margin: 0 0 18px; max-width: 420px;
+  }
+
+  /* ---- game board ---- */
+  .board { position: relative; z-index: 1; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+
+  .opponent-row { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .hand-label { font-size: 11px; letter-spacing: 1.5px; opacity: 0.6; }
+  .card-backs { display: flex; }
+  .card-back {
+    width: 34px; height: 50px; border-radius: 6px; margin-left: -14px;
+    background: linear-gradient(135deg, var(--card-bg-1), var(--card-bg-2));
+    border: 1px solid rgba(212,175,55,0.5); position: relative;
+  }
+  .card-back:first-child { margin-left: 0; }
+  .card-back::after { content: '🌙'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; opacity: 0.5; }
+
+  .status-line { min-height: 20px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--accent-color); opacity: 0.9; }
+
+  .table-row { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 4px 0; }
+  .pile-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .pile-label { font-size: 10px; letter-spacing: 1.5px; opacity: 0.55; }
+
+  .play-card {
+    width: 64px; height: 92px; border-radius: 9px; position: relative;
+    background: linear-gradient(155deg, var(--card-bg-1), var(--card-bg-2));
+    border: 1px solid rgba(212,175,55,0.55);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+  }
+  .play-card .pc-value { font-size: 20px; font-weight: 600; line-height: 1; }
+  .play-card .pc-symbol { font-size: 22px; margin-top: 4px; }
+  .play-card.suit-moon { color: var(--suit-moon); }
+  .play-card.suit-star { color: var(--suit-star); }
+  .play-card.suit-flame { color: var(--suit-flame); }
+  .play-card.suit-drop { color: var(--suit-drop); }
+  .play-card.special { border-color: var(--accent-glow); box-shadow: 0 0 14px rgba(139,47,224,0.5); }
+
+  .draw-pile {
+    width: 64px; height: 92px; border-radius: 9px; cursor: pointer;
+    background: linear-gradient(135deg, var(--card-bg-1), var(--card-bg-2));
+    border: 1px dashed rgba(212,175,55,0.6);
+    display: flex; align-items: center; justify-content: center; font-size: 22px; opacity: 0.85;
+    transition: 0.15s;
+  }
+  .draw-pile:hover { border-color: var(--accent-color); box-shadow: 0 0 12px rgba(212,175,55,0.35); }
+  .draw-pile:active { transform: scale(0.96); }
+  .draw-pile.disabled { opacity: 0.35; cursor: default; box-shadow: none; }
+
+  .active-suit-badge {
+    font-size: 11px; letter-spacing: 1px; opacity: 0.7; margin-top: -2px;
+  }
+
+  .player-row { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 6px; }
+  .player-hand { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 100%; }
+  .hand-card {
+    width: 52px; height: 76px; border-radius: 8px; cursor: pointer;
+    background: linear-gradient(155deg, var(--card-bg-1), var(--card-bg-2));
+    border: 1px solid rgba(212,175,55,0.4);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: 0.15s; position: relative;
+  }
+  .hand-card .hc-value { font-size: 16px; font-weight: 600; line-height: 1; }
+  .hand-card .hc-symbol { font-size: 17px; margin-top: 3px; }
+  .hand-card.suit-moon { color: var(--suit-moon); }
+  .hand-card.suit-star { color: var(--suit-star); }
+  .hand-card.suit-flame { color: var(--suit-flame); }
+  .hand-card.suit-drop { color: var(--suit-drop); }
+  .hand-card.playable { border-color: var(--accent-color); box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+  .hand-card.playable:hover { transform: translateY(-4px); }
+  .hand-card.playable:active { transform: translateY(-1px) scale(0.96); }
+  .hand-card.disabled { opacity: 0.4; cursor: default; }
+  .hand-card.special { border-color: var(--accent-glow); }
+
+  .action-row { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; }
+  .btn-newgame {
+    background: rgba(212,175,55,0.1); border: 1px solid var(--accent-color);
+    color: var(--accent-color); padding: 9px 20px; border-radius: 30px; font-size: 11px; letter-spacing: 2px;
+    cursor: pointer; transition: 0.2s;
+  }
+  .btn-newgame:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 14px var(--accent-color); }
+  .btn-newgame:active { transform: scale(0.96); }
+
+  /* ---- suit picker + result overlays ---- */
+  #suit-overlay, #result-overlay, #info-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.92); justify-content: center; align-items: center; padding: 20px;
+  }
+  #suit-overlay.show, #result-overlay.show, #info-overlay.show { display: flex; }
+  .modal-panel {
+    background: var(--card-bg-1); border: 1px solid var(--accent-color); border-radius: 12px;
+    max-width: 380px; width: 100%; max-height: 84vh; overflow-y: auto; padding: 26px 20px 22px;
+    position: relative; box-shadow: 0 0 30px rgba(212,175,55,0.25);
+  }
+  .modal-panel h2 { text-align: center; font-size: 18px; letter-spacing: 2px; margin: 4px 0 16px; color: var(--accent-color); }
+  .modal-panel h3 { font-size: 13px; letter-spacing: 1px; color: var(--accent-color); margin: 16px 0 6px; }
+  .modal-panel p, .modal-panel li { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.6; opacity: 0.92; margin: 0 0 10px; text-align: left; }
+  .modal-close {
+    position: absolute; top: 10px; right: 12px; background: none; border: none; color: var(--accent-color);
+    font-size: 18px; cursor: pointer; line-height: 1;
+  }
+  .info-lang-toggle {
+    position: absolute; top: 12px; left: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.4);
+    color: var(--accent-color); border-radius: 14px; padding: 3px 10px; font-size: 11px; letter-spacing: 1px; cursor: pointer;
+  }
+  .suit-choices { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+  .suit-choice {
+    width: 76px; height: 76px; border-radius: 10px; cursor: pointer; font-size: 26px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.35);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: 0.15s;
+  }
+  .suit-choice span.label { font-size: 10px; font-family: 'Orbitron', sans-serif; letter-spacing: 0.5px; opacity: 0.75; }
+  .suit-choice:hover { border-color: var(--accent-color); background: rgba(212,175,55,0.1); }
+  .result-title { font-size: 20px; letter-spacing: 2px; margin-bottom: 8px; }
+  .result-title.win { color: var(--accent-color); text-shadow: 0 0 14px rgba(212,175,55,0.5); }
+  .result-title.lose { color: #ff7a4d; }
+
+  /* ---- SEO content ---- */
+  .seo-content {
+    position: relative; z-index: 1; max-width: 620px; width: 100%; margin: 34px auto 0;
+    text-align: left; font-family: 'Cormorant Garamond', serif; font-size: 16.5px; line-height: 1.7; opacity: 0.92;
+  }
+  .seo-content h1 { font-family: 'Orbitron', sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--accent-color); text-align: center; margin-bottom: 6px; }
+  .seo-content > p.lead { text-align: center; font-style: italic; opacity: 0.85; font-size: 17px; margin-bottom: 22px; }
+  .seo-content h2 { font-family: 'Orbitron', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--accent-color); margin: 26px 0 8px; }
+  .seo-content h3 { font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 0.5px; color: var(--accent-color); opacity: 0.9; margin: 16px 0 4px; }
+  .seo-rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0; }
+  .seo-rule-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.25); border-radius: 10px; padding: 12px 14px; }
+  .seo-rule-card h3 { margin: 0 0 4px; }
+  .seo-rule-card p { margin: 0; font-size: 14.5px; }
+  .seo-faq-item { margin-bottom: 14px; }
+  .seo-faq-item h3 { font-size: 14.5px; margin-bottom: 3px; }
+  .seo-faq-item p { margin: 0; }
+  .seo-disclaimer { font-size: 13px; opacity: 0.6; font-style: italic; margin-top: 24px; text-align: center; }
+  @media (max-width: 480px) { .seo-rules-grid { grid-template-columns: 1fr; } .seo-content { font-size: 15.5px; } }
+
+  .site-footer-full {
+    position: relative; z-index: 1; margin-top: 30px; padding-top: 16px; border-top: 1px solid rgba(212,175,55,0.15);
+    max-width: 620px; width: 100%; font-size: 12px; opacity: 0.7; text-align: center;
+  }
+  .site-footer-full nav { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+  .site-footer-full nav a { text-decoration: none; opacity: 0.85; }
+  .site-footer-full nav a:hover { opacity: 1; text-decoration: underline; }
+</style>
+</head>
+<body id="body">
+
+<a class="corner-btn corner-btn-home" href="index.html" title="Back to Noctuary Tarot / Zpět na Noctuary Tarot" aria-label="Back to homepage">🏠</a>
+<button class="corner-btn corner-btn-info" id="btn-info" title="Rules / Pravidla" aria-label="Rules">i</button>
+<button class="corner-btn corner-btn-lang" id="btn-lang-toggle" title="Language / Jazyk" aria-label="Switch language">CZ</button>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="brand">
+  <div class="brand-name">NOCTUARY TAROT</div>
+</div>
+<h1 class="page-title" data-i18n="game_title">NIGHT RAIN</h1>
+<p class="page-subtitle" data-i18n="game_subtitle">A free shedding card game — first to empty your hand wins. Watch out for the rain.</p>
+
+<div class="board">
+  <div class="opponent-row">
+    <div class="hand-label" data-i18n="opponent_label">OPPONENT</div>
+    <div class="card-backs" id="ai-card-backs"></div>
+  </div>
+
+  <div class="status-line" id="status-line"></div>
+
+  <div class="table-row">
+    <div class="pile-wrap">
+      <div class="pile-label" data-i18n="draw_label">DRAW</div>
+      <div class="draw-pile" id="draw-pile" role="button" tabindex="0" aria-label="Draw a card">🂠</div>
+    </div>
+    <div class="pile-wrap">
+      <div class="pile-label" data-i18n="discard_label">DISCARD</div>
+      <div class="play-card" id="discard-top"></div>
+      <div class="active-suit-badge" id="active-suit-badge"></div>
+    </div>
+  </div>
+
+  <div class="player-row">
+    <div class="hand-label" data-i18n="your_hand_label">YOUR HAND</div>
+    <div class="player-hand" id="player-hand"></div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn-newgame" id="btn-newgame" data-i18n="btn_newgame">NEW GAME</button>
+  </div>
+</div>
+
+<div id="suit-overlay">
+  <div class="modal-panel">
+    <h2 data-i18n="suit_pick_title">CHOOSE THE NEXT SUIT</h2>
+    <div class="suit-choices" id="suit-choices"></div>
+  </div>
+</div>
+
+<div id="result-overlay">
+  <div class="modal-panel" style="text-align:center;">
+    <div class="result-title" id="result-title"></div>
+    <p class="modal-panel-sub" id="result-sub" style="font-family:'Cormorant Garamond',serif; opacity:0.85;"></p>
+    <button class="btn-newgame" id="btn-result-newgame" data-i18n="btn_playagain">PLAY AGAIN</button>
+  </div>
+</div>
+
+<div id="info-overlay">
+  <div class="modal-panel">
+    <button class="modal-close" id="btn-info-close" aria-label="Close">✕</button>
+    <button class="info-lang-toggle" id="info-lang-toggle" aria-label="Switch language">CZ</button>
+    <h2 data-i18n="rules_title">HOW TO PLAY</h2>
+    <p data-i18n="rules_intro">Night Rain is played with a 40-card deck — four suits (Moon, Star, Flame, Drop), each numbered 1 to 10. Be the first to play every card from your hand.</p>
+    <h3 data-i18n="rules_h_match">MATCHING</h3>
+    <p data-i18n="rules_p_match">On your turn, play a card that shares either the suit or the number with the top card of the discard pile. If you have nothing to play, draw one card — if it can be played, you may play it right away.</p>
+    <h3 data-i18n="rules_h_downpour">7 — DOWNPOUR</h3>
+    <p data-i18n="rules_p_downpour">Playing a 7 sends the Downpour to your opponent: they must draw two cards and lose their turn, unless they play a 7 of their own to send it back and add two more.</p>
+    <h3 data-i18n="rules_h_eclipse">1 — ECLIPSE</h3>
+    <p data-i18n="rules_p_eclipse">Playing a 1 covers the table in an Eclipse: your opponent's next turn is skipped and play returns straight to you.</p>
+    <h3 data-i18n="rules_h_fullmoon">10 — FULL MOON</h3>
+    <p data-i18n="rules_p_fullmoon">A 10 is a Full Moon — it can be played on anything, and lets you choose which suit comes next.</p>
+    <h3 data-i18n="rules_h_win">WINNING</h3>
+    <p data-i18n="rules_p_win">The first player to run out of cards wins the round. Tap NEW GAME any time to shuffle and start over.</p>
+  </div>
+</div>
+
+<main class="seo-content">
+  <p class="lead" data-i18n="seo_lead">Night Rain is a free browser card game — no download, no account, just you against the computer.</p>
+
+  <h2 data-i18n="seo_h_about">About Night Rain</h2>
+  <p data-i18n="seo_p_about1">Night Rain (Noční liják) is an original card game from the makers of Noctuary Tarot, built for anyone who enjoys quick, tactical shedding games — the kind of family card game played across many countries under many different names, including the Czech classic Prší. Night Rain keeps that same easy-to-learn, hard-to-put-down spirit, with its own four-suit deck and its own set of special cards.</p>
+  <p data-i18n="seo_p_about2">The whole match runs in your browser. There is nothing to install, no account to create, and no time limit — deal a new hand whenever you like.</p>
+
+  <h2 data-i18n="seo_h_rules">Rules at a Glance</h2>
+  <div class="seo-rules-grid">
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule1_h">🌧️ 7 — Downpour</h3>
+      <p data-i18n="seo_rule1_p">Forces the next player to draw two cards, unless they answer with a 7 of their own.</p>
+    </div>
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule2_h">🌑 1 — Eclipse</h3>
+      <p data-i18n="seo_rule2_p">Skips the other player's turn completely.</p>
+    </div>
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule3_h">🌕 10 — Full Moon</h3>
+      <p data-i18n="seo_rule3_p">A wild card — play it on anything and pick the next suit.</p>
+    </div>
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule4_h">🏆 Empty hand wins</h3>
+      <p data-i18n="seo_rule4_p">Play your last card before your opponent does and you win the round.</p>
+    </div>
+  </div>
+
+  <h2 data-i18n="seo_h_faq">Frequently Asked Questions</h2>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq1_q">What is Night Rain?</h3>
+    <p data-i18n="seo_faq1_a">A free browser card game inspired by classic shedding card games such as Prší. Match the suit or number of the top card and be the first to empty your hand.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq2_q">Is it free to play?</h3>
+    <p data-i18n="seo_faq2_a">Yes, completely free, with no download, account or sign-up required.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq3_q">How many players are supported?</h3>
+    <p data-i18n="seo_faq3_a">This version is single-player — you play one on one against a computer opponent.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq4_q">What do the special cards do?</h3>
+    <p data-i18n="seo_faq4_a">A 7 is a Downpour that makes the next player draw two, a 1 is an Eclipse that skips a turn, and a 10 is a Full Moon wild card that lets you choose the next suit.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq5_q">Is Night Rain the same game as Prší?</h3>
+    <p data-i18n="seo_faq5_a">Night Rain is an original reskin inspired by the same family of games as Prší, with its own four suits, a 1-10 deck and renamed special cards, rather than a direct copy.</p>
+  </div>
+
+  <p class="seo-disclaimer" data-i18n="seo_disclaimer">Night Rain is offered as a free, light-hearted diversion — there is no real-money play involved and no data is required to play.</p>
+</main>
+
+<footer class="site-footer-full">
+  <nav>
+    <a href="index.html" data-i18n="footer_link_home">Card of the Day</a>
+    <a href="horoscope.html" data-i18n="footer_link_horoscope">Free Horoscope</a>
+    <a href="index.html#" id="footer-btn-info" data-i18n="footer_link_rules">How to play</a>
+    <a href="privacy.html" data-i18n="footer_link_privacy">Privacy Policy</a>
+  </nav>
+  <div><span data-i18n="footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="footer_copy_post"> Noctuary Tarot — Night Rain, a free card game</span></div>
+  <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------------- i18n ----------------
+  var i18nText = {
+    game_title: { en: 'NIGHT RAIN', cz: 'NOČNÍ LIJÁK' },
+    game_subtitle: { en: 'A free shedding card game — first to empty your hand wins. Watch out for the rain.', cz: 'Volná karetní hra na zbavování se karet — kdo první vyloží všechny karty, vyhrává. Dejte si pozor na déšť.' },
+    opponent_label: { en: 'OPPONENT', cz: 'SOUPEŘ' },
+    your_hand_label: { en: 'YOUR HAND', cz: 'VAŠE KARTY' },
+    draw_label: { en: 'DRAW', cz: 'BALÍČEK' },
+    discard_label: { en: 'DISCARD', cz: 'ODHOZ' },
+    btn_newgame: { en: 'NEW GAME', cz: 'NOVÁ HRA' },
+    btn_playagain: { en: 'PLAY AGAIN', cz: 'HRÁT ZNOVU' },
+    suit_pick_title: { en: 'CHOOSE THE NEXT SUIT', cz: 'VYBERTE DALŠÍ BARVU' },
+    rules_title: { en: 'HOW TO PLAY', cz: 'PRAVIDLA HRY' },
+    rules_intro: { en: 'Night Rain is played with a 40-card deck — four suits (Moon, Star, Flame, Drop), each numbered 1 to 10. Be the first to play every card from your hand.', cz: 'Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Vyhrává ten, kdo první vyloží všechny své karty.' },
+    rules_h_match: { en: 'MATCHING', cz: 'PŘIHAZOVÁNÍ' },
+    rules_p_match: { en: 'On your turn, play a card that shares either the suit or the number with the top card of the discard pile. If you have nothing to play, draw one card — if it can be played, you may play it right away.', cz: 'Na tahu přihoďte kartu, která se shoduje barvou nebo hodnotou s vrchní kartou na odhazovacím balíčku. Pokud nemáte co přihodit, líznete si jednu kartu — pokud jde zahrát, můžete ji rovnou přihodit.' },
+    rules_h_downpour: { en: '7 — DOWNPOUR', cz: '7 — LIJÁK' },
+    rules_p_downpour: { en: 'Playing a 7 sends the Downpour to your opponent: they must draw two cards and lose their turn, unless they play a 7 of their own to send it back and add two more.', cz: 'Sedmička sesílá na soupeře Liják: musí si líznout dvě karty a ztrácí tah, pokud nemá vlastní sedmičku, kterou liják pošle zpátky a přidá další dvě karty.' },
+    rules_h_eclipse: { en: '1 — ECLIPSE', cz: '1 — ZATMĚNÍ' },
+    rules_p_eclipse: { en: 'Playing a 1 covers the table in an Eclipse: your opponent\u2019s next turn is skipped and play returns straight to you.', cz: 'Jednička zahalí stůl do Zatmění: soupeři propadne příští tah a hra se vrací rovnou k vám.' },
+    rules_h_fullmoon: { en: '10 — FULL MOON', cz: '10 — ÚPLNĚK' },
+    rules_p_fullmoon: { en: 'A 10 is a Full Moon — it can be played on anything, and lets you choose which suit comes next.', cz: 'Desítka je Úplněk — lze ji přihodit na cokoliv a vy si vyberete, jaká barva bude platit dál.' },
+    rules_h_win: { en: 'WINNING', cz: 'VÝHRA' },
+    rules_p_win: { en: 'The first player to run out of cards wins the round. Tap NEW GAME any time to shuffle and start over.', cz: 'Vyhrává ten, komu první dojdou karty. Kdykoliv můžete kartami zamíchat a začít znovu tlačítkem NOVÁ HRA.' },
+    status_your_turn: { en: 'Your turn.', cz: 'Jste na tahu.' },
+    status_ai_turn: { en: 'Opponent is thinking…', cz: 'Soupeř přemýšlí…' },
+    status_you_drew: { en: 'You drew a card.', cz: 'Lízli jste si kartu.' },
+    status_ai_drew: { en: 'Opponent drew a card.', cz: 'Soupeř si lízl kartu.' },
+    status_downpour_you: { en: 'Downpour! Draw 2 or answer with a 7.', cz: 'Liják! Líznete si 2, nebo odpovězte sedmičkou.' },
+    status_downpour_ai: { en: 'Downpour sent to the opponent.', cz: 'Liják poslán soupeři.' },
+    status_eclipse: { en: 'Eclipse! You go again.', cz: 'Zatmění! Jdete znovu.' },
+    status_invalid: { en: 'That card doesn\u2019t match.', cz: 'Tahle karta nesedí.' },
+    status_pending_downpour: { en: 'You must play a 7 or draw.', cz: 'Musíte přihodit sedmičku, nebo si líznout.' },
+    result_win_title: { en: 'YOU WIN', cz: 'VYHRÁLI JSTE' },
+    result_lose_title: { en: 'OPPONENT WINS', cz: 'VYHRÁL SOUPEŘ' },
+    result_win_sub: { en: 'You cleared your hand first. Well played.', cz: 'Vyložili jste karty jako první. Pěkná hra.' },
+    result_lose_sub: { en: 'The opponent emptied their hand first. Try again.', cz: 'Soupeř vyložil karty jako první. Zkuste to znovu.' },
+    seo_lead: { en: 'Night Rain is a free browser card game — no download, no account, just you against the computer.', cz: 'Noční liják je volná karetní hra do prohlížeče — bez stahování, bez registrace, jen vy proti počítači.' },
+    seo_h_about: { en: 'About Night Rain', cz: 'O hře Noční liják' },
+    seo_p_about1: { en: 'Night Rain (Noční liják) is an original card game from the makers of Noctuary Tarot, built for anyone who enjoys quick, tactical shedding games — the kind of family card game played across many countries under many different names, including the Czech classic Prší. Night Rain keeps that same easy-to-learn, hard-to-put-down spirit, with its own four-suit deck and its own set of special cards.', cz: 'Noční liják je originální karetní hra od tvůrců Noctuary Tarot, určená každému, kdo má rád rychlé, taktické hry na zbavování se karet — tedy rodinné karetní hry hrané v mnoha zemích pod mnoha různými jmény, včetně české klasiky Prší. Noční liják si zachovává stejného snadno pochopitelného a návykového ducha, ale s vlastní čtyřbarevnou sadou karet a vlastními speciálními kartami.' },
+    seo_p_about2: { en: 'The whole match runs in your browser. There is nothing to install, no account to create, and no time limit — deal a new hand whenever you like.', cz: 'Celá partie běží přímo ve vašem prohlížeči. Není třeba nic instalovat, zakládat účet, ani hlídat čas — novou partii si rozdejte, kdykoliv budete chtít.' },
+    seo_h_rules: { en: 'Rules at a Glance', cz: 'Pravidla ve zkratce' },
+    seo_rule1_h: { en: '🌧️ 7 — Downpour', cz: '🌧️ 7 — Liják' },
+    seo_rule1_p: { en: 'Forces the next player to draw two cards, unless they answer with a 7 of their own.', cz: 'Přinutí dalšího hráče líznout si dvě karty, pokud neodpoví vlastní sedmičkou.' },
+    seo_rule2_h: { en: '🌑 1 — Eclipse', cz: '🌑 1 — Zatmění' },
+    seo_rule2_p: { en: 'Skips the other player\u2019s turn completely.', cz: 'Úplně přeskočí tah druhého hráče.' },
+    seo_rule3_h: { en: '🌕 10 — Full Moon', cz: '🌕 10 — Úplněk' },
+    seo_rule3_p: { en: 'A wild card — play it on anything and pick the next suit.', cz: 'Divoká karta — lze ji přihodit na cokoliv a vybrat si další barvu.' },
+    seo_rule4_h: { en: '🏆 Empty hand wins', cz: '🏆 Prázdná ruka vyhrává' },
+    seo_rule4_p: { en: 'Play your last card before your opponent does and you win the round.', cz: 'Zahrajte svou poslední kartu dřív než soupeř a vyhráváte kolo.' },
+    seo_h_faq: { en: 'Frequently Asked Questions', cz: 'Časté dotazy' },
+    seo_faq1_q: { en: 'What is Night Rain?', cz: 'Co je Noční liják?' },
+    seo_faq1_a: { en: 'A free browser card game inspired by classic shedding card games such as Prší. Match the suit or number of the top card and be the first to empty your hand.', cz: 'Volná karetní hra do prohlížeče inspirovaná klasickými hrami na zbavování se karet, jako je Prší. Přihazujte podle barvy nebo hodnoty vrchní karty a vyložte karty jako první.' },
+    seo_faq2_q: { en: 'Is it free to play?', cz: 'Je hra zdarma?' },
+    seo_faq2_a: { en: 'Yes, completely free, with no download, account or sign-up required.', cz: 'Ano, zcela zdarma, bez stahování, účtu nebo registrace.' },
+    seo_faq3_q: { en: 'How many players are supported?', cz: 'Kolik hráčů hra podporuje?' },
+    seo_faq3_a: { en: 'This version is single-player — you play one on one against a computer opponent.', cz: 'Tato verze je pro jednoho hráče — hrajete jeden na jednoho proti počítačovému soupeři.' },
+    seo_faq4_q: { en: 'What do the special cards do?', cz: 'Co dělají speciální karty?' },
+    seo_faq4_a: { en: 'A 7 is a Downpour that makes the next player draw two, a 1 is an Eclipse that skips a turn, and a 10 is a Full Moon wild card that lets you choose the next suit.', cz: 'Sedmička je Liják, díky kterému si další hráč líznek dvě karty, jednička je Zatmění, které přeskočí tah, a desítka je divoká karta Úplněk, kterou si vyberete další barvu.' },
+    seo_faq5_q: { en: 'Is Night Rain the same game as Prší?', cz: 'Je Noční liják stejná hra jako Prší?' },
+    seo_faq5_a: { en: 'Night Rain is an original reskin inspired by the same family of games as Prší, with its own four suits, a 1-10 deck and renamed special cards, rather than a direct copy.', cz: 'Noční liják je původní zpracování inspirované stejnou rodinou her jako Prší, s vlastními čtyřmi barvami, sadou karet 1 až 10 a přejmenovanými speciálními kartami, nikoliv přímou kopií.' },
+    seo_disclaimer: { en: 'Night Rain is offered as a free, light-hearted diversion — there is no real-money play involved and no data is required to play.', cz: 'Noční liják je nabízen jako volné, odlehčené zpestření dne — nejde o hru o peníze a ke hraní nejsou potřeba žádná data.' },
+    footer_link_home: { en: 'Card of the Day', cz: 'Karta dne' },
+    footer_link_horoscope: { en: 'Free Horoscope', cz: 'Horoskop zdarma' },
+    footer_link_rules: { en: 'How to play', cz: 'Jak hrát' },
+    footer_link_privacy: { en: 'Privacy Policy', cz: 'Zásady ochrany soukromí' },
+    footer_copy_pre: { en: '© ', cz: '© ' },
+    footer_copy_post: { en: ' Noctuary Tarot — Night Rain, a free card game', cz: ' Noctuary Tarot — Noční liják, volná karetní hra' }
+  };
+
+  var LANG_KEY = 'noctuary_night_rain_lang';
+  var lang = 'cz';
+  try {
+    var saved = localStorage.getItem(LANG_KEY);
+    if (saved === 'cz' || saved === 'en') lang = saved;
+  } catch (e) {}
+
+  function applyLanguage() {
+    document.documentElement.setAttribute('lang', lang === 'cz' ? 'cs' : 'en');
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var entry = i18nText[el.getAttribute('data-i18n')];
+      if (entry) el.textContent = entry[lang] || entry.en;
+    });
+    var otherLabel = lang === 'en' ? 'CZ' : 'EN';
+    var b1 = document.getElementById('btn-lang-toggle'); if (b1) b1.textContent = otherLabel;
+    var b2 = document.getElementById('info-lang-toggle'); if (b2) b2.textContent = otherLabel;
+    renderStatus();
+    renderSuitLabels();
+  }
+  function toggleLanguage() {
+    lang = lang === 'en' ? 'cz' : 'en';
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    applyLanguage();
+  }
+  document.getElementById('btn-lang-toggle').addEventListener('click', toggleLanguage);
+  document.getElementById('info-lang-toggle').addEventListener('click', toggleLanguage);
+
+  var footerYear = document.getElementById('footer-year');
+  if (footerYear) footerYear.textContent = new Date().getFullYear();
+
+  var footerInfoBtn = document.getElementById('footer-btn-info');
+  if (footerInfoBtn) footerInfoBtn.addEventListener('click', function (e) { e.preventDefault(); toggleInfo(true); });
+
+  // ---------------- game engine ----------------
+  var SUITS = ['moon', 'star', 'flame', 'drop'];
+  var SUIT_SYMBOL = { moon: '\u{1F319}', star: '\u2B50', flame: '\u{1F525}', drop: '\u{1F4A7}' };
+  var SUIT_LABEL = {
+    moon: { en: 'Moon', cz: 'Měsíc' },
+    star: { en: 'Star', cz: 'Hvězda' },
+    flame: { en: 'Flame', cz: 'Plamen' },
+    drop: { en: 'Drop', cz: 'Kapka' }
+  };
+
+  function buildDeck() {
+    var deck = [];
+    SUITS.forEach(function (s) { for (var v = 1; v <= 10; v++) deck.push({ suit: s, value: v }); });
+    return deck;
+  }
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+  function isSpecial(card) { return card.value === 7 || card.value === 1 || card.value === 10; }
+  function canPlay(card, topCard, activeSuit) {
+    if (card.value === 10) return true;
+    return card.suit === activeSuit || card.value === topCard.value;
+  }
+
+  var state = null;
+
+  function newGame() {
+    var deck = shuffle(buildDeck());
+    var player = deck.splice(0, 7);
+    var ai = deck.splice(0, 7);
+    var discard = [];
+    var idx = deck.findIndex(function (c) { return !isSpecial(c); });
+    if (idx === -1) idx = 0;
+    discard.push(deck.splice(idx, 1)[0]);
+    state = {
+      draw: deck, discard: discard, player: player, ai: ai,
+      activeSuit: discard[0].suit, turn: 'player', pendingDraw: 0, pendingType: null,
+      winner: null, statusKey: 'status_your_turn'
+    };
+    render();
+  }
+
+  function reshuffleIfNeeded() {
+    if (state.draw.length === 0 && state.discard.length > 1) {
+      var top = state.discard.pop();
+      state.draw = shuffle(state.discard);
+      state.discard = [top];
+    }
+  }
+  function drawCards(hand, n) {
+    for (var i = 0; i < n; i++) {
+      reshuffleIfNeeded();
+      if (state.draw.length === 0) break;
+      hand.push(state.draw.pop());
+    }
+  }
+
+  function playableIndices(who) {
+    var hand = who === 'player' ? state.player : state.ai;
+    var top = state.discard[state.discard.length - 1];
+    var out = [];
+    hand.forEach(function (c, i) {
+      if (state.pendingType === 'downpour') { if (c.value === 7) out.push(i); return; }
+      if (canPlay(c, top, state.activeSuit)) out.push(i);
+    });
+    return out;
+  }
+
+  function playCard(who, cardIndex, chosenSuit) {
+    var hand = who === 'player' ? state.player : state.ai;
+    var card = hand[cardIndex];
+    if (!card) return false;
+    var top = state.discard[state.discard.length - 1];
+    if (state.pendingType === 'downpour') {
+      if (card.value !== 7) return false;
+    } else if (!canPlay(card, top, state.activeSuit)) {
+      return false;
+    }
+    hand.splice(cardIndex, 1);
+    state.discard.push(card);
+    state.activeSuit = card.value === 10 ? (chosenSuit || card.suit) : card.suit;
+    var other = who === 'player' ? 'ai' : 'player';
+
+    if (card.value === 7) {
+      state.pendingDraw = (state.pendingDraw || 0) + 2;
+      state.pendingType = 'downpour';
+      state.turn = other;
+      state.statusKey = other === 'player' ? 'status_downpour_you' : 'status_downpour_ai';
+    } else if (card.value === 1) {
+      state.pendingType = null;
+      state.turn = who;
+      state.statusKey = who === 'player' ? 'status_eclipse' : 'status_ai_turn';
+    } else {
+      state.pendingType = null;
+      state.turn = other;
+      state.statusKey = other === 'player' ? 'status_your_turn' : 'status_ai_turn';
+    }
+
+    if (hand.length === 0) { state.winner = who; state.turn = null; }
+    return true;
+  }
+
+  function drawTurn(who) {
+    var hand = who === 'player' ? state.player : state.ai;
+    var other = who === 'player' ? 'ai' : 'player';
+    if (state.pendingType === 'downpour' && state.pendingDraw > 0) {
+      drawCards(hand, state.pendingDraw);
+      state.pendingDraw = 0;
+      state.pendingType = null;
+      state.turn = other;
+      state.statusKey = who === 'player' ? 'status_you_drew' : 'status_ai_drew';
+      return;
+    }
+    drawCards(hand, 1);
+    state.turn = other;
+    state.statusKey = who === 'player' ? 'status_you_drew' : 'status_ai_drew';
+  }
+
+  function aiChooseMove() {
+    var options = playableIndices('ai');
+    if (options.length === 0) return null;
+    var hand = state.ai;
+    options.sort(function (a, b) {
+      function score(c) { return c.value === 10 ? 0 : (c.value === 7 || c.value === 1 ? 2 : 1); }
+      return score(hand[b]) - score(hand[a]);
+    });
+    var chosenIndex = options[0];
+    var chosenSuit = null;
+    if (hand[chosenIndex].value === 10) {
+      var counts = {};
+      hand.forEach(function (c, i) { if (i !== chosenIndex) counts[c.suit] = (counts[c.suit] || 0) + 1; });
+      chosenSuit = SUITS.reduce(function (best, s) { return (counts[s] || 0) > (counts[best] || 0) ? s : best; }, SUITS[0]);
+    }
+    return { index: chosenIndex, suit: chosenSuit };
+  }
+
+  function aiTakeTurn() {
+    if (state.winner || state.turn !== 'ai') return;
+    var move = aiChooseMove();
+    if (!move) { drawTurn('ai'); }
+    else { playCard('ai', move.index, move.suit); }
+    render();
+    if (!state.winner && state.turn === 'ai') {
+      setTimeout(aiTakeTurn, 650);
+    } else if (!state.winner && state.turn === 'player') {
+      // nothing further; player's move
+    }
+  }
+
+  // ---------------- rendering ----------------
+  function cardEl(card, extraClass, valueClass) {
+    var el = document.createElement('div');
+    el.className = extraClass + ' suit-' + card.suit + (isSpecial(card) ? ' special' : '');
+    var v = document.createElement('div');
+    v.className = valueClass;
+    v.textContent = card.value;
+    var s = document.createElement('div');
+    s.className = valueClass.replace('value', 'symbol');
+    s.textContent = SUIT_SYMBOL[card.suit];
+    el.appendChild(v);
+    el.appendChild(s);
+    return el;
+  }
+
+  function renderStatus() {
+    var el = document.getElementById('status-line');
+    if (!el || !state) return;
+    var entry = i18nText[state.statusKey];
+    el.textContent = entry ? (entry[lang] || entry.en) : '';
+  }
+  function renderSuitLabels() {
+    var badge = document.getElementById('active-suit-badge');
+    if (!badge || !state) return;
+    var lbl = SUIT_LABEL[state.activeSuit];
+    badge.textContent = SUIT_SYMBOL[state.activeSuit] + ' ' + (lbl[lang] || lbl.en);
+  }
+
+  function render() {
+    if (!state) return;
+    // opponent backs
+    var backs = document.getElementById('ai-card-backs');
+    backs.innerHTML = '';
+    state.ai.forEach(function () {
+      var b = document.createElement('div');
+      b.className = 'card-back';
+      backs.appendChild(b);
+    });
+
+    // discard top
+    var topWrap = document.getElementById('discard-top');
+    topWrap.innerHTML = '';
+    var top = state.discard[state.discard.length - 1];
+    topWrap.className = 'play-card suit-' + top.suit + (isSpecial(top) ? ' special' : '');
+    var v = document.createElement('div'); v.className = 'pc-value'; v.textContent = top.value;
+    var s = document.createElement('div'); s.className = 'pc-symbol'; s.textContent = SUIT_SYMBOL[top.suit];
+    topWrap.appendChild(v); topWrap.appendChild(s);
+    renderSuitLabels();
+
+    // draw pile
+    var drawPileEl = document.getElementById('draw-pile');
+    var canAct = !state.winner && state.turn === 'player';
+    drawPileEl.classList.toggle('disabled', !canAct);
+
+    // player hand
+    var handWrap = document.getElementById('player-hand');
+    handWrap.innerHTML = '';
+    var playable = state.turn === 'player' ? playableIndices('player') : [];
+    state.player.forEach(function (card, i) {
+      var el = document.createElement('div');
+      var isPlayable = canAct && playable.indexOf(i) !== -1;
+      el.className = 'hand-card suit-' + card.suit + (isSpecial(card) ? ' special' : '') + (isPlayable ? ' playable' : ' disabled');
+      var v2 = document.createElement('div'); v2.className = 'hc-value'; v2.textContent = card.value;
+      var s2 = document.createElement('div'); s2.className = 'hc-symbol'; s2.textContent = SUIT_SYMBOL[card.suit];
+      el.appendChild(v2); el.appendChild(s2);
+      if (isPlayable) {
+        el.addEventListener('click', function () { onPlayerPlay(i); });
+      }
+      handWrap.appendChild(el);
+    });
+
+    renderStatus();
+
+    if (state.winner) {
+      showResult(state.winner);
+    }
+  }
+
+  function onPlayerPlay(index) {
+    if (!state || state.winner || state.turn !== 'player') return;
+    var card = state.player[index];
+    if (card.value === 10) {
+      openSuitPicker(function (chosenSuit) {
+        playCard('player', index, chosenSuit);
+        render();
+        if (!state.winner && state.turn === 'ai') setTimeout(aiTakeTurn, 650);
+      });
+      return;
+    }
+    var ok = playCard('player', index, null);
+    if (!ok) return;
+    render();
+    if (!state.winner && state.turn === 'ai') setTimeout(aiTakeTurn, 650);
+  }
+
+  document.getElementById('draw-pile').addEventListener('click', function () {
+    if (!state || state.winner || state.turn !== 'player') return;
+    drawTurn('player');
+    render();
+    if (!state.winner && state.turn === 'ai') setTimeout(aiTakeTurn, 650);
+  });
+  document.getElementById('draw-pile').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+  });
+
+  function openSuitPicker(callback) {
+    var wrap = document.getElementById('suit-choices');
+    wrap.innerHTML = '';
+    SUITS.forEach(function (s) {
+      var btn = document.createElement('div');
+      btn.className = 'suit-choice suit-' + s;
+      var icon = document.createElement('span'); icon.textContent = SUIT_SYMBOL[s];
+      var label = document.createElement('span'); label.className = 'label';
+      label.textContent = (SUIT_LABEL[s][lang] || SUIT_LABEL[s].en);
+      btn.appendChild(icon); btn.appendChild(label);
+      btn.addEventListener('click', function () {
+        document.getElementById('suit-overlay').classList.remove('show');
+        callback(s);
+      });
+      wrap.appendChild(btn);
+    });
+    document.getElementById('suit-overlay').classList.add('show');
+  }
+
+  function showResult(winner) {
+    var titleEl = document.getElementById('result-title');
+    var subEl = document.getElementById('result-sub');
+    var isWin = winner === 'player';
+    titleEl.className = 'result-title ' + (isWin ? 'win' : 'lose');
+    var titleEntry = i18nText[isWin ? 'result_win_title' : 'result_lose_title'];
+    var subEntry = i18nText[isWin ? 'result_win_sub' : 'result_lose_sub'];
+    titleEl.textContent = titleEntry[lang] || titleEntry.en;
+    subEl.textContent = subEntry[lang] || subEntry.en;
+    document.getElementById('result-overlay').classList.add('show');
+  }
+
+  document.getElementById('btn-newgame').addEventListener('click', function () { newGame(); });
+  document.getElementById('btn-result-newgame').addEventListener('click', function () {
+    document.getElementById('result-overlay').classList.remove('show');
+    newGame();
+  });
+
+  function toggleInfo(show) { document.getElementById('info-overlay').classList.toggle('show', show); }
+  document.getElementById('btn-info').addEventListener('click', function () { toggleInfo(true); });
+  document.getElementById('btn-info-close').addEventListener('click', function () { toggleInfo(false); });
+  document.getElementById('info-overlay').addEventListener('click', function (e) {
+    if (e.target.id === 'info-overlay') toggleInfo(false);
+  });
+
+  applyLanguage();
+  newGame();
+})();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>

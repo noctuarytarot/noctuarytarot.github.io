@@ -261,7 +261,8 @@
   .corner-btn-articles { left: 10px; top: calc(10px + 114px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-contact { left: 10px; top: calc(10px + 152px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-horoscope { left: 10px; top: calc(10px + 190px + env(safe-area-inset-top, 0px)); font-size: 15px; }
-  .corner-btn-lang { left: 10px; top: calc(10px + 228px + env(safe-area-inset-top, 0px)); font-size: 12px; font-weight: 600; }
+  .corner-btn-nightrain { left: 10px; top: calc(10px + 228px + env(safe-area-inset-top, 0px)); font-size: 15px; }
+  .corner-btn-lang { left: 10px; top: calc(10px + 266px + env(safe-area-inset-top, 0px)); font-size: 12px; font-weight: 600; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
   /* Articles / SEO text menu */
@@ -720,7 +721,8 @@
     .corner-btn-articles { top: calc(10px + 102px + env(safe-area-inset-top, 0px)); }
     .corner-btn-contact { top: calc(10px + 136px + env(safe-area-inset-top, 0px)); }
     .corner-btn-horoscope { top: calc(10px + 170px + env(safe-area-inset-top, 0px)); }
-    .corner-btn-lang { top: calc(10px + 204px + env(safe-area-inset-top, 0px)); font-size: 11px; }
+    .corner-btn-nightrain { top: calc(10px + 204px + env(safe-area-inset-top, 0px)); }
+    .corner-btn-lang { top: calc(10px + 238px + env(safe-area-inset-top, 0px)); font-size: 11px; }
     .brand { margin-bottom: 2px; }
     .brand-name { font-size: 12px; }
     .page-title { font-size: 15px; margin: 2px 0 10px; }
@@ -847,6 +849,7 @@
 <button class="corner-btn corner-btn-articles" id="btn-articles" title="Tarot Articles" aria-label="Tarot Articles">☰</button>
 <button class="corner-btn corner-btn-contact" id="btn-contact" title="Contact" aria-label="Contact">✉</button>
 <a class="corner-btn corner-btn-horoscope" href="horoscope.html" title="Free Horoscope / Horoskop" aria-label="Free Horoscope">✦</a>
+<a class="corner-btn corner-btn-nightrain" href="night-rain.html" title="Night Rain — Free Card Game / Noční liják — karetní hra zdarma" aria-label="Night Rain card game">🌧️</a>
 <button class="corner-btn corner-btn-lang" id="btn-lang-toggle" onclick="toggleInfoLanguage()" title="Language / Jazyk" aria-label="Switch language">CZ</button>
 
 <div class="blob blob-1"></div>
@@ -1035,6 +1038,10 @@
         <span><span class="articles-menu-item-title" data-i18n="a12_menu_title">Music and Atmosphere for a Reading</span><br><span class="articles-menu-item-sub" data-i18n="a12_menu_sub">Setting a calmer mood before you draw</span></span>
         <span class="articles-menu-item-arrow">›</span>
       </button>
+      <button class="articles-menu-item" data-article="a13">
+        <span><span class="articles-menu-item-title" data-i18n="a13_menu_title">Night Rain — A Free Card Game</span><br><span class="articles-menu-item-sub" data-i18n="a13_menu_sub">A quick shedding game for whenever you need a break</span></span>
+        <span class="articles-menu-item-arrow">›</span>
+      </button>
     </div>
 
     <div class="article-detail" id="article-detail">
@@ -1198,6 +1205,7 @@
     <a href="tarot-myths-debunked.html" data-i18n="a10_menu_title">Common Tarot Myths, Debunked</a>
     <a href="numbers-in-tarot.html" data-i18n="a11_menu_title">Numbers in Tarot</a>
     <a href="tarot-music-and-atmosphere.html" data-i18n="a12_menu_title">Music and Atmosphere for a Reading</a>
+    <a href="night-rain.html" data-i18n="a13_menu_title">Night Rain — A Free Card Game</a>
   </nav>
   <div><span data-i18n="seo_footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="seo_footer_copy_post"> Noctuary Tarot — free card of the day</span></div>
   <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
@@ -2405,7 +2413,9 @@
     a11_menu_title: { en: 'Numbers in Tarot', cz: 'Čísla v tarotu' },
     a11_menu_sub: { en: 'A short intro to tarot numerology', cz: 'Krátký úvod do tarotové numerologie' },
     a12_menu_title: { en: 'Music and Atmosphere for a Reading', cz: 'Hudba a atmosféra pro výklad' },
-    a12_menu_sub: { en: 'Setting a calmer mood before you draw', cz: 'Klidnější nálada, než si vytáhnete kartu' }
+    a12_menu_sub: { en: 'Setting a calmer mood before you draw', cz: 'Klidnější nálada, než si vytáhnete kartu' },
+    a13_menu_title: { en: 'Night Rain — A Free Card Game', cz: 'Noční liják — karetní hra zdarma' },
+    a13_menu_sub: { en: 'A quick shedding game for whenever you need a break', cz: 'Rychlá karetní hra na zbavování se karet, kdykoliv si potřebujete odpočinout' }
   };
 
   // Page title, meta description/keywords, and <html lang> — kept in sync with the
@@ -2625,6 +2635,24 @@
         url: 'https://synthlucida.com/player.html',
         en: 'Open the SYNTHLUCIDA ambient player \u2192',
         cz: 'Otevřít přehrávač SYNTHLUCIDA \u2192'
+      }
+    },
+    a13: {
+      title: { en: 'Night Rain \u2014 A Free Card Game', cz: 'Noční liják \u2014 karetní hra zdarma' },
+      body: {
+        en: [
+          'Not every visit here has to be about reflection \u2014 sometimes you just want a quick game while the kettle boils. Night Rain is a small shedding card game built alongside Noctuary Tarot: match the suit or number on top of the pile, watch out for the Downpour and the Eclipse, and try to empty your hand before the computer empties theirs.',
+          'It plays in the browser in a couple of minutes, with no download and no account, in English or Czech.'
+        ],
+        cz: [
+          'Ne každá návštěva tu musí být o reflexi \u2014 někdy chcete jen rychlou hru, než se uvaří voda na čaj. Noční liják je malá karetní hra na zbavování se karet, vzniklá vedle Noctuary Tarot: přihazujte podle barvy nebo hodnoty vrchní karty, dejte si pozor na Liják a Zatmění a zkuste vyložit karty dřív než počítač.',
+          'Hraje se přímo v prohlížeči, během pár minut, bez stahování a bez registrace, česky i anglicky.'
+        ]
+      },
+      link: {
+        url: 'night-rain.html',
+        en: 'Play Night Rain \u2192',
+        cz: 'Hrát Noční liják \u2192'
       }
     }
   };
