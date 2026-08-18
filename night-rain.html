@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0d0221">
 <title>Noční liják — Volná online karetní hra | Noctuary Tarot</title>
-<meta name="description" content="Noční liják — volná karetní hra do prohlížeče inspirovaná klasickými hrami na zbavování se karet. Hrajte proti počítači, bez stahování, bez registrace. Dostupné česky i anglicky.">
-<meta name="keywords" content="noční liják, night rain, karetní hra zdarma, volná karetní hra, karetní hra do prohlížeče, hra na zbavování se karet, Noctuary">
+<meta name="description" content="Noční liják — volná karetní hra do prohlížeče inspirovaná klasickými hrami na zbavování se karet, s pěti speciálními kartami inspirovanými velkou arkánou tarotu. Hrajte proti počítači, bez stahování, bez registrace. Dostupné česky i anglicky.">
+<meta name="keywords" content="noční liják, night rain, karetní hra zdarma, volná karetní hra, karetní hra do prohlížeče, hra na zbavování se karet, tarotové karetní hry, Věž, Kolo štěstí, Noctuary">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Synthlucida">
 <meta name="language" content="Czech">
@@ -105,7 +105,7 @@
       "name": "Co dělají speciální karty?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sedmička je Liják: další hráč si musí líznout dvě karty a uniknout tomu může jen vlastní sedmičkou. Jednička je Zatmění: přeskočí tah druhého hráče. Desítka je Úplněk: divoká karta, kterou si vyberete další barvu."
+        "text": "Noční liják má pět speciálních karet inspirovaných velkou arkánou tarotu. Sedmička je Liják: další hráč si musí líznout dvě karty a uniknout tomu může jen vlastní sedmičkou. Jednička je Zatmění: přeskočí tah druhého hráče. Desítka je Úplněk: divoká karta, kterou si vyberete další barvu. Čtyřka je Věž: prohodí karty v rukou obou hráčů. Pětka je Kolo štěstí: samotný osud rozhodne, kdo hraje další tah."
       }
     }
   ]
@@ -203,7 +203,7 @@
   .hand-label { font-size: 11px; letter-spacing: 1.5px; opacity: 0.6; }
   .card-backs { display: flex; }
   .card-back {
-    width: 34px; height: 50px; border-radius: 6px; margin-left: -14px;
+    width: 44px; height: 65px; border-radius: 7px; margin-left: -18px;
     background:
       repeating-linear-gradient(45deg, rgba(212,175,55,0.07) 0 4px, transparent 4px 8px),
       linear-gradient(135deg, var(--card-bg-1), var(--card-bg-2));
@@ -211,7 +211,7 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.45);
   }
   .card-back:first-child { margin-left: 0; }
-  .card-back::after { content: '🌙'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; opacity: 0.5; }
+  .card-back::after { content: '🌙'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; opacity: 0.5; }
 
   .status-line { min-height: 20px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--accent-color); opacity: 0.9; }
 
@@ -252,13 +252,13 @@
   }
 
   .play-card {
-    width: 64px; height: 92px; border-radius: 9px; position: relative; overflow: hidden;
+    width: 84px; height: 121px; border-radius: 11px; position: relative; overflow: hidden;
     border: 1px solid rgba(212,175,55,0.55);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 4px 14px rgba(0,0,0,0.5);
   }
-  .play-card .pc-value { font-size: 21px; font-weight: 700; line-height: 1; text-shadow: 0 0 10px currentColor; }
-  .play-card .pc-symbol { font-size: 22px; margin-top: 4px; filter: drop-shadow(0 0 4px currentColor); }
+  .play-card .pc-value { font-size: 27px; font-weight: 700; line-height: 1; text-shadow: 0 0 10px currentColor; }
+  .play-card .pc-symbol { font-size: 29px; margin-top: 5px; filter: drop-shadow(0 0 4px currentColor); }
   .play-card.suit-moon { color: var(--suit-moon); }
   .play-card.suit-star { color: var(--suit-star); }
   .play-card.suit-flame { color: var(--suit-flame); }
@@ -267,10 +267,10 @@
   .play-card .card-power { font-size: 14px; }
 
   .draw-pile {
-    width: 64px; height: 92px; border-radius: 9px; cursor: pointer;
+    width: 84px; height: 121px; border-radius: 11px; cursor: pointer;
     background: linear-gradient(135deg, var(--card-bg-1), var(--card-bg-2));
     border: 1px dashed rgba(212,175,55,0.6);
-    display: flex; align-items: center; justify-content: center; font-size: 22px; opacity: 0.85;
+    display: flex; align-items: center; justify-content: center; font-size: 28px; opacity: 0.85;
     transition: 0.15s;
   }
   .draw-pile:hover { border-color: var(--accent-color); box-shadow: 0 0 12px rgba(212,175,55,0.35); }
@@ -286,15 +286,15 @@
   .player-row { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 6px; }
   .player-hand { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 100%; }
   .hand-card {
-    width: 52px; height: 76px; border-radius: 8px;
+    width: 68px; height: 99px; border-radius: 10px;
     border: 1px solid rgba(212,175,55,0.4);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; position: relative; overflow: hidden;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 3px 8px rgba(0,0,0,0.4);
   }
-  .hand-card .hc-value { font-size: 17px; font-weight: 700; line-height: 1; text-shadow: 0 0 8px currentColor; }
-  .hand-card .hc-symbol { font-size: 17px; margin-top: 3px; filter: drop-shadow(0 0 3px currentColor); }
-  .hand-card .card-power { font-size: 10px; top: 3px; right: 4px; }
+  .hand-card .hc-value { font-size: 22px; font-weight: 700; line-height: 1; text-shadow: 0 0 8px currentColor; }
+  .hand-card .hc-symbol { font-size: 22px; margin-top: 4px; filter: drop-shadow(0 0 3px currentColor); }
+  .hand-card .card-power { font-size: 13px; top: 4px; right: 5px; }
   .hand-card.suit-moon { color: var(--suit-moon); }
   .hand-card.suit-star { color: var(--suit-star); }
   .hand-card.suit-flame { color: var(--suit-flame); }
@@ -455,21 +455,27 @@
     <button class="modal-close" id="btn-info-close" aria-label="Close">✕</button>
     <button class="info-lang-toggle" id="info-lang-toggle" aria-label="Switch language">EN</button>
     <h2 data-i18n="rules_title">PRAVIDLA HRY</h2>
-    <p data-i18n="rules_intro">Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Cíl je jednoduchý: na tahu se zbavte jedné karty z ruky, a kdo je vyloží všechny první, vyhrává.</p>
+    <p data-i18n="rules_intro">Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Cíl je jednoduchý: na tahu se zbavte jedné karty z ruky, a kdo je vyloží všechny první, vyhrává. Pět hodnot má speciální účinek a čerpá z velké arkány Noctuary Tarotu.</p>
 
     <div class="rules-legend">
-      <div class="rules-legend-item"><span class="icon">🌧️</span><span class="txt"><b data-i18n="legend_downpour_label">7 — LIJÁK:</b> <span data-i18n="legend_downpour_desc">soupeř lízne 2 karty a nehraje</span></span></div>
       <div class="rules-legend-item"><span class="icon">🌑</span><span class="txt"><b data-i18n="legend_eclipse_label">1 — ZATMĚNÍ:</b> <span data-i18n="legend_eclipse_desc">soupeř má tah přeskočený, jdete znovu</span></span></div>
+      <div class="rules-legend-item"><span class="icon">🌩️</span><span class="txt"><b data-i18n="legend_tower_label">4 — VĚŽ:</b> <span data-i18n="legend_tower_desc">karty v rukou obou hráčů se prohodí</span></span></div>
+      <div class="rules-legend-item"><span class="icon">🎡</span><span class="txt"><b data-i18n="legend_wheel_label">5 — KOLO ŠTĚSTÍ:</b> <span data-i18n="legend_wheel_desc">osud rozhodne, kdo hraje další tah</span></span></div>
+      <div class="rules-legend-item"><span class="icon">🌧️</span><span class="txt"><b data-i18n="legend_downpour_label">7 — LIJÁK:</b> <span data-i18n="legend_downpour_desc">soupeř lízne 2 karty a nehraje</span></span></div>
       <div class="rules-legend-item"><span class="icon">🌕</span><span class="txt"><b data-i18n="legend_fullmoon_label">10 — ÚPLNĚK:</b> <span data-i18n="legend_fullmoon_desc">divoká karta, vyberete si barvu</span></span></div>
     </div>
 
     <h3 data-i18n="rules_h_match">🃏 PŘIHAZOVÁNÍ</h3>
     <p data-i18n="rules_p_match">Na tahu zahrajte kartu ze své ruky, která sedí barvou NEBO hodnotou k vrchní kartě na odhazovacím balíčku. Např. leží-li nahoře Kapka 6, můžete zahrát libovolnou Kapku, nebo libovolnou šestku. Nesedí vám nic? Líznete si jednu kartu z balíčku — jde-li rovnou zahrát, můžete ji ihned přihodit.</p>
     <hr class="rules-divider">
-    <h3 data-i18n="rules_h_downpour">🌧️ 7 — LIJÁK</h3>
-    <p data-i18n="rules_p_downpour">Sedmička sesílá na soupeře Liják: musí si líznout dvě karty a ztrácí tah — pokud ovšem nemá vlastní sedmičku, kterou liják pošle zpátky a přidá další dvě karty navrch.</p>
     <h3 data-i18n="rules_h_eclipse">🌑 1 — ZATMĚNÍ</h3>
     <p data-i18n="rules_p_eclipse">Jednička zahalí stůl do Zatmění: soupeři propadne příští tah úplně a hra se vrací rovnou zpátky k vám, jako byste hráli dvakrát za sebou.</p>
+    <h3 data-i18n="rules_h_tower">🌩️ 4 — VĚŽ</h3>
+    <p data-i18n="rules_p_tower">Čtyřka je Věž z velké arkány — náhlý obrat, který změní tvar hry. Jakmile ji zahrajete, karty v ruce se mezi vámi a soupeřem beze zbytku prohodí. Zahrajete-li Věží úplně poslední kartu z ruky, vyhráváte okamžitě a k prohození už nedojde.</p>
+    <h3 data-i18n="rules_h_wheel">🎡 5 — KOLO ŠTĚSTÍ</h3>
+    <p data-i18n="rules_p_wheel">Pětka je Kolo štěstí. Po jejím zahrání sám osud hodí mincí: s poloviční pravděpodobností jdete znovu vy, s poloviční se tah přehoupne na soupeře jako obvykle. Nikdy předem nevíte, jak se kolo otočí.</p>
+    <h3 data-i18n="rules_h_downpour">🌧️ 7 — LIJÁK</h3>
+    <p data-i18n="rules_p_downpour">Sedmička sesílá na soupeře Liják: musí si líznout dvě karty a ztrácí tah — pokud ovšem nemá vlastní sedmičku, kterou liják pošle zpátky a přidá další dvě karty navrch.</p>
     <h3 data-i18n="rules_h_fullmoon">🌕 10 — ÚPLNĚK</h3>
     <p data-i18n="rules_p_fullmoon">Desítka je Úplněk — jediná karta, kterou lze přihodit na cokoliv bez ohledu na barvu či hodnotu. Po zahrání si sami vyberete, jaká barva bude platit dál.</p>
     <h3 data-i18n="rules_h_win">🏆 VÝHRA</h3>
@@ -481,18 +487,26 @@
   <p class="lead" data-i18n="seo_lead">Noční liják je volná karetní hra do prohlížeče — bez stahování, bez registrace, jen vy proti počítači.</p>
 
   <h2 data-i18n="seo_h_about">O hře Noční liják</h2>
-  <p data-i18n="seo_p_about1">Noční liják je originální karetní hra od tvůrců Noctuary Tarot, určená každému, kdo má rád rychlé, taktické hry na zbavování se karet — tedy rodinné karetní hry hrané v mnoha zemích pod mnoha různými jmény. Noční liják má stejného snadno pochopitelného a návykového ducha, ale s vlastní čtyřbarevnou sadou karet a vlastními speciálními kartami.</p>
+  <p data-i18n="seo_p_about1">Noční liják je originální karetní hra od tvůrců Noctuary Tarot, určená každému, kdo má rád rychlé, taktické hry na zbavování se karet — tedy rodinné karetní hry hrané v mnoha zemích pod mnoha různými jmény. Noční liják má stejného snadno pochopitelného a návykového ducha, ale s vlastní čtyřbarevnou sadou karet a vlastními speciálními kartami, z nichž dvě — Věž a Kolo štěstí — přímo čerpají z velké arkány tarotu.</p>
   <p data-i18n="seo_p_about2">Celá partie běží přímo ve vašem prohlížeči. Není třeba nic instalovat, zakládat účet, ani hlídat čas — novou partii si rozdejte, kdykoliv budete chtít.</p>
 
   <h2 data-i18n="seo_h_rules">Pravidla ve zkratce</h2>
   <div class="seo-rules-grid">
     <div class="seo-rule-card">
-      <h3 data-i18n="seo_rule1_h">🌧️ 7 — Liják</h3>
-      <p data-i18n="seo_rule1_p">Přinutí dalšího hráče líznout si dvě karty, pokud neodpoví vlastní sedmičkou.</p>
-    </div>
-    <div class="seo-rule-card">
       <h3 data-i18n="seo_rule2_h">🌑 1 — Zatmění</h3>
       <p data-i18n="seo_rule2_p">Úplně přeskočí tah druhého hráče.</p>
+    </div>
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule5_h">🌩️ 4 — Věž</h3>
+      <p data-i18n="seo_rule5_p">Karta z velké arkány tarotu — prohodí karty v rukou obou hráčů.</p>
+    </div>
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule6_h">🎡 5 — Kolo štěstí</h3>
+      <p data-i18n="seo_rule6_p">Další karta z velké arkány — o tom, kdo hraje další tah, rozhodne náhoda.</p>
+    </div>
+    <div class="seo-rule-card">
+      <h3 data-i18n="seo_rule1_h">🌧️ 7 — Liják</h3>
+      <p data-i18n="seo_rule1_p">Přinutí dalšího hráče líznout si dvě karty, pokud neodpoví vlastní sedmičkou.</p>
     </div>
     <div class="seo-rule-card">
       <h3 data-i18n="seo_rule3_h">🌕 10 — Úplněk</h3>
@@ -519,7 +533,11 @@
   </div>
   <div class="seo-faq-item">
     <h3 data-i18n="seo_faq4_q">Co dělají speciální karty?</h3>
-    <p data-i18n="seo_faq4_a">Sedmička je Liják, díky kterému si další hráč líznek dvě karty, jednička je Zatmění, které přeskočí tah, a desítka je divoká karta Úplněk, kterou si vyberete další barvu.</p>
+    <p data-i18n="seo_faq4_a">Noční liják má pět speciálních hodnot. Sedmička je Liják, díky kterému si další hráč líznek dvě karty, jednička je Zatmění, které přeskočí tah, desítka je divoká karta Úplněk, kterou si vyberete další barvu, čtyřka je Věž z velké arkány tarotu, která prohodí karty v rukou obou hráčů, a pětka je Kolo štěstí, které náhodou rozhodne, kdo hraje další tah.</p>
+  </div>
+  <div class="seo-faq-item">
+    <h3 data-i18n="seo_faq5_q">Souvisí speciální karty s tarotem?</h3>
+    <p data-i18n="seo_faq5_a">Ano. Věž a Kolo štěstí jsou karty z velké arkány klasického tarotu a v Nočním lijáku dostaly herní podobu — Věž jako náhlý obrat, který otočí karty v rukou obou hráčů, Kolo štěstí jako moment, kdy o dalším tahu rozhoduje osud.</p>
   </div>
   <p class="seo-disclaimer" data-i18n="seo_disclaimer">Noční liják je nabízen jako volné, odlehčené zpestření dne — nejde o hru o peníze a ke hraní nejsou potřeba žádná data.</p>
 </main>
@@ -551,19 +569,27 @@
     btn_playagain: { en: 'PLAY AGAIN', cz: 'HRÁT ZNOVU' },
     suit_pick_title: { en: 'CHOOSE THE NEXT SUIT', cz: 'VYBERTE DALŠÍ BARVU' },
     rules_title: { en: 'HOW TO PLAY', cz: 'PRAVIDLA HRY' },
-    rules_intro: { en: 'Night Rain is played with a 40-card deck — four suits (Moon, Star, Flame, Drop), each numbered 1 to 10. The goal is simple: be the first to play every card out of your hand.', cz: 'Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Cíl je jednoduchý: na tahu se zbavte jedné karty z ruky, a kdo je vyloží všechny první, vyhrává.' },
-    legend_downpour_label: { en: '7 — DOWNPOUR:', cz: '7 — LIJÁK:' },
-    legend_downpour_desc: { en: 'opponent draws 2 cards and skips a turn', cz: 'soupeř lízne 2 karty a nehraje' },
+    rules_intro: { en: 'Night Rain is played with a 40-card deck — four suits (Moon, Star, Flame, Drop), each numbered 1 to 10. The goal is simple: be the first to play every card out of your hand. Five values carry a special effect, and two of them are drawn straight from the Noctuary Tarot\u2019s Major Arcana.', cz: 'Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Cíl je jednoduchý: na tahu se zbavte jedné karty z ruky, a kdo je vyloží všechny první, vyhrává. Pět hodnot má speciální účinek a čerpá z velké arkány Noctuary Tarotu.' },
     legend_eclipse_label: { en: '1 — ECLIPSE:', cz: '1 — ZATMĚNÍ:' },
     legend_eclipse_desc: { en: 'opponent\u2019s turn is skipped, you go again', cz: 'soupeř má tah přeskočený, jdete znovu' },
+    legend_tower_label: { en: '4 — THE TOWER:', cz: '4 — VĚŽ:' },
+    legend_tower_desc: { en: 'both players\u2019 hands are swapped', cz: 'karty v rukou obou hráčů se prohodí' },
+    legend_wheel_label: { en: '5 — WHEEL OF FORTUNE:', cz: '5 — KOLO ŠTĚSTÍ:' },
+    legend_wheel_desc: { en: 'fate decides who plays next', cz: 'osud rozhodne, kdo hraje další tah' },
+    legend_downpour_label: { en: '7 — DOWNPOUR:', cz: '7 — LIJÁK:' },
+    legend_downpour_desc: { en: 'opponent draws 2 cards and skips a turn', cz: 'soupeř lízne 2 karty a nehraje' },
     legend_fullmoon_label: { en: '10 — FULL MOON:', cz: '10 — ÚPLNĚK:' },
     legend_fullmoon_desc: { en: 'wild card, you pick the next suit', cz: 'divoká karta, vyberete si barvu' },
     rules_h_match: { en: 'MATCHING', cz: 'PŘIHAZOVÁNÍ' },
     rules_p_match: { en: 'On your turn, play a card from your hand that shares either the suit OR the number with the top card of the discard pile. For example, if a Drop 6 is on top, you can play any Drop, or any 6. Nothing fits? Draw one card from the deck — if it can be played, you may play it right away.', cz: 'Na tahu zahrajte kartu ze své ruky, která sedí barvou NEBO hodnotou k vrchní kartě na odhazovacím balíčku. Např. leží-li nahoře Kapka 6, můžete zahrát libovolnou Kapku, nebo libovolnou šestku. Nesedí vám nic? Líznete si jednu kartu z balíčku — jde-li rovnou zahrát, můžete ji ihned přihodit.' },
-    rules_h_downpour: { en: '7 — DOWNPOUR', cz: '7 — LIJÁK' },
-    rules_p_downpour: { en: 'Playing a 7 sends the Downpour to your opponent: they must draw two cards and lose their turn — unless they play a 7 of their own, which sends it right back and adds two more cards on top.', cz: 'Sedmička sesílá na soupeře Liják: musí si líznout dvě karty a ztrácí tah — pokud ovšem nemá vlastní sedmičku, kterou liják pošle zpátky a přidá další dvě karty navrch.' },
     rules_h_eclipse: { en: '1 — ECLIPSE', cz: '1 — ZATMĚNÍ' },
     rules_p_eclipse: { en: 'Playing a 1 covers the table in an Eclipse: your opponent\u2019s next turn is skipped entirely and play returns straight to you, as if you played twice in a row.', cz: 'Jednička zahalí stůl do Zatmění: soupeři propadne příští tah úplně a hra se vrací rovnou zpátky k vám, jako byste hráli dvakrát za sebou.' },
+    rules_h_tower: { en: '4 — THE TOWER', cz: '4 — VĚŽ' },
+    rules_p_tower: { en: 'A 4 is The Tower from the Major Arcana — a sudden upheaval that changes the shape of the game. The moment you play it, your hand and your opponent\u2019s hand are swapped completely. If The Tower happens to be the very last card in your hand, you win immediately and the swap never happens.', cz: 'Čtyřka je Věž z velké arkány — náhlý obrat, který změní tvar hry. Jakmile ji zahrajete, karty v ruce se mezi vámi a soupeřem beze zbytku prohodí. Zahrajete-li Věží úplně poslední kartu z ruky, vyhráváte okamžitě a k prohození už nedojde.' },
+    rules_h_wheel: { en: '5 — WHEEL OF FORTUNE', cz: '5 — KOLO ŠTĚSTÍ' },
+    rules_p_wheel: { en: 'A 5 is the Wheel of Fortune. Once it\u2019s played, fate flips a coin: there\u2019s a fifty-fifty chance you go again, and an equal chance play passes to your opponent as usual. You never know which way the wheel will turn.', cz: 'Pětka je Kolo štěstí. Po jejím zahrání sám osud hodí mincí: s poloviční pravděpodobností jdete znovu vy, s poloviční se tah přehoupne na soupeře jako obvykle. Nikdy předem nevíte, jak se kolo otočí.' },
+    rules_h_downpour: { en: '7 — DOWNPOUR', cz: '7 — LIJÁK' },
+    rules_p_downpour: { en: 'Playing a 7 sends the Downpour to your opponent: they must draw two cards and lose their turn — unless they play a 7 of their own, which sends it right back and adds two more cards on top.', cz: 'Sedmička sesílá na soupeře Liják: musí si líznout dvě karty a ztrácí tah — pokud ovšem nemá vlastní sedmičku, kterou liják pošle zpátky a přidá další dvě karty navrch.' },
     rules_h_fullmoon: { en: '10 — FULL MOON', cz: '10 — ÚPLNĚK' },
     rules_p_fullmoon: { en: 'A 10 is a Full Moon — the only card that can be played on anything, regardless of suit or number. After playing it, you choose which suit is active next.', cz: 'Desítka je Úplněk — jediná karta, kterou lze přihodit na cokoliv bez ohledu na barvu či hodnotu. Po zahrání si sami vyberete, jaká barva bude platit dál.' },
     rules_h_win: { en: 'WINNING', cz: 'VÝHRA' },
@@ -575,6 +601,10 @@
     status_downpour_you: { en: 'Downpour! Draw 2 or answer with a 7.', cz: 'Liják! Líznete si 2, nebo odpovězte sedmičkou.' },
     status_downpour_ai: { en: 'Downpour sent to the opponent.', cz: 'Liják poslán soupeři.' },
     status_eclipse: { en: 'Eclipse! You go again.', cz: 'Zatmění! Jdete znovu.' },
+    status_tower_you: { en: 'The Tower struck — hands are swapped! Your turn.', cz: 'Věž udeřila! Ruce byly prohozeny — jste na tahu.' },
+    status_tower_ai: { en: 'The Tower struck — hands are swapped! Opponent\u2019s turn.', cz: 'Věž udeřila! Ruce byly prohozeny — na tahu je soupeř.' },
+    status_wheel_you: { en: 'The Wheel of Fortune turns — your turn.', cz: 'Kolo štěstí se otočilo — jste na tahu.' },
+    status_wheel_ai: { en: 'The Wheel of Fortune turns — opponent\u2019s turn.', cz: 'Kolo štěstí se otočilo — na tahu je soupeř.' },
     status_invalid: { en: 'That card doesn\u2019t match the suit or number.', cz: 'Tahle karta nesedí barvou ani hodnotou.' },
     status_pending_downpour: { en: 'You must play a 7 or draw.', cz: 'Musíte přihodit sedmičku, nebo si líznout.' },
     result_win_title: { en: 'YOU WIN', cz: 'VYHRÁLI JSTE' },
@@ -583,13 +613,17 @@
     result_lose_sub: { en: 'The opponent emptied their hand first. Try again.', cz: 'Soupeř vyložil karty jako první. Zkuste to znovu.' },
     seo_lead: { en: 'Night Rain is a free browser card game — no download, no account, just you against the computer.', cz: 'Noční liják je volná karetní hra do prohlížeče — bez stahování, bez registrace, jen vy proti počítači.' },
     seo_h_about: { en: 'About Night Rain', cz: 'O hře Noční liják' },
-    seo_p_about1: { en: 'Night Rain (Noční liják) is an original card game from the makers of Noctuary Tarot, built for anyone who enjoys quick, tactical shedding games — the kind of family card game played across many countries under many different names. Night Rain has that same easy-to-learn, hard-to-put-down spirit, with its own four-suit deck and its own set of special cards.', cz: 'Noční liják je originální karetní hra od tvůrců Noctuary Tarot, určená každému, kdo má rád rychlé, taktické hry na zbavování se karet — tedy rodinné karetní hry hrané v mnoha zemích pod mnoha různými jmény. Noční liják má stejného snadno pochopitelného a návykového ducha, ale s vlastní čtyřbarevnou sadou karet a vlastními speciálními kartami.' },
+    seo_p_about1: { en: 'Night Rain (Noční liják) is an original card game from the makers of Noctuary Tarot, built for anyone who enjoys quick, tactical shedding games — the kind of family card game played across many countries under many different names. Night Rain has that same easy-to-learn, hard-to-put-down spirit, with its own four-suit deck and its own set of special cards, two of which — The Tower and Wheel of Fortune — are drawn directly from the tarot\u2019s Major Arcana.', cz: 'Noční liják je originální karetní hra od tvůrců Noctuary Tarot, určená každému, kdo má rád rychlé, taktické hry na zbavování se karet — tedy rodinné karetní hry hrané v mnoha zemích pod mnoha různými jmény. Noční liják má stejného snadno pochopitelného a návykového ducha, ale s vlastní čtyřbarevnou sadou karet a vlastními speciálními kartami, z nichž dvě — Věž a Kolo štěstí — přímo čerpají z velké arkány tarotu.' },
     seo_p_about2: { en: 'The whole match runs in your browser. There is nothing to install, no account to create, and no time limit — deal a new hand whenever you like.', cz: 'Celá partie běží přímo ve vašem prohlížeči. Není třeba nic instalovat, zakládat účet, ani hlídat čas — novou partii si rozdejte, kdykoliv budete chtít.' },
     seo_h_rules: { en: 'Rules at a Glance', cz: 'Pravidla ve zkratce' },
     seo_rule1_h: { en: '🌧️ 7 — Downpour', cz: '🌧️ 7 — Liják' },
     seo_rule1_p: { en: 'Forces the next player to draw two cards, unless they answer with a 7 of their own.', cz: 'Přinutí dalšího hráče líznout si dvě karty, pokud neodpoví vlastní sedmičkou.' },
     seo_rule2_h: { en: '🌑 1 — Eclipse', cz: '🌑 1 — Zatmění' },
     seo_rule2_p: { en: 'Skips the other player\u2019s turn completely.', cz: 'Úplně přeskočí tah druhého hráče.' },
+    seo_rule5_h: { en: '🌩️ 4 — The Tower', cz: '🌩️ 4 — Věž' },
+    seo_rule5_p: { en: 'A Major Arcana card — swaps both players\u2019 hands.', cz: 'Karta z velké arkány tarotu — prohodí karty v rukou obou hráčů.' },
+    seo_rule6_h: { en: '🎡 5 — Wheel of Fortune', cz: '🎡 5 — Kolo štěstí' },
+    seo_rule6_p: { en: 'Another Major Arcana card — chance decides who plays next.', cz: 'Další karta z velké arkány — o tom, kdo hraje další tah, rozhodne náhoda.' },
     seo_rule3_h: { en: '🌕 10 — Full Moon', cz: '🌕 10 — Úplněk' },
     seo_rule3_p: { en: 'A wild card — play it on anything and pick the next suit.', cz: 'Divoká karta — lze ji přihodit na cokoliv a vybrat si další barvu.' },
     seo_rule4_h: { en: '🏆 Empty hand wins', cz: '🏆 Prázdná ruka vyhrává' },
@@ -602,7 +636,9 @@
     seo_faq3_q: { en: 'How many players are supported?', cz: 'Kolik hráčů hra podporuje?' },
     seo_faq3_a: { en: 'This version is single-player — you play one on one against a computer opponent.', cz: 'Tato verze je pro jednoho hráče — hrajete jeden na jednoho proti počítačovému soupeři.' },
     seo_faq4_q: { en: 'What do the special cards do?', cz: 'Co dělají speciální karty?' },
-    seo_faq4_a: { en: 'A 7 is a Downpour that makes the next player draw two, a 1 is an Eclipse that skips a turn, and a 10 is a Full Moon wild card that lets you choose the next suit.', cz: 'Sedmička je Liják, díky kterému si další hráč líznek dvě karty, jednička je Zatmění, které přeskočí tah, a desítka je divoká karta Úplněk, kterou si vyberete další barvu.' },
+    seo_faq4_a: { en: 'Night Rain has five special values. A 7 is a Downpour that makes the next player draw two, a 1 is an Eclipse that skips a turn, a 10 is a Full Moon wild card that lets you choose the next suit, a 4 is The Tower from the tarot\u2019s Major Arcana, which swaps both players\u2019 hands, and a 5 is the Wheel of Fortune, which lets chance decide who plays next.', cz: 'Noční liják má pět speciálních hodnot. Sedmička je Liják, díky kterému si další hráč líznek dvě karty, jednička je Zatmění, které přeskočí tah, desítka je divoká karta Úplněk, kterou si vyberete další barvu, čtyřka je Věž z velké arkány tarotu, která prohodí karty v rukou obou hráčů, a pětka je Kolo štěstí, které náhodou rozhodne, kdo hraje další tah.' },
+    seo_faq5_q: { en: 'Are the special cards connected to tarot?', cz: 'Souvisí speciální karty s tarotem?' },
+    seo_faq5_a: { en: 'Yes. The Tower and Wheel of Fortune are cards from the classic tarot\u2019s Major Arcana, reimagined as game mechanics in Night Rain — The Tower as a sudden upheaval that swaps both hands, and the Wheel of Fortune as a moment when fate decides who plays next.', cz: 'Ano. Věž a Kolo štěstí jsou karty z velké arkány klasického tarotu a v Nočním lijáku dostaly herní podobu — Věž jako náhlý obrat, který otočí karty v rukou obou hráčů, Kolo štěstí jako moment, kdy o dalším tahu rozhoduje osud.' },
     seo_disclaimer: { en: 'Night Rain is offered as a free, light-hearted diversion — there is no real-money play involved and no data is required to play.', cz: 'Noční liják je nabízen jako volné, odlehčené zpestření dne — nejde o hru o peníze a ke hraní nejsou potřeba žádná data.' },
     footer_link_home: { en: 'Card of the Day', cz: 'Karta dne' },
     footer_link_horoscope: { en: 'Free Horoscope', cz: 'Horoskop zdarma' },
@@ -667,7 +703,7 @@
     }
     return arr;
   }
-  function isSpecial(card) { return card.value === 7 || card.value === 1 || card.value === 10; }
+  function isSpecial(card) { return card.value === 7 || card.value === 1 || card.value === 10 || card.value === 4 || card.value === 5; }
   function canPlay(card, topCard, activeSuit) {
     if (card.value === 10) return true;
     return card.suit === activeSuit || card.value === topCard.value;
@@ -741,6 +777,23 @@
       state.pendingType = null;
       state.turn = who;
       state.statusKey = who === 'player' ? 'status_eclipse' : 'status_ai_turn';
+    } else if (card.value === 4) {
+      // THE TOWER: sudden upheaval — both hands are swapped.
+      // 'hand' still refers to the array 'who' just discarded from, so the
+      // win check below stays correct even after state.player/state.ai swap.
+      var swapTmp = state.player;
+      state.player = state.ai;
+      state.ai = swapTmp;
+      state.pendingType = null;
+      state.turn = other;
+      state.statusKey = other === 'player' ? 'status_tower_you' : 'status_tower_ai';
+    } else if (card.value === 5) {
+      // WHEEL OF FORTUNE: fate flips a coin to decide who plays next.
+      state.pendingType = null;
+      var fateContinues = Math.random() < 0.5;
+      var nextHolder = fateContinues ? who : other;
+      state.turn = nextHolder;
+      state.statusKey = nextHolder === 'player' ? 'status_wheel_you' : 'status_wheel_ai';
     } else {
       state.pendingType = null;
       state.turn = other;
@@ -799,7 +852,7 @@
   }
 
   // ---------------- rendering ----------------
-  var POWER_ICON = { 7: '\u{1F327}\uFE0F', 1: '\u{1F311}', 10: '\u{1F315}' };
+  var POWER_ICON = { 7: '\u{1F327}\uFE0F', 1: '\u{1F311}', 10: '\u{1F315}', 4: '\u{1F329}\uFE0F', 5: '\u{1F3A1}' };
 
   function cardEl(card, baseClass, sizePrefix) {
     var el = document.createElement('div');
