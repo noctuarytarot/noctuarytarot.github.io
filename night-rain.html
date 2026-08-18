@@ -550,7 +550,7 @@
     </div>
 
     <h3 data-i18n="rules_h_match">🃏 PŘIHAZOVÁNÍ</h3>
-    <p data-i18n="rules_p_match">Na tahu zahrajte kartu ze své ruky, která sedí barvou NEBO hodnotou k vrchní kartě na odhazovacím balíčku. Např. leží-li nahoře Kapka 6, můžete zahrát libovolnou Kapku, nebo libovolnou šestku. Nesedí vám nic? Líznete si jednu kartu z balíčku — jde-li rovnou zahrát, můžete ji ihned přihodit.</p>
+    <p data-i18n="rules_p_match">Na tahu zahrajte kartu ze své ruky, která sedí barvou NEBO hodnotou k vrchní kartě na odhazovacím balíčku. Např. leží-li nahoře Kapka 6, můžete zahrát libovolnou Kapku, nebo libovolnou šestku. Nesedí vám nic? Líznete si jednu kartu z balíčku a tah přechází na soupeře — líznutou kartu si necháváte do příštího kola.</p>
     <hr class="rules-divider">
     <h3 data-i18n="rules_h_eclipse">🌑 1 — ZATMĚNÍ</h3>
     <p data-i18n="rules_p_eclipse">Jednička zahalí stůl do Zatmění: soupeři propadne příští tah úplně a hra se vrací rovnou zpátky k vám, jako byste hráli dvakrát za sebou.</p>
@@ -678,7 +678,7 @@
     legend_fullmoon_label: { en: '10 — FULL MOON:', cz: '10 — ÚPLNĚK:' },
     legend_fullmoon_desc: { en: 'wild card, you pick the next suit', cz: 'divoká karta, vyberete si barvu' },
     rules_h_match: { en: 'MATCHING', cz: 'PŘIHAZOVÁNÍ' },
-    rules_p_match: { en: 'On your turn, play a card from your hand that shares either the suit OR the number with the top card of the discard pile. For example, if a Drop 6 is on top, you can play any Drop, or any 6. Nothing fits? Draw one card from the deck — if it can be played, you may play it right away.', cz: 'Na tahu zahrajte kartu ze své ruky, která sedí barvou NEBO hodnotou k vrchní kartě na odhazovacím balíčku. Např. leží-li nahoře Kapka 6, můžete zahrát libovolnou Kapku, nebo libovolnou šestku. Nesedí vám nic? Líznete si jednu kartu z balíčku — jde-li rovnou zahrát, můžete ji ihned přihodit.' },
+    rules_p_match: { en: 'On your turn, play a card from your hand that shares either the suit OR the number with the top card of the discard pile. For example, if a Drop 6 is on top, you can play any Drop, or any 6. Nothing fits? Draw one card from the deck and your turn passes to your opponent — you keep the drawn card for your next turn.', cz: 'Na tahu zahrajte kartu ze své ruky, která sedí barvou NEBO hodnotou k vrchní kartě na odhazovacím balíčku. Např. leží-li nahoře Kapka 6, můžete zahrát libovolnou Kapku, nebo libovolnou šestku. Nesedí vám nic? Líznete si jednu kartu z balíčku a tah přechází na soupeře — líznutou kartu si necháváte do příštího kola.' },
     rules_h_eclipse: { en: '1 — ECLIPSE', cz: '1 — ZATMĚNÍ' },
     rules_p_eclipse: { en: 'Playing a 1 covers the table in an Eclipse: your opponent\u2019s next turn is skipped entirely and play returns straight to you, as if you played twice in a row.', cz: 'Jednička zahalí stůl do Zatmění: soupeři propadne příští tah úplně a hra se vrací rovnou zpátky k vám, jako byste hráli dvakrát za sebou.' },
     rules_h_tower: { en: '4 — THE TOWER', cz: '4 — VĚŽ' },
@@ -910,12 +910,15 @@
       state.turn = who;
       state.statusKey = who === 'player' ? 'status_eclipse' : 'status_ai_turn';
     } else if (card.value === 4) {
-      // THE TOWER: sudden upheaval — both hands are swapped.
-      // 'hand' still refers to the array 'who' just discarded from, so the
-      // win check below stays correct even after state.player/state.ai swap.
-      var swapTmp = state.player;
-      state.player = state.ai;
-      state.ai = swapTmp;
+      // THE TOWER: sudden upheaval — both hands are swapped, unless this
+      // was the winning last card, in which case the swap never happens
+      // (matches the rules text: "if it's your last card, you win
+      // immediately and the swap never happens").
+      if (hand.length > 0) {
+        var swapTmp = state.player;
+        state.player = state.ai;
+        state.ai = swapTmp;
+      }
       state.pendingType = null;
       state.turn = other;
       state.statusKey = other === 'player' ? 'status_tower_you' : 'status_tower_ai';
