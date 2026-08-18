@@ -337,6 +337,14 @@
 
   /* ---- 1p / 2p mode toggle ---- */
   .mode-toggle { position: relative; z-index: 1; display: flex; gap: 8px; margin: 0 0 12px; }
+  .howto-btn {
+    position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.4); color: var(--accent-color);
+    border-radius: 20px; padding: 6px 14px; font-size: 11px; letter-spacing: 1px; cursor: pointer;
+    margin: 0 0 14px; font-family: 'Orbitron', sans-serif; transition: 0.2s;
+  }
+  .howto-btn:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
+  .howto-btn:active { transform: scale(0.96); }
   .mode-btn {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.35); color: #fff;
     padding: 6px 14px; border-radius: 20px; font-size: 10.5px; letter-spacing: 1px; cursor: pointer;
@@ -385,7 +393,14 @@
   .modal-panel p, .modal-panel li { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.6; opacity: 0.92; margin: 0 0 10px; text-align: left; }
   .rules-legend { display: flex; flex-direction: column; gap: 8px; margin: 14px 0 18px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.25); border-radius: 10px; }
   .rules-legend-item { display: flex; align-items: center; gap: 10px; text-align: left; }
-  .rules-legend-item .icon { font-size: 20px; width: 26px; flex: none; text-align: center; }
+  .rules-legend-item .mini-card {
+    flex: none; width: 34px; height: 46px; border-radius: 6px; border: 1.5px solid var(--accent-glow);
+    background: linear-gradient(160deg, var(--card-bg-1), var(--card-bg-2));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 0 8px rgba(139,47,224,0.45);
+  }
+  .rules-legend-item .mini-card .mc-value { font-size: 15px; font-weight: 700; color: var(--accent-color); line-height: 1; text-shadow: 0 0 6px currentColor; }
+  .rules-legend-item .mini-card .mc-symbol { font-size: 13px; margin-top: 2px; }
   .rules-legend-item .txt { font-family: 'Cormorant Garamond', serif; font-size: 14.5px; line-height: 1.4; opacity: 0.92; }
   .rules-legend-item .txt b { color: var(--accent-color); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.5px; }
   .rules-divider { border: none; border-top: 1px solid rgba(212,175,55,0.2); margin: 16px 0; }
@@ -451,6 +466,8 @@
 </div>
 <h1 class="page-title" data-i18n="game_title">NOČNÍ LIJÁK</h1>
 <p class="page-subtitle" data-i18n="game_subtitle">Volná karetní hra na zbavování se karet — kdo první vyloží všechny karty, vyhrává. Dejte si pozor na déšť.</p>
+
+<button class="howto-btn" id="btn-howto" data-i18n="btn_howto">📖 NÁVOD — JAK HRÁT</button>
 
 <div class="mode-toggle" id="mode-toggle">
   <button class="mode-btn active" id="mode-btn-pc" data-i18n="mode_pc">👤 PROTI PC</button>
@@ -525,11 +542,11 @@
     <p data-i18n="rules_intro">Noční liják se hraje se 40 kartami — čtyři barvy (Měsíc, Hvězda, Plamen, Kapka), každá s hodnotami 1 až 10. Cíl je jednoduchý: na tahu se zbavte jedné karty z ruky, a kdo je vyloží všechny první, vyhrává. Pět hodnot má speciální účinek a čerpá z velké arkány Noctuary Tarotu.</p>
 
     <div class="rules-legend">
-      <div class="rules-legend-item"><span class="icon">🌑</span><span class="txt"><b data-i18n="legend_eclipse_label">1 — ZATMĚNÍ:</b> <span data-i18n="legend_eclipse_desc">soupeř má tah přeskočený, jdete znovu</span></span></div>
-      <div class="rules-legend-item"><span class="icon">🌩️</span><span class="txt"><b data-i18n="legend_tower_label">4 — VĚŽ:</b> <span data-i18n="legend_tower_desc">karty v rukou obou hráčů se prohodí</span></span></div>
-      <div class="rules-legend-item"><span class="icon">🎡</span><span class="txt"><b data-i18n="legend_wheel_label">5 — KOLO ŠTĚSTÍ:</b> <span data-i18n="legend_wheel_desc">osud rozhodne, kdo hraje další tah</span></span></div>
-      <div class="rules-legend-item"><span class="icon">🌧️</span><span class="txt"><b data-i18n="legend_downpour_label">7 — LIJÁK:</b> <span data-i18n="legend_downpour_desc">soupeř lízne 2 karty a nehraje</span></span></div>
-      <div class="rules-legend-item"><span class="icon">🌕</span><span class="txt"><b data-i18n="legend_fullmoon_label">10 — ÚPLNĚK:</b> <span data-i18n="legend_fullmoon_desc">divoká karta, vyberete si barvu</span></span></div>
+      <div class="rules-legend-item"><span class="mini-card"><span class="mc-value">1</span><span class="mc-symbol">🌑</span></span><span class="txt"><b data-i18n="legend_eclipse_label">1 — ZATMĚNÍ:</b> <span data-i18n="legend_eclipse_desc">soupeř má tah přeskočený, jdete znovu</span></span></div>
+      <div class="rules-legend-item"><span class="mini-card"><span class="mc-value">4</span><span class="mc-symbol">🌩️</span></span><span class="txt"><b data-i18n="legend_tower_label">4 — VĚŽ:</b> <span data-i18n="legend_tower_desc">karty v rukou obou hráčů se prohodí</span></span></div>
+      <div class="rules-legend-item"><span class="mini-card"><span class="mc-value">5</span><span class="mc-symbol">🎡</span></span><span class="txt"><b data-i18n="legend_wheel_label">5 — KOLO ŠTĚSTÍ:</b> <span data-i18n="legend_wheel_desc">osud rozhodne, kdo hraje další tah</span></span></div>
+      <div class="rules-legend-item"><span class="mini-card"><span class="mc-value">7</span><span class="mc-symbol">🌧️</span></span><span class="txt"><b data-i18n="legend_downpour_label">7 — LIJÁK:</b> <span data-i18n="legend_downpour_desc">soupeř lízne 2 karty a nehraje</span></span></div>
+      <div class="rules-legend-item"><span class="mini-card"><span class="mc-value">10</span><span class="mc-symbol">🌕</span></span><span class="txt"><b data-i18n="legend_fullmoon_label">10 — ÚPLNĚK:</b> <span data-i18n="legend_fullmoon_desc">divoká karta, vyberete si barvu</span></span></div>
     </div>
 
     <h3 data-i18n="rules_h_match">🃏 PŘIHAZOVÁNÍ</h3>
@@ -628,6 +645,7 @@
   var i18nText = {
     game_title: { en: 'NIGHT RAIN', cz: 'NOČNÍ LIJÁK' },
     game_subtitle: { en: 'A free shedding card game — first to empty your hand wins. Watch out for the rain.', cz: 'Volná karetní hra na zbavování se karet — kdo první vyloží všechny karty, vyhrává. Dejte si pozor na déšť.' },
+    btn_howto: { en: '📖 HOW TO PLAY', cz: '📖 NÁVOD — JAK HRÁT' },
     opponent_label: { en: 'OPPONENT', cz: 'SOUPEŘ' },
     score_wins_label: { en: 'Wins', cz: 'Výhry' },
     score_losses_label: { en: 'Losses', cz: 'Prohry' },
@@ -1394,6 +1412,7 @@
 
   function toggleInfo(show) { document.getElementById('info-overlay').classList.toggle('show', show); }
   document.getElementById('btn-info').addEventListener('click', function () { toggleInfo(true); });
+  document.getElementById('btn-howto').addEventListener('click', function () { toggleInfo(true); });
   document.getElementById('btn-info-close').addEventListener('click', function () { toggleInfo(false); });
   document.getElementById('info-overlay').addEventListener('click', function (e) {
     if (e.target.id === 'info-overlay') toggleInfo(false);
