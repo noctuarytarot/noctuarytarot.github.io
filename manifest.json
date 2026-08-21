@@ -1,7 +1,7 @@
 {
-  "name": "Noctuary Tarot – Karta dne zdarma",
+  "name": "Noctuary Tarot – Free Daily Card",
   "short_name": "Noctuary Tarot",
-  "description": "Denní tarotová karta zdarma — tři balíčky (Tarot, Cosmic Whisper Oracle, Night Tarot), historie tažených karet a prostor pro reflexi.",
+  "description": "Free daily tarot card — three decks (Tarot, Cosmic Whisper Oracle, Night Tarot), history of drawn cards, and a space for reflection.",
   "start_url": "https://noctuarytarot.github.io/",
   "scope": "https://noctuarytarot.github.io/",
   "id": "https://noctuarytarot.github.io/",
@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "background_color": "#0d0221",
   "theme_color": "#0d0221",
-  "lang": "cs",
+  "lang": "en",
   "categories": ["lifestyle", "entertainment"],
   "icons": [
     { "src": "favicon-16.png", "sizes": "16x16", "type": "image/png" },
