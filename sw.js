@@ -1,13 +1,15 @@
 // Noctuary Tarot — Service Worker
 // Zvyš toto číslo při každé větší aktualizaci webu, aby si prohlížeče
 // stáhly novou verzi a zahodily starou cache.
-const CACHE_VERSION = 'v602';
+const CACHE_VERSION = 'v604';
 const CACHE_NAME = 'noctuary-tarot-' + CACHE_VERSION;
 
 // Statické soubory, které má smysl mít offline hned od instalace.
 const PRECACHE_URLS = [
   './',
   './index.html',
+  './horoscope.html',
+  './horoscope-en.html',
   './night-rain.html',
   './night-rain-en.html',
   './privacy.html',
@@ -59,6 +61,26 @@ self.addEventListener('fetch', function (event) {
 
   // Jen GET požadavky a jen náš vlastní origin (Firebase, fonty apod. necháváme jít normálně na síť).
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) {
+    return;
+  }
+
+  // horoscopes.json aktualizuje GitHub Actions 3x denně — na rozdíl od ikonek
+  // a manifestu se tenhle soubor pořád mění, takže ho NIKDY neservírujeme
+  // cache-first (jinak by prohlížeč mohl zobrazovat starý horoskop klidně
+  // několik dní, dokud nepřijde nová verze service workera). Vždy nejdřív
+  // síť, cache jen jako záložní offline fallback.
+  if (new URL(req.url).pathname.endsWith('/horoscopes.json')) {
+    event.respondWith(
+      fetch(req, { cache: 'no-store' })
+        .then(function (res) {
+          var resClone = res.clone();
+          caches.open(CACHE_NAME).then(function (cache) { cache.put(req, resClone); });
+          return res;
+        })
+        .catch(function () {
+          return caches.match(req); // offline — vrátí poslední známou verzi, pokud nějaká je
+        })
+    );
     return;
   }
 
