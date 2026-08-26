@@ -309,6 +309,89 @@
   .site-nav-back a { color: var(--accent-color); text-decoration: none; opacity: 0.85; }
   .site-nav-back a:hover { opacity: 1; text-shadow: 0 0 8px var(--accent-color); }
   .site-nav-back span.sep { opacity: 0.3; }
+
+  /* ---- weather (Open-Meteo), styled to match the horoscope theme ---- */
+  .wx-section{
+    --wx-accent-color: var(--accent-color);
+    --wx-accent-glow: var(--accent-glow);
+    position: relative; z-index: 1; max-width: 640px; width: 100%; margin-top: 44px;
+    text-align: center;
+  }
+  .wx-section h2 {
+    font-family: 'Orbitron', sans-serif; font-size: 15px; letter-spacing: 1.5px;
+    color: var(--wx-accent-color); text-shadow: 0 0 8px var(--wx-accent-color); margin-bottom: 14px;
+  }
+  .wx-search-row{ display:flex; gap:8px; position:relative; margin-bottom:18px; }
+  .wx-search-row input{
+    flex:1; font-family:'Cormorant Garamond', serif; font-size:15px; font-style:italic;
+    padding:11px 16px; border-radius:24px;
+    border:1px solid rgba(212,175,55,0.35); background:rgba(255,255,255,0.04);
+    color:#fff; outline:none; transition:0.3s;
+  }
+  .wx-search-row input::placeholder{ color:rgba(255,255,255,0.4); }
+  .wx-search-row input:focus{ border-color: var(--wx-accent-color); box-shadow:0 0 14px rgba(212,175,55,0.25); }
+  .wx-icon-btn{
+    width:42px; height:42px; flex-shrink:0; border-radius:50%;
+    border:1px solid var(--wx-accent-color); background:rgba(255,255,255,0.04);
+    color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:0.3s;
+  }
+  .wx-icon-btn:hover{ background:rgba(255,255,255,0.1); box-shadow:0 0 18px var(--wx-accent-color); }
+  .wx-icon-btn svg{ width:17px; height:17px; color: var(--wx-accent-color); }
+  .wx-suggestions{
+    position:absolute; top:52px; left:0; right:0;
+    background: var(--card-bg-1); border:1px solid rgba(212,175,55,0.3); border-radius:14px;
+    overflow:hidden; z-index:30; box-shadow:0 16px 34px rgba(0,0,0,0.5); text-align:left;
+  }
+  .wx-suggestions button{
+    display:block; width:100%; text-align:left; padding:11px 16px; font-size:13.5px;
+    background:none; border:none; color:#fff; cursor:pointer; font-family:'Cormorant Garamond', serif;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .wx-suggestions button:last-child{ border-bottom:none; }
+  .wx-suggestions button:hover, .wx-suggestions button:focus-visible{ background:rgba(212,175,55,0.12); color: var(--wx-accent-color); }
+  .wx-suggestions .empty{ padding:11px 16px; font-size:12.5px; opacity:0.55; font-style:italic; }
+  .wx-card{
+    border-radius:18px; border:1px solid rgba(212,175,55,0.3); background: var(--card-bg-1);
+    padding:22px 20px 16px; margin-bottom:16px; text-align:left;
+  }
+  .wx-place{ font-family:'Orbitron', sans-serif; font-size:11.5px; letter-spacing:1.5px; text-transform:uppercase; opacity:0.7; margin-bottom:4px; }
+  .wx-updated{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:11.5px; opacity:0.45; margin-bottom:18px; }
+  .wx-temp-row{ display:flex; align-items:flex-end; gap:14px; margin-bottom:6px; }
+  .wx-temp{ font-family:'Orbitron', sans-serif; font-size:56px; font-weight:600; line-height:0.85; color:#fff; text-shadow:0 0 22px var(--wx-accent-color); }
+  .wx-temp-unit{ font-size:24px; font-weight:500; vertical-align:super; }
+  .wx-cond{ display:flex; flex-direction:column; gap:6px; padding-bottom:8px; }
+  .wx-cond-icon{ width:32px; height:32px; color: var(--wx-accent-color); filter:drop-shadow(0 0 6px var(--wx-accent-color)); }
+  .wx-cond-label{ font-family:'Cormorant Garamond', serif; font-size:13.5px; font-style:italic; }
+  .wx-feels{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:12.5px; opacity:0.6; margin-bottom:20px; }
+  .wx-arc-wrap{ position:relative; height:90px; margin:0 -4px 6px; }
+  .wx-arc-wrap svg{ width:100%; height:100%; overflow:visible; }
+  .wx-arc-path{ fill:none; stroke:rgba(255,255,255,0.16); stroke-width:2; stroke-dasharray:1 7; stroke-linecap:round; }
+  .wx-arc-marker-glow{ transform-box:fill-box; transform-origin:center; animation:wxArcPulse 3s ease-out infinite; }
+  .wx-arc-marker{ transition:cx 1s ease, cy 1s ease; filter:drop-shadow(0 0 6px var(--wx-accent-color)); }
+  @keyframes wxArcPulse{ 0%{ transform:scale(0.9); opacity:0.5; } 100%{ transform:scale(2.4); opacity:0; } }
+  .wx-arc-labels{ display:flex; justify-content:space-between; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:11.5px; opacity:0.55; margin-top:2px; }
+  .wx-arc-labels span{ display:flex; align-items:center; gap:6px; }
+  .wx-arc-labels svg{ width:12px; height:12px; color: var(--wx-accent-color); }
+  .wx-stats{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:18px; }
+  .wx-stat{ border-radius:12px; border:1px solid rgba(212,175,55,0.2); background:rgba(255,255,255,0.03); padding:12px 6px; text-align:center; }
+  .wx-stat-label{ font-family:'Orbitron', sans-serif; font-size:9px; letter-spacing:0.6px; text-transform:uppercase; color: var(--wx-accent-color); opacity:0.85; margin-bottom:6px; }
+  .wx-stat-value{ font-family:'Cormorant Garamond', serif; font-size:15px; }
+  .wx-section-label{ font-family:'Orbitron', sans-serif; font-size:10.5px; letter-spacing:1.8px; text-transform:uppercase; color: var(--wx-accent-color); text-shadow:0 0 8px var(--wx-accent-color); margin:0 0 10px 2px; opacity:0.9; text-align:left; }
+  .wx-hourly{ display:flex; gap:9px; overflow-x:auto; padding:4px 2px 14px; scrollbar-width:thin; }
+  .wx-hour{ flex:0 0 auto; width:56px; border-radius:14px; border:1px solid rgba(212,175,55,0.2); background:rgba(255,255,255,0.03); padding:12px 0 10px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:7px; }
+  .wx-hour.now{ border-color: var(--wx-accent-color); box-shadow:0 0 14px rgba(212,175,55,0.2); }
+  .wx-hour-time{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:10px; opacity:0.55; }
+  .wx-hour svg{ width:19px; height:19px; color: var(--wx-accent-color); filter:drop-shadow(0 0 4px var(--wx-accent-color)); }
+  .wx-hour-temp{ font-family:'Cormorant Garamond', serif; font-size:13px; }
+  .wx-days{ display:flex; flex-direction:column; gap:8px; }
+  .wx-day{ display:flex; align-items:center; gap:12px; border-radius:14px; border:1px solid rgba(212,175,55,0.2); background:rgba(255,255,255,0.03); padding:12px 15px; }
+  .wx-day-name{ width:56px; font-family:'Cormorant Garamond', serif; font-size:12.5px; text-align:left; }
+  .wx-day svg{ width:19px; height:19px; color: var(--wx-accent-color); filter:drop-shadow(0 0 4px var(--wx-accent-color)); flex-shrink:0; }
+  .wx-day-range{ margin-left:auto; font-family:'Cormorant Garamond', serif; font-size:13px; display:flex; gap:8px; }
+  .wx-day-range .wx-lo{ opacity:0.45; }
+  .wx-footnote{ margin-top:12px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:11px; opacity:0.4; }
+  .wx-state-msg{ text-align:center; padding:50px 16px; opacity:0.55; font-size:13px; font-family:'Cormorant Garamond', serif; font-style:italic; }
+  .wx-hidden{ display:none !important; }
 </style>
 </head>
 <body>
@@ -358,6 +441,21 @@
   </div>
   <div class="moon-phase-name" id="moon-phase-name"></div>
   <div class="moon-phase-illum" id="moon-illum"></div>
+</section>
+
+<section class="wx-section">
+  <h2>Weather Right Now</h2>
+  <div class="wx-search-row">
+    <input id="wx-cityInput" type="text" placeholder="Find a city…" autocomplete="off" aria-label="Search for a city">
+    <button class="wx-icon-btn" id="wx-locBtn" title="Use my location" aria-label="Use my location">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+    </button>
+    <div class="wx-suggestions wx-hidden" id="wx-suggestions"></div>
+  </div>
+  <div id="wx-content">
+    <div class="wx-state-msg" id="wx-stateMsg">Loading the sky…</div>
+  </div>
+  <div class="wx-footnote">Data: Open&#8209;Meteo.com</div>
 </section>
 
 <footer>
@@ -568,6 +666,297 @@
   }
   updateMoonPhase();
   setInterval(updateMoonPhase, 3600000);
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search";
+  var FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
+  var STORAGE_KEY = "noctuary.weather.place";
+
+  var els = {
+    input: document.getElementById("wx-cityInput"),
+    suggestions: document.getElementById("wx-suggestions"),
+    locBtn: document.getElementById("wx-locBtn"),
+    content: document.getElementById("wx-content"),
+    section: document.querySelector(".wx-section")
+  };
+  if (!els.input || !els.content) return;
+
+  function icon(name) {
+    var icons = {
+      sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/>',
+      moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5Z"/>',
+      cloud: '<path d="M7 18a4.5 4.5 0 0 1-.5-8.97A5.5 5.5 0 0 1 17.2 8.1 4 4 0 0 1 17 16H7Z"/>',
+      cloudsun: '<circle cx="8" cy="8" r="2.6"/><path d="M8 3v1.6M4 8H2.5M4.3 4.3l1.1 1.1M12.5 5l-1 1"/><path d="M9.5 18a4 4 0 0 1-.4-7.98A5 5 0 0 1 19 11.6 3.6 3.6 0 0 1 18.6 18H9.5Z"/>',
+      cloudmoon: '<path d="M17.8 4.2A5 5 0 1 0 14.4 8a3.8 3.8 0 0 1 3.4-3.8Z"/><path d="M9.5 18a4 4 0 0 1-.4-7.98A5 5 0 0 1 19 11.6 3.6 3.6 0 0 1 18.6 18H9.5Z"/>',
+      rain: '<path d="M7 15.5a4.3 4.3 0 0 1-.4-8.58A5.3 5.3 0 0 1 16.9 6a3.9 3.9 0 0 1-.4 7.8H7Z"/><path d="M8 18.5 7 21M12 18.5l-1 2.5M16 18.5l-1 2.5"/>',
+      snow: '<path d="M7 13.5a4.1 4.1 0 0 1-.4-8.18A5.1 5.1 0 0 1 16.4 4a3.7 3.7 0 0 1-.4 7.4H7Z"/><path d="M8 18v3M6.5 19.5l3-3M9.5 19.5l-3-3M16 18v3M14.5 19.5l3-3M17.5 19.5l-3-3"/>',
+      storm: '<path d="M7 13.5a4.1 4.1 0 0 1-.4-8.18A5.1 5.1 0 0 1 16.4 4a3.7 3.7 0 0 1-.4 7.4H7Z"/><path d="M12.5 14 10 18.5h3L11 22"/>',
+      fog: '<path d="M4 8h11M3 12h15M4 16h11" />'
+    };
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + icons[name] + '</svg>';
+  }
+
+  function weatherInfo(code, isDay) {
+    var day = isDay !== 0;
+    var map = {
+      0: { label: "Clear sky", icon: day ? "sun" : "moon", group: "clear" },
+      1: { label: "Mostly clear", icon: day ? "cloudsun" : "cloudmoon", group: "clear" },
+      2: { label: "Partly cloudy", icon: day ? "cloudsun" : "cloudmoon", group: "cloudy" },
+      3: { label: "Overcast", icon: "cloud", group: "cloudy" },
+      45: { label: "Fog", icon: "fog", group: "fog" },
+      48: { label: "Freezing fog", icon: "fog", group: "fog" },
+      51: { label: "Light drizzle", icon: "rain", group: "rain" },
+      53: { label: "Drizzle", icon: "rain", group: "rain" },
+      55: { label: "Dense drizzle", icon: "rain", group: "rain" },
+      56: { label: "Freezing drizzle", icon: "rain", group: "rain" },
+      57: { label: "Heavy freezing drizzle", icon: "rain", group: "rain" },
+      61: { label: "Light rain", icon: "rain", group: "rain" },
+      63: { label: "Rain", icon: "rain", group: "rain" },
+      65: { label: "Heavy rain", icon: "rain", group: "rain" },
+      66: { label: "Freezing rain", icon: "rain", group: "rain" },
+      67: { label: "Heavy freezing rain", icon: "rain", group: "rain" },
+      71: { label: "Light snow", icon: "snow", group: "snow" },
+      73: { label: "Snow", icon: "snow", group: "snow" },
+      75: { label: "Heavy snow", icon: "snow", group: "snow" },
+      77: { label: "Snow grains", icon: "snow", group: "snow" },
+      80: { label: "Rain showers", icon: "rain", group: "rain" },
+      81: { label: "Rain showers", icon: "rain", group: "rain" },
+      82: { label: "Violent rain showers", icon: "rain", group: "rain" },
+      85: { label: "Snow showers", icon: "snow", group: "snow" },
+      86: { label: "Heavy snow showers", icon: "snow", group: "snow" },
+      95: { label: "Thunderstorm", icon: "storm", group: "storm" },
+      96: { label: "Thunderstorm with hail", icon: "storm", group: "storm" },
+      99: { label: "Severe thunderstorm with hail", icon: "storm", group: "storm" }
+    };
+    return map[code] || { label: "Unknown", icon: "cloud", group: "cloudy" };
+  }
+
+  var THEME_ACCENTS = {
+    clear_day: ['#ffce54', '#7a5300'],
+    clear_night: ['#9b8cfb', '#2c1c66'],
+    cloudy: ['#8fb3d9', '#1d3654'],
+    fog: ['#9fb8bb', '#1f3536'],
+    rain: ['#38bdf8', '#0b3654'],
+    snow: ['#7dd8e8', '#0d4a52'],
+    storm: ['#b18cf9', '#341a5c']
+  };
+  function applyAccent(group, isDay) {
+    var key = group === "clear" ? (isDay ? "clear_day" : "clear_night") : group;
+    var pair = THEME_ACCENTS[key] || THEME_ACCENTS.clear_day;
+    if (els.section) {
+      els.section.style.setProperty("--wx-accent-color", pair[0]);
+      els.section.style.setProperty("--wx-accent-glow", pair[1]);
+    }
+  }
+
+  var searchTimer = null;
+  els.input.addEventListener("input", function () {
+    var q = els.input.value.trim();
+    clearTimeout(searchTimer);
+    if (q.length < 2) { hideSuggestions(); return; }
+    searchTimer = setTimeout(function () { doSearch(q); }, 350);
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!els.suggestions.contains(e.target) && e.target !== els.input) hideSuggestions();
+  });
+
+  function hideSuggestions() { els.suggestions.classList.add("wx-hidden"); els.suggestions.innerHTML = ""; }
+
+  function doSearch(q) {
+    var url = GEOCODE_URL + "?name=" + encodeURIComponent(q) + "&count=6&language=en&format=json";
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      renderSuggestions(data.results || []);
+    }).catch(function () { hideSuggestions(); });
+  }
+
+  function renderSuggestions(results) {
+    if (!results.length) {
+      els.suggestions.innerHTML = '<div class="empty">No city found</div>';
+      els.suggestions.classList.remove("wx-hidden");
+      return;
+    }
+    els.suggestions.innerHTML = "";
+    results.forEach(function (r) {
+      var btn = document.createElement("button");
+      var parts = [r.name];
+      if (r.admin1) parts.push(r.admin1);
+      if (r.country) parts.push(r.country);
+      btn.textContent = parts.join(", ");
+      btn.addEventListener("click", function () {
+        selectPlace({ name: r.name, admin1: r.admin1, country: r.country, latitude: r.latitude, longitude: r.longitude });
+        els.input.value = "";
+        hideSuggestions();
+      });
+      els.suggestions.appendChild(btn);
+    });
+    els.suggestions.classList.remove("wx-hidden");
+  }
+
+  function selectPlace(place) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(place)); } catch (e) {}
+    loadWeather(place);
+  }
+
+  els.locBtn.addEventListener("click", function () {
+    if (!navigator.geolocation) { return; }
+    setState("Locating…");
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      var place = { name: "Your location", admin1: "", country: "", latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+      selectPlace(place);
+    }, function () {
+      setState("Couldn't get your location. Try entering a city manually.");
+    }, { timeout: 8000 });
+  });
+
+  function setState(msg) {
+    els.content.innerHTML = '<div class="wx-state-msg">' + msg + '</div>';
+  }
+
+  function loadWeather(place) {
+    setState("Loading the sky…");
+    var params = new URLSearchParams({
+      latitude: place.latitude,
+      longitude: place.longitude,
+      current: "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,is_day",
+      hourly: "temperature_2m,weather_code",
+      daily: "sunrise,sunset,weather_code,temperature_2m_max,temperature_2m_min",
+      timezone: "auto",
+      forecast_days: 6
+    });
+    fetch(FORECAST_URL + "?" + params.toString())
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (data) { render(place, data); })
+      .catch(function (err) { setState("Couldn't load the forecast. Please try again."); console.error(err); });
+  }
+
+  function fmtHour(iso) {
+    var d = new Date(iso);
+    return d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  }
+  function fmtDay(iso) {
+    var d = new Date(iso);
+    var s = d.toLocaleDateString("en-GB", { weekday: "short" });
+    return s.charAt(0).toUpperCase() + s.slice(1).replace(".", "");
+  }
+
+  function render(place, data) {
+    var cur = data.current;
+    var info = weatherInfo(cur.weather_code, cur.is_day);
+    applyAccent(info.group, cur.is_day === 1);
+
+    var placeLabel = place.name;
+    if (place.admin1 && place.admin1 !== place.name) placeLabel += ", " + place.admin1;
+
+    var todaySunrise = new Date(data.daily.sunrise[0]);
+    var todaySunset = new Date(data.daily.sunset[0]);
+    var now = new Date();
+    var span = todaySunset - todaySunrise;
+    var frac = span > 0 ? (now - todaySunrise) / span : 0.5;
+    frac = Math.max(0, Math.min(1, frac));
+    var x0 = 20, y0 = 70, x1 = 150, y1 = 8, x2 = 280, y2 = 70;
+    var t = frac;
+    var mx = (1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * x1 + t * t * x2;
+    var my = (1 - t) * (1 - t) * y0 + 2 * (1 - t) * t * y1 + t * t * y2;
+
+    var html = "";
+    html += '<div class="wx-card">';
+    html += '<div class="wx-place">' + escapeHtml(placeLabel) + '</div>';
+    html += '<div class="wx-updated">Updated ' + fmtHour(cur.time) + '</div>';
+    html += '<div class="wx-temp-row">';
+    html += '<div class="wx-temp">' + Math.round(cur.temperature_2m) + '<span class="wx-temp-unit">°</span></div>';
+    html += '<div class="wx-cond"><div class="wx-cond-icon">' + icon(info.icon) + '</div><div class="wx-cond-label">' + info.label + '</div></div>';
+    html += '</div>';
+    html += '<div class="wx-feels">Feels like ' + Math.round(cur.apparent_temperature) + '°</div>';
+
+    html += '<div class="wx-arc-wrap"><svg viewBox="0 0 300 80" preserveAspectRatio="none">';
+    html += '<path class="wx-arc-path" d="M20,70 Q150,8 280,70"/>';
+    html += '<circle class="wx-arc-marker-glow" cx="' + mx.toFixed(1) + '" cy="' + my.toFixed(1) + '" r="5" fill="var(--wx-accent-color)"/>';
+    html += '<circle class="wx-arc-marker" cx="' + mx.toFixed(1) + '" cy="' + my.toFixed(1) + '" r="5" fill="var(--wx-accent-color)"/>';
+    html += '</svg></div>';
+    html += '<div class="wx-arc-labels">';
+    html += '<span>' + icon("sun") + ' Sunrise ' + fmtHour(data.daily.sunrise[0]) + '</span>';
+    html += '<span>Sunset ' + fmtHour(data.daily.sunset[0]) + ' ' + icon("moon") + '</span>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="wx-stats">';
+    html += statBlock("Humidity", cur.relative_humidity_2m + "%");
+    html += statBlock("Wind", Math.round(cur.wind_speed_10m) + " km/h");
+    html += statBlock("Precip.", (cur.precipitation || 0).toFixed(1) + " mm");
+    html += '</div>';
+
+    html += '<div class="wx-section-label">Next Hours</div>';
+    html += '<div class="wx-hourly">';
+    var nowIdx = findCurrentHourIndex(data.hourly.time);
+    for (var i = nowIdx; i < Math.min(nowIdx + 24, data.hourly.time.length); i++) {
+      var hi = weatherInfo(data.hourly.weather_code[i], isHourDay(data.hourly.time[i], data.daily));
+      var isNow = i === nowIdx;
+      html += '<div class="wx-hour' + (isNow ? " now" : "") + '">';
+      html += '<div class="wx-hour-time">' + (isNow ? "Now" : fmtHour(data.hourly.time[i])) + '</div>';
+      html += icon(hi.icon);
+      html += '<div class="wx-hour-temp">' + Math.round(data.hourly.temperature_2m[i]) + '°</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="wx-section-label">Coming Days</div>';
+    html += '<div class="wx-days">';
+    for (var d = 0; d < data.daily.time.length; d++) {
+      var di = weatherInfo(data.daily.weather_code[d], 1);
+      html += '<div class="wx-day">';
+      html += '<div class="wx-day-name">' + (d === 0 ? "Today" : fmtDay(data.daily.time[d])) + '</div>';
+      html += icon(di.icon);
+      html += '<div class="wx-day-range"><span>' + Math.round(data.daily.temperature_2m_max[d]) + '°</span><span class="wx-lo">' + Math.round(data.daily.temperature_2m_min[d]) + '°</span></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    els.content.innerHTML = html;
+  }
+
+  function statBlock(label, value) {
+    return '<div class="wx-stat"><div class="wx-stat-label">' + label + '</div><div class="wx-stat-value">' + value + '</div></div>';
+  }
+
+  function findCurrentHourIndex(times) {
+    var now = new Date();
+    for (var i = 0; i < times.length; i++) {
+      var t = new Date(times[i]);
+      if (t >= now) return Math.max(0, i);
+    }
+    return 0;
+  }
+
+  function isHourDay(iso, daily) {
+    var t = new Date(iso).getTime();
+    for (var i = 0; i < daily.sunrise.length; i++) {
+      var sr = new Date(daily.sunrise[i]).getTime();
+      var ss = new Date(daily.sunset[i]).getTime();
+      if (t >= sr && t <= ss) return 1;
+    }
+    return 0;
+  }
+
+  function escapeHtml(s) {
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function init() {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) {}
+    if (saved && saved.latitude) {
+      loadWeather(saved);
+    } else {
+      loadWeather({ name: "Prague", admin1: "", country: "Czechia", latitude: 50.0755, longitude: 14.4378 });
+    }
+  }
+  init();
 })();
 </script>
 </body>
