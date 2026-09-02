@@ -263,6 +263,7 @@
   .corner-btn-horoscope { left: 10px; top: calc(10px + 190px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-nightrain { left: 10px; top: calc(10px + 228px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-lang { left: 10px; top: calc(10px + 266px + env(safe-area-inset-top, 0px)); font-size: 12px; font-weight: 600; }
+  .corner-btn-apps { left: 10px; top: calc(10px + 304px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
   /* Articles / SEO text menu */
@@ -277,7 +278,7 @@
     display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
     background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.3); color: #fff;
     border-radius: 10px; padding: 12px 14px; text-align: left; cursor: pointer; transition: 0.2s;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond', serif; text-decoration: none;
   }
   .articles-menu-item:hover { background: rgba(212,175,55,0.1); border-color: var(--accent-color); }
   .articles-menu-item-title { font-size: 15px; font-weight: 600; letter-spacing: 0.3px; color: var(--accent-color); }
@@ -293,6 +294,14 @@
   .article-detail-back:hover { background: var(--accent-color); color: #000; }
   .article-detail h2 { text-align: left; }
   .article-detail p, .article-detail li { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.65; opacity: 0.92; margin: 0 0 10px 0; }
+
+  /* Other apps menu */
+  #apps-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.92); justify-content: center; align-items: center; padding: 20px;
+  }
+  #apps-overlay.show { display: flex; }
+  .apps-panel { max-width: 460px; }
 
   #history-overlay {
     display: none; position: fixed; inset: 0; z-index: 300;
@@ -723,6 +732,7 @@
     .corner-btn-horoscope { top: calc(10px + 170px + env(safe-area-inset-top, 0px)); }
     .corner-btn-nightrain { top: calc(10px + 204px + env(safe-area-inset-top, 0px)); }
     .corner-btn-lang { top: calc(10px + 238px + env(safe-area-inset-top, 0px)); font-size: 11px; }
+    .corner-btn-apps { top: calc(10px + 272px + env(safe-area-inset-top, 0px)); }
     .brand { margin-bottom: 2px; }
     .brand-name { font-size: 12px; }
     .page-title { font-size: 15px; margin: 2px 0 10px; }
@@ -854,6 +864,7 @@
 <a class="corner-btn corner-btn-horoscope" href="horoscope-en.html" title="Free Horoscope / Horoskop" aria-label="Free Horoscope">✦</a>
 <a class="corner-btn corner-btn-nightrain" href="night-rain-en.html" title="Night Rain — Free Card Game / Noční liják — karetní hra zdarma" aria-label="Night Rain card game">🌧️</a>
 <button class="corner-btn corner-btn-lang" id="btn-lang-toggle" onclick="toggleInfoLanguage()" title="Language / Jazyk" aria-label="Switch language">CZ</button>
+<button class="corner-btn corner-btn-apps" id="btn-apps" title="Other Apps / Další aplikace" aria-label="Other apps">🧩</button>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -1051,6 +1062,69 @@
       <button class="article-detail-back" id="article-detail-back">‹ <span data-i18n="history_back">BACK</span></button>
       <h2 id="article-detail-title"></h2>
       <div id="article-detail-body"></div>
+    </div>
+  </div>
+</div>
+
+<div id="apps-overlay">
+  <div class="info-panel apps-panel">
+    <button class="history-close" id="btn-apps-close" aria-label="Close">✕</button>
+    <h2 data-i18n="apps_title">OTHER APPS</h2>
+    <p class="history-sub" data-i18n="apps_sub">A few more free tools and apps by the same maker, Synthlucida.</p>
+
+    <div class="articles-menu" id="apps-menu">
+      <a class="articles-menu-item" href="https://synthlucida.com/landing_webzenith-en.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🛠️ WEBZENith</span><br><span class="articles-menu-item-sub" data-i18n="apps_webzenith_sub">Free website builder — no coding needed</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://relaxplayer.eu" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🎧 Relax Player</span><br><span class="articles-menu-item-sub" data-i18n="apps_relaxplayer_sub">Ambient &amp; chillout music player</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/weather.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🌦️ <span data-i18n="apps_weather_title">Weather</span></span><br><span class="articles-menu-item-sub" data-i18n="apps_weather_sub">Free weather forecast</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/vyplata.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">💸 <span data-i18n="apps_payday_title">Payday</span></span><br><span class="articles-menu-item-sub" data-i18n="apps_payday_sub">Salary &amp; payday calculator</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/tripcost-en.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🚗 <span data-i18n="apps_tripcost_title">Trip Cost</span></span><br><span class="articles-menu-item-sub" data-i18n="apps_tripcost_sub">Fuel cost calculator for a trip</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/progrese-cz.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🎹 Progrese</span><br><span class="articles-menu-item-sub" data-i18n="apps_progrese_sub">Chord progression helper</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://uklidnito.eu" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🧘 Uklidni To</span><br><span class="articles-menu-item-sub" data-i18n="apps_uklidnito_sub">A short breathing &amp; calming exercise</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/e-liquid-mixing-calculator.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">🧪 <span data-i18n="apps_liquid_title">Liquid Mixing</span></span><br><span class="articles-menu-item-sub" data-i18n="apps_liquid_sub">E-liquid mixing calculator</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/denik-vozidla-en.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">📒 <span data-i18n="apps_logbook_title">Logbook</span></span><br><span class="articles-menu-item-sub" data-i18n="apps_logbook_sub">Vehicle mileage logbook</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/vodovaha-en.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">📐 <span data-i18n="apps_level_title">Level</span></span><br><span class="articles-menu-item-sub" data-i18n="apps_level_sub">Turns your phone into a spirit level</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/vapetrack-en.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">💨 Vapetrack</span><br><span class="articles-menu-item-sub" data-i18n="apps_vapetrack_sub">Vaping habit tracker</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/pohadkovnik.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">📖 Pohádkovník</span><br><span class="articles-menu-item-sub" data-i18n="apps_pohadkovnik_sub">Random bedtime story generator</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
+      <a class="articles-menu-item" href="https://synthlucida.com/delnas.html" target="_blank" rel="noopener noreferrer">
+        <span><span class="articles-menu-item-title">💪 Dělňas</span><br><span class="articles-menu-item-sub" data-i18n="apps_delnas_sub">Simple workout tracker</span></span>
+        <span class="articles-menu-item-arrow">↗</span>
+      </a>
     </div>
   </div>
 </div>
@@ -2418,7 +2492,29 @@
     a12_menu_title: { en: 'Music and Atmosphere for a Reading', cz: 'Hudba a atmosféra pro výklad' },
     a12_menu_sub: { en: 'Setting a calmer mood before you draw', cz: 'Klidnější nálada, než si vytáhnete kartu' },
     a13_menu_title: { en: 'Night Rain — A Free Card Game', cz: 'Noční liják — karetní hra zdarma' },
-    a13_menu_sub: { en: 'A quick shedding game for whenever you need a break', cz: 'Rychlá karetní hra na zbavování se karet, kdykoliv si potřebujete odpočinout' }
+    a13_menu_sub: { en: 'A quick shedding game for whenever you need a break', cz: 'Rychlá karetní hra na zbavování se karet, kdykoliv si potřebujete odpočinout' },
+
+    apps_title: { en: 'OTHER APPS', cz: 'DALŠÍ APLIKACE' },
+    apps_sub: { en: 'A few more free tools and apps by the same maker, Synthlucida.', cz: 'Pár dalších free nástrojů a aplikací od stejného tvůrce, Synthlucida.' },
+    apps_webzenith_sub: { en: 'Free website builder — no coding needed', cz: 'Tvorba webu zdarma — bez kódování' },
+    apps_relaxplayer_sub: { en: 'Ambient & chillout music player', cz: 'Ambientní a chillout hudební přehrávač' },
+    apps_weather_title: { en: 'Weather', cz: 'Počasí' },
+    apps_weather_sub: { en: 'Free weather forecast', cz: 'Předpověď počasí zdarma' },
+    apps_payday_title: { en: 'Payday', cz: 'Výplata' },
+    apps_payday_sub: { en: 'Salary & payday calculator', cz: 'Kalkulačka výplaty a mzdy' },
+    apps_tripcost_title: { en: 'Trip Cost', cz: 'Cena cesty' },
+    apps_tripcost_sub: { en: 'Fuel cost calculator for a trip', cz: 'Kalkulačka nákladů na palivo pro cestu' },
+    apps_progrese_sub: { en: 'Chord progression helper', cz: 'Pomocník s akordovými postupy' },
+    apps_uklidnito_sub: { en: 'A short breathing & calming exercise', cz: 'Krátké dechové a zklidňující cvičení' },
+    apps_liquid_title: { en: 'Liquid Mixing', cz: 'Míchání liquidu' },
+    apps_liquid_sub: { en: 'E-liquid mixing calculator', cz: 'Kalkulačka na míchání e-liquidu' },
+    apps_logbook_title: { en: 'Logbook', cz: 'Deník vozidla' },
+    apps_logbook_sub: { en: 'Vehicle mileage logbook', cz: 'Kniha jízd pro vozidlo' },
+    apps_level_title: { en: 'Level', cz: 'Vodováha' },
+    apps_level_sub: { en: 'Turns your phone into a spirit level', cz: 'Změní telefon na vodováhu' },
+    apps_vapetrack_sub: { en: 'Vaping habit tracker', cz: 'Sledování vapování' },
+    apps_pohadkovnik_sub: { en: 'Random bedtime story generator', cz: 'Generátor pohádek na dobrou noc' },
+    apps_delnas_sub: { en: 'Simple workout tracker', cz: 'Jednoduché sledování tréninků' }
   };
 
   // Page title, meta description/keywords, and <html lang> — kept in sync with the
@@ -2754,6 +2850,15 @@
   document.getElementById('btn-contact-close').addEventListener('click', function () { toggleContactOverlay(false); });
   document.getElementById('contact-overlay').addEventListener('click', function (e) {
     if (e.target.id === 'contact-overlay') toggleContactOverlay(false);
+  });
+
+  function toggleAppsOverlay(show) {
+    document.getElementById('apps-overlay').classList.toggle('show', show);
+  }
+  document.getElementById('btn-apps').addEventListener('click', function () { toggleAppsOverlay(true); });
+  document.getElementById('btn-apps-close').addEventListener('click', function () { toggleAppsOverlay(false); });
+  document.getElementById('apps-overlay').addEventListener('click', function (e) {
+    if (e.target.id === 'apps-overlay') toggleAppsOverlay(false);
   });
 
   // Contact form submission via Web3Forms AJAX endpoint (fetch) - the page
