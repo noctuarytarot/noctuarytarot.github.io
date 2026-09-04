@@ -262,6 +262,7 @@
   .corner-btn-nightrain { left: 10px; top: calc(10px + 228px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn-lang { left: 10px; top: calc(10px + 266px + env(safe-area-inset-top, 0px)); font-size: 12px; font-weight: 600; }
   .corner-btn-apps { left: 10px; top: calc(10px + 304px + env(safe-area-inset-top, 0px)); font-size: 15px; }
+  .corner-btn-home { left: 10px; top: calc(10px + 342px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
   /* Articles / SEO text menu */
@@ -731,6 +732,7 @@
     .corner-btn-nightrain { top: calc(10px + 204px + env(safe-area-inset-top, 0px)); }
     .corner-btn-lang { top: calc(10px + 238px + env(safe-area-inset-top, 0px)); font-size: 11px; }
     .corner-btn-apps { top: calc(10px + 272px + env(safe-area-inset-top, 0px)); }
+    .corner-btn-home { top: calc(10px + 306px + env(safe-area-inset-top, 0px)); }
     .brand { margin-bottom: 2px; }
     .brand-name { font-size: 12px; }
     .page-title { font-size: 15px; margin: 2px 0 10px; }
@@ -863,6 +865,7 @@
 <a class="corner-btn corner-btn-nightrain" href="night-rain-en.html" title="Night Rain — Free Card Game / Noční liják — karetní hra zdarma" aria-label="Night Rain card game">🌧️</a>
 <button class="corner-btn corner-btn-lang" id="btn-lang-toggle" onclick="toggleInfoLanguage()" title="Language / Jazyk" aria-label="Switch language">CZ</button>
 <button class="corner-btn corner-btn-apps" id="btn-apps" title="Other Apps / Další aplikace" aria-label="Other apps">🧩</button>
+<a class="corner-btn corner-btn-home" id="btn-home" href="landing.html" title="Home / Domů" aria-label="Home">⌂</a>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -2767,6 +2770,12 @@
     if (articlesBtn) articlesBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
     var cornerLangBtn = document.getElementById('btn-lang-toggle');
     if (cornerLangBtn) cornerLangBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
+    var homeBtn = document.getElementById('btn-home');
+    if (homeBtn) {
+      homeBtn.href = guideLang === 'en' ? 'landing-en.html' : 'landing.html';
+      homeBtn.title = guideLang === 'en' ? 'Home' : 'Domů';
+      homeBtn.setAttribute('aria-label', guideLang === 'en' ? 'Home' : 'Domů');
+    }
     if (typeof renderCurrentArticle === 'function') renderCurrentArticle();
     if (typeof applySeoLanguage === 'function') applySeoLanguage();
     if (typeof renderCurrentSlogan === 'function') renderCurrentSlogan();
