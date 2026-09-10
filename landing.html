@@ -90,7 +90,7 @@
     { "@type": "Question", "name": "Je Noctuary Tarot zdarma?", "acceptedAnswer": { "@type": "Answer", "text": "Ano, Noctuary Tarot je zcela zdarma a funguje přímo v prohlížeči bez registrace a bez stahování aplikace." } },
     { "@type": "Question", "name": "Jaký je rozdíl mezi Tarotem, Oracle a Night Tarotem?", "acceptedAnswer": { "@type": "Answer", "text": "Tarot je klasický 78kartový balíček s tradičním výkladem. Cosmic Whisper Oracle nabízí volnější, intuitivnější karty bez pevné struktury malé a velké arkány. Night Tarot je autorský mystický balíček s temnější, snovou atmosférou." } },
     { "@type": "Question", "name": "Co znamená obrácená karta?", "acceptedAnswer": { "@type": "Answer", "text": "Obrácená (reversed) karta obvykle ukazuje na zablokovanou, oslabenou nebo vnitřní podobu významu karty v základní poloze — například váhání místo jistoty, nebo téma, které si teprve žádá pozornost." } },
-    { "@type": "Question", "name": "Ukládá si aplikace historii vytažených karet?", "acceptedAnswer": { "@type": "Answer", "text": "Ano, Noctuary Tarot si v prohlížeči ukládá historii tažených karet, ke které se lze kdykoliv vrátit a podívat se, jaké karty a výklady padly v předchozích dnech." } },
+    { "@type": "Question", "name": "Ukládá si aplikace historii vytažených karet?", "acceptedAnswer": { "@type": "Answer", "text": "Ano, Noctuary Tarot si v prohlížeči ukládá historii tažených karet po dobu 60 minut." } },
     { "@type": "Question", "name": "Má Noctuary Tarot i horoskop?", "acceptedAnswer": { "@type": "Answer", "text": "Ano, Noctuary Tarot nabízí i horoskop zdarma — měsíční předpověď pro všech 12 znamení zvěrokruhu, která se automaticky aktualizuje." } }
   ]
 }
@@ -306,7 +306,10 @@
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(180deg, rgba(5,1,15,0), rgba(5,1,15,0.94) 30%, #05010f 100%);
     display: flex; justify-content: center;
+    transform: translateY(0);
+    transition: transform 0.25s ease;
   }
+  .mobile-cta.is-hidden { transform: translateY(110%); }
   .mobile-cta a {
     width: 100%; max-width: 420px; text-align: center; justify-content: center;
   }
@@ -412,7 +415,7 @@
       <div class="step">
         <div class="step-num">3</div>
         <h3>Chvíle na reflexi</h3>
-        <p>Přečti si krátkou reflexní otázku k dané kartě a vrať se zítra na další — historie zůstává uložená.</p>
+        <p>Přečti si krátkou reflexní otázku k dané kartě a vrať se zítra na další.</p>
       </div>
     </div>
   </section>
@@ -470,20 +473,12 @@
       </details>
       <details class="faq-item">
         <summary>Ukládá si aplikace historii vytažených karet? <span class="faq-arrow">▾</span></summary>
-        <p>Ano, Noctuary Tarot si v prohlížeči ukládá historii tažených karet, ke které se lze kdykoliv vrátit a podívat se, jaké karty a výklady padly v předchozích dnech.</p>
+        <p>Ano, Noctuary Tarot si v prohlížeči ukládá historii tažených karet po dobu 60 minut.</p>
       </details>
       <details class="faq-item">
         <summary>Má Noctuary Tarot i horoskop? <span class="faq-arrow">▾</span></summary>
         <p>Ano, Noctuary Tarot nabízí i horoskop zdarma — měsíční předpověď pro všech 12 znamení zvěrokruhu, která se automaticky aktualizuje.</p>
       </details>
-    </div>
-  </section>
-
-  <section class="final-cta">
-    <h2 class="section-title">Dnešní karta na tebe čeká</h2>
-    <p class="hero-sub">Žádná registrace, žádné stahování — jen ty, jedna karta a chvíle klidu.</p>
-    <div class="hero-ctas">
-      <a class="btn-primary" href="https://noctuarytarot.com/">🔮 Vyložit kartu dne zdarma</a>
     </div>
   </section>
 </main>
@@ -507,5 +502,45 @@
 </div>
 
 <script>document.getElementById('rok').textContent = new Date().getFullYear();</script>
+<script>
+(function () {
+  var bar = document.querySelector('.mobile-cta');
+  if (!bar) return;
+  var lastY = window.scrollY;
+  var ticking = false;
+
+  // schovat, když je vidět jiné CTA tlačítko (hero nebo footer)
+  var otherCtas = document.querySelectorAll('.hero .btn-primary, footer.site-footer');
+  var ctaVisible = false;
+  if ('IntersectionObserver' in window && otherCtas.length) {
+    var io = new IntersectionObserver(function (entries) {
+      ctaVisible = entries.some(function (e) { return e.isIntersecting; });
+      update();
+    }, { threshold: 0.3 });
+    otherCtas.forEach(function (el) { io.observe(el); });
+  }
+
+  function update() {
+    if (ctaVisible) {
+      bar.classList.add('is-hidden');
+      return;
+    }
+    var y = window.scrollY;
+    if (y > lastY + 4) {
+      bar.classList.add('is-hidden'); // scroll dolů = schovat
+    } else if (y < lastY - 4) {
+      bar.classList.remove('is-hidden'); // scroll nahoru = ukázat
+    }
+    lastY = y;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      requestAnimationFrame(function () { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>

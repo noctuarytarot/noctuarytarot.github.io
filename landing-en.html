@@ -90,7 +90,7 @@
     { "@type": "Question", "name": "Is Noctuary Tarot free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Noctuary Tarot is completely free and works right in your browser, with no registration and nothing to download." } },
     { "@type": "Question", "name": "What's the difference between Tarot, Oracle, and Night Tarot?", "acceptedAnswer": { "@type": "Answer", "text": "Tarot is the classic 78-card deck with traditional meanings. The Cosmic Whisper Oracle offers looser, more intuitive cards with no fixed Major/Minor Arcana structure. Night Tarot is an original mystical deck with a darker, dreamlike atmosphere." } },
     { "@type": "Question", "name": "What does a reversed card mean?", "acceptedAnswer": { "@type": "Answer", "text": "A reversed card usually points to a blocked, weakened, or inward version of its upright meaning — for example hesitation instead of certainty, or a theme that's only just asking for attention." } },
-    { "@type": "Question", "name": "Does the app save my card history?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Noctuary Tarot saves a history of your drawn cards right in your browser, so you can look back anytime and see which cards and meanings came up on previous days." } },
+    { "@type": "Question", "name": "Does the app save my card history?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Noctuary Tarot saves a history of your drawn cards in your browser for 60 minutes." } },
     { "@type": "Question", "name": "Does Noctuary Tarot also have a horoscope?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Noctuary Tarot also offers a free horoscope — a monthly forecast for all 12 zodiac signs that updates automatically." } }
   ]
 }
@@ -306,7 +306,10 @@
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(180deg, rgba(5,1,15,0), rgba(5,1,15,0.94) 30%, #05010f 100%);
     display: flex; justify-content: center;
+    transform: translateY(0);
+    transition: transform 0.25s ease;
   }
+  .mobile-cta.is-hidden { transform: translateY(110%); }
   .mobile-cta a {
     width: 100%; max-width: 420px; text-align: center; justify-content: center;
   }
@@ -412,7 +415,7 @@
       <div class="step">
         <div class="step-num">3</div>
         <h3>A moment to reflect</h3>
-        <p>Read the short reflection question for that card and come back tomorrow — your history stays saved.</p>
+        <p>Read the short reflection question for that card and come back tomorrow.</p>
       </div>
     </div>
   </section>
@@ -470,20 +473,12 @@
       </details>
       <details class="faq-item">
         <summary>Does the app save my card history? <span class="faq-arrow">▾</span></summary>
-        <p>Yes, your drawn card history stays saved in the browser and is always available through the clock icon.</p>
+        <p>Yes, your drawn card history stays saved in your browser for 60 minutes.</p>
       </details>
       <details class="faq-item">
         <summary>Does Noctuary Tarot also have a horoscope? <span class="faq-arrow">▾</span></summary>
         <p>Yes — tap the ✦ icon or visit the horoscope page for a free monthly horoscope covering all 12 zodiac signs.</p>
       </details>
-    </div>
-  </section>
-
-  <section class="final-cta">
-    <h2 class="section-title">Today's card is waiting</h2>
-    <p class="hero-sub">No sign-up, nothing to download — just you, one card, and a moment of calm.</p>
-    <div class="hero-ctas">
-      <a class="btn-primary" href="https://noctuarytarot.com/">🔮 Draw Your Free Card</a>
     </div>
   </section>
 </main>
@@ -507,5 +502,44 @@
 </div>
 
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script>
+(function () {
+  var bar = document.querySelector('.mobile-cta');
+  if (!bar) return;
+  var lastY = window.scrollY;
+  var ticking = false;
+
+  var otherCtas = document.querySelectorAll('.hero .btn-primary, footer.site-footer');
+  var ctaVisible = false;
+  if ('IntersectionObserver' in window && otherCtas.length) {
+    var io = new IntersectionObserver(function (entries) {
+      ctaVisible = entries.some(function (e) { return e.isIntersecting; });
+      update();
+    }, { threshold: 0.3 });
+    otherCtas.forEach(function (el) { io.observe(el); });
+  }
+
+  function update() {
+    if (ctaVisible) {
+      bar.classList.add('is-hidden');
+      return;
+    }
+    var y = window.scrollY;
+    if (y > lastY + 4) {
+      bar.classList.add('is-hidden');
+    } else if (y < lastY - 4) {
+      bar.classList.remove('is-hidden');
+    }
+    lastY = y;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      requestAnimationFrame(function () { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
