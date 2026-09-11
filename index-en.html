@@ -269,6 +269,45 @@
   .corner-btn-home { left: 10px; top: calc(10px + 380px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
+  /* ===== Mobile: collapse the corner-button column into one dropdown menu ===== */
+  .corner-menu-toggle {
+    display: none; position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: 10px; z-index: 211;
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    background: rgba(0,0,0,0.5); border: 1px solid var(--accent-color); color: var(--accent-color);
+    align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif;
+    font-size: 16px; transition: 0.2s;
+  }
+  .corner-menu-toggle:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
+  .corner-menu-toggle:active { transform: scale(0.92); }
+  .corner-menu-toggle.open { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
+  .corner-menu-dropdown {
+    display: none; flex-direction: column; position: fixed;
+    top: calc(46px + env(safe-area-inset-top, 0px)); left: 10px; z-index: 211;
+    min-width: 200px; max-height: min(72dvh, 480px); overflow-y: auto;
+    background: rgba(10,5,20,0.97); border: 1px solid var(--accent-color); border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.55), 0 0 16px rgba(212,175,55,0.2); padding: 6px;
+  }
+  .corner-menu-dropdown.open { display: flex; }
+  .corner-menu-item {
+    display: flex; align-items: center; gap: 10px; width: 100%; background: none; border: none;
+    color: #fff; text-decoration: none; cursor: pointer; padding: 9px 10px; border-radius: 8px;
+    font-family: 'Orbitron', sans-serif; font-size: 12.5px; letter-spacing: 0.3px; text-align: left; transition: 0.15s;
+  }
+  .corner-menu-item:hover, .corner-menu-item:active { background: rgba(212,175,55,0.15); color: var(--accent-color); }
+  .corner-menu-item-icon {
+    flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; border: 1px solid var(--accent-color); color: var(--accent-color); font-size: 12px;
+  }
+  /* Footer's full article list duplicates the "Tarot Articles" menu item
+     (which opens the same list in a nicer in-app overlay) — hide it visually
+     everywhere, but keep it in the DOM for SEO/crawlers. */
+  .footer-articles-label, .footer-articles-nav { display: none !important; }
+
+  @media (max-width: 640px) {
+    #corner-btn-group { display: none !important; }
+    .corner-menu-toggle { display: flex; }
+  }
+
   /* Articles / SEO text menu */
   #articles-overlay {
     display: none; position: fixed; inset: 0; z-index: 300;
@@ -861,6 +900,7 @@
 </head>
 <body id="body">
 
+<div id="corner-btn-group">
 <button class="corner-btn corner-btn-left" id="btn-info" title="How to read" aria-label="How to read">i</button>
 <button class="corner-btn corner-btn-fs" id="btn-fullscreen-toggle" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">⤢</button>
 <button class="corner-btn corner-btn-history" id="btn-history" title="History" aria-label="History">🕐</button>
@@ -872,6 +912,65 @@
 <button class="corner-btn corner-btn-lang" id="btn-lang-toggle" onclick="toggleInfoLanguage()" title="Language / Jazyk" aria-label="Switch language">CZ</button>
 <button class="corner-btn corner-btn-apps" id="btn-apps" title="Other Apps / Další aplikace" aria-label="Other apps">🧩</button>
 <a class="corner-btn corner-btn-home" id="btn-home" href="landing.html" title="Home / Domů" aria-label="Home">⌂</a>
+</div>
+
+<button class="corner-menu-toggle" id="btn-corner-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Menu">☰</button>
+<div class="corner-menu-dropdown" id="corner-menu-dropdown" role="menu" aria-hidden="true">
+  <button class="corner-menu-item" role="menuitem" data-target="btn-info"><span class="corner-menu-item-icon">i</span><span>How to read</span></button>
+  <button class="corner-menu-item" role="menuitem" data-target="btn-fullscreen-toggle"><span class="corner-menu-item-icon">⤢</span><span>Fullscreen</span></button>
+  <button class="corner-menu-item" role="menuitem" data-target="btn-history"><span class="corner-menu-item-icon">🕐</span><span>History</span></button>
+  <button class="corner-menu-item" role="menuitem" data-target="btn-articles"><span class="corner-menu-item-icon">☰</span><span>Tarot Articles</span></button>
+  <button class="corner-menu-item" role="menuitem" data-target="btn-contact"><span class="corner-menu-item-icon">✉</span><span>Contact</span></button>
+  <a class="corner-menu-item" role="menuitem" href="horoscope-en.html"><span class="corner-menu-item-icon">✦</span><span>Free Horoscope</span></a>
+  <a class="corner-menu-item" role="menuitem" href="night-rain-en.html"><span class="corner-menu-item-icon">🌧️</span><span>Night Rain — Card Game</span></a>
+  <a class="corner-menu-item" role="menuitem" href="hvezdna_obloha-en.html"><span class="corner-menu-item-icon">🌌</span><span>Night Sky</span></a>
+  <button class="corner-menu-item" role="menuitem" data-target="btn-lang-toggle"><span class="corner-menu-item-icon">🌐</span><span>Language (CZ/EN)</span></button>
+  <button class="corner-menu-item" role="menuitem" data-target="btn-apps"><span class="corner-menu-item-icon">🧩</span><span>Other Apps</span></button>
+  <a class="corner-menu-item" role="menuitem" href="landing.html"><span class="corner-menu-item-icon">⌂</span><span>Home</span></a>
+</div>
+<script>
+(function () {
+  var toggle = document.getElementById('btn-corner-menu-toggle');
+  var dropdown = document.getElementById('corner-menu-dropdown');
+  if (!toggle || !dropdown) return;
+
+  function closeMenu() {
+    toggle.classList.remove('open');
+    dropdown.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    dropdown.setAttribute('aria-hidden', 'true');
+  }
+  function openMenu() {
+    toggle.classList.add('open');
+    dropdown.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+    dropdown.setAttribute('aria-hidden', 'false');
+  }
+
+  toggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (dropdown.classList.contains('open')) closeMenu(); else openMenu();
+  });
+
+  Array.prototype.forEach.call(dropdown.querySelectorAll('.corner-menu-item'), function (item) {
+    item.addEventListener('click', function () {
+      var targetId = item.getAttribute('data-target');
+      if (targetId) {
+        var el = document.getElementById(targetId);
+        if (el) el.click();
+      }
+      closeMenu();
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (dropdown.classList.contains('open') && !dropdown.contains(e.target) && e.target !== toggle) closeMenu();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
