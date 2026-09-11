@@ -1,7 +1,7 @@
 // Noctuary Tarot — Service Worker
 // Zvyš toto číslo při každé větší aktualizaci webu, aby si prohlížeče
 // stáhly novou verzi a zahodily starou cache.
-const CACHE_VERSION = 'v617';
+const CACHE_VERSION = 'v618';
 const CACHE_NAME = 'noctuary-tarot-' + CACHE_VERSION;
 
 // Statické soubory, které má smysl mít offline hned od instalace.
@@ -12,6 +12,7 @@ const PRECACHE_URLS = [
   './landing.html',
   './landing-en.html',
   './horoscope.html',
+  './hvezdna_obloha.html',
   './horoscope-en.html',
   './night-rain.html',
   './night-rain-en.html',
