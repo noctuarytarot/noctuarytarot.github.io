@@ -269,9 +269,9 @@
   .corner-btn-home { left: 10px; top: calc(10px + 380px + env(safe-area-inset-top, 0px)); font-size: 15px; }
   .corner-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
 
-  /* ===== Mobile: collapse the corner-button column into one dropdown menu ===== */
+  /* ===== Collapse the corner-button column into one dropdown menu (all screen sizes) ===== */
   .corner-menu-toggle {
-    display: none; position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: 10px; z-index: 211;
+    display: flex; position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: 10px; z-index: 211;
     width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
     background: rgba(0,0,0,0.5); border: 1px solid var(--accent-color); color: var(--accent-color);
     align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif;
@@ -303,10 +303,7 @@
      everywhere, but keep it in the DOM for SEO/crawlers. */
   .footer-articles-label, .footer-articles-nav { display: none !important; }
 
-  @media (max-width: 640px) {
-    #corner-btn-group { display: none !important; }
-    .corner-menu-toggle { display: flex; }
-  }
+  #corner-btn-group { display: none !important; }
 
   /* Articles / SEO text menu */
   #articles-overlay {
@@ -825,7 +822,7 @@
     text-shadow: 0 0 10px rgba(212,175,55,0.35); margin: 40px 0 14px; text-transform: uppercase;
   }
   .seo-content > p.lead {
-    font-size: 19px; font-style: italic; opacity: 0.9; margin-bottom: 0;
+    font-size: 19px; font-style: italic; opacity: 0.9; margin-bottom: 0; text-align: center;
   }
   .seo-deck-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 10px;
@@ -848,6 +845,23 @@
   .seo-content a { color: var(--accent-color); }
   .seo-disclaimer { font-size: 13px; opacity: 0.5; margin-top: 30px; font-style: italic; }
   .seo-player-note { font-size: 12px; opacity: 0.45; margin-top: 14px; }
+  .seo-details { margin-top: 18px; }
+  .seo-details summary.seo-summary {
+    cursor: pointer; list-style: none; user-select: none;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 12px 0; border-top: 1px solid rgba(212,175,55,0.18);
+    font-family: 'Orbitron', sans-serif; font-size: 11.5px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--accent-color); opacity: 0.75;
+    transition: opacity 0.2s ease;
+  }
+  .seo-details summary.seo-summary::-webkit-details-marker { display: none; }
+  .seo-details summary.seo-summary::marker { content: ''; }
+  .seo-details summary.seo-summary:hover { opacity: 1; }
+  .seo-details summary.seo-summary::after {
+    content: '▾'; font-size: 10px; transition: transform 0.25s ease;
+  }
+  .seo-details[open] summary.seo-summary::after { transform: rotate(180deg); }
+  .seo-details-inner { padding-top: 4px; }
   .site-footer-full {
     position: relative; z-index: 1; width: 100%; max-width: 720px; margin: 40px auto 0; padding: 26px 20px 6px;
     border-top: 1px solid rgba(212,175,55,0.18); text-align: center;
@@ -1306,11 +1320,15 @@
 </div>
 
 <div class="site-footer">
-  made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a>
+  made in <a href="https://synthlucida.com" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a>
 </div>
 
 <main class="seo-content">
   <p class="lead" data-i18n="seo_lead">Noctuary Tarot is your free card of the day — a short daily pause for reflection, not a prediction of the future.</p>
+
+  <details class="seo-details" id="seo-details">
+  <summary class="seo-summary"><span id="seo-toggle-label" data-i18n="seo_toggle_more">Read more</span></summary>
+  <div class="seo-details-inner">
 
   <h2 data-i18n="seo_h_howworks">How Noctuary Tarot Works</h2>
   <p data-i18n="seo_p_howworks1">Tap "Draw Again" and let the app pull one card from the deck you've chosen. The card flips over to reveal its symbol and name, and below it you'll find the meaning in both English and Czech — for both the upright and reversed position. Each card also comes with a short reflection question to sit with for a moment.</p>
@@ -1362,6 +1380,9 @@
   </div>
 
   <p class="seo-disclaimer" data-i18n="seo_disclaimer">Noctuary Tarot is offered as a daily space for pause, reflection, and atmosphere — it is not fortune-telling, a prediction of the future, or a substitute for professional guidance on important life decisions.</p>
+
+  </div>
+  </details>
 </main>
 
 <footer class="site-footer-full">
@@ -1387,7 +1408,7 @@
     <a href="night-rain.html" data-i18n="a13_menu_title">Night Rain — A Free Card Game</a>
   </nav>
   <div><span data-i18n="seo_footer_copy_pre">© </span><span id="footer-year"></span><span data-i18n="seo_footer_copy_post"> Noctuary Tarot — free card of the day</span></div>
-  <div style="margin-top:4px;">made in <a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
+  <div style="margin-top:4px;">made in <a href="https://synthlucida.com" target="_blank" rel="noopener noreferrer">SYNTHLUCIDA</a></div>
   <div style="margin-top:4px;"><a href="privacy.html" data-i18n="seo_footer_link_privacy">Privacy Policy</a></div>
   <div class="site-stats" id="site-stats">
     <span class="stat-item"><span class="stat-label" data-i18n="seo_footer_stats_visits">Total visits:</span><strong id="stat-total">–</strong></span>
@@ -2526,6 +2547,8 @@
     h_spread_story: { en: 'WEAVING THE STORY', cz: 'SLOŽENÍ PŘÍBĚHU' },    p_spread_story: { en: 'Read each position on its own first, in plain language, out loud if that helps. Then read the layout left to right, or center outward, as one continuous sentence connecting each card to the next — "this leads to this, which is challenged by this." The final read is always a story, not a checklist. Trust the connections that feel obvious before reaching for a stricter textbook meaning.', cz: 'Nejdřív si v obyčejném jazyce přečtěte každou pozici zvlášť, klidně nahlas, pokud to pomáhá. Pak přečtěte celé rozložení zleva doprava, nebo od středu ven, jako jednu souvislou větu spojující jednu kartu s druhou — „tohle vede k tomuhle, čemu odporuje tohle". Výsledný výklad je vždy příběh, ne checklist. Důvěřujte souvislostem, které jsou zjevné na první pohled, dřív než sáhnete po přísnějším „učebnicovém" významu.' },
 
     seo_lead: { en: 'Noctuary Tarot is your free card of the day — a short daily pause for reflection, not a prediction of the future.', cz: 'Noctuary Tarot je tvá karta dne zdarma — krátká denní zastávka pro reflexi, ne věštění o budoucnosti.' },
+    seo_toggle_more: { en: 'Read more', cz: 'Zobrazit více' },
+    seo_toggle_less: { en: 'Show less', cz: 'Zobrazit méně' },
     seo_h_howworks: { en: 'How Noctuary Tarot Works', cz: 'Jak Noctuary Tarot funguje' },
     seo_p_howworks1: { en: 'Tap "Draw Again" and let the app pull one card from the deck you\u2019ve chosen. The card flips over to reveal its symbol and name, and below it you\u2019ll find the meaning in both English and Czech — for both the upright and reversed position. Each card also comes with a short reflection question to sit with for a moment.', cz: 'Klikni na tlačítko „Draw again" a nech aplikaci vytáhnout jednu kartu ze zvoleného balíčku. Karta se otočí, ukáže svůj symbol a jméno a pod ní se objeví výklad v angličtině i v češtině — jak ve vzpřímené, tak v obrácené poloze. Ke každé kartě je navíc krátká reflexní otázka, u které se můžeš na chvíli zastavit.' },
     seo_p_howworks2: { en: 'The app keeps a history of your drawn cards right in the browser, so you can look back anytime and notice how themes repeat or shift over time. Everything runs in the browser, with no registration and nothing to download.', cz: 'Aplikace si v prohlížeči ukládá historii tažených karet, takže se kdykoliv můžeš podívat, co ti padlo dřív, a sledovat, jak se témata v čase opakují nebo proměňují. Vše funguje v prohlížeči, bez registrace a bez nutnosti cokoliv stahovat.' },
@@ -2857,11 +2880,20 @@
     }
   };
 
+  function updateSeoToggleLabel() {
+    var seoDetails = document.getElementById('seo-details');
+    var seoLabel = document.getElementById('seo-toggle-label');
+    if (!seoDetails || !seoLabel) return;
+    var entry = i18nText[seoDetails.open ? 'seo_toggle_less' : 'seo_toggle_more'];
+    if (entry) seoLabel.textContent = entry[guideLang] || entry.en;
+  }
+
   function applyGuideLanguage() {
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var entry = i18nText[el.getAttribute('data-i18n')];
       if (entry) el.textContent = entry[guideLang] || entry.en;
     });
+    updateSeoToggleLabel();
     var btn = document.getElementById('info-lang-toggle');
     if (btn) btn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
     var historyBtn = document.getElementById('history-lang-toggle');
@@ -2893,6 +2925,9 @@
   } catch (e) {}
   applyGuideLanguage();
   updateClock();
+
+  var seoDetailsEl = document.getElementById('seo-details');
+  if (seoDetailsEl) seoDetailsEl.addEventListener('toggle', updateSeoToggleLabel);
 
   var currentArticleId = null;
 
