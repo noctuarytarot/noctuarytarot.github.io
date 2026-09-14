@@ -3487,7 +3487,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
   import {
     getDatabase, ref, onValue, runTransaction,
-    onDisconnect, push, set, serverTimestamp
+    onDisconnect, push, set, remove
   } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
   // ⚠️ VLOŽ SEM SVOU NOVOU FIREBASE KONFIGURACI
@@ -3505,6 +3505,12 @@
   const totalEl = document.getElementById('stat-total');
   const todayEl = document.getElementById('stat-today');
   const onlineEl = document.getElementById('stat-online');
+
+  // Presence záznam starší než tohle se bere jako "zombie" (onDisconnect
+  // se z nějakého důvodu nespustil — zabitá záložka, uspaný telefon,
+  // výpadek sítě…) a nepočítá se do "online".
+  const PRESENCE_TTL_MS = 90 * 1000;   // 90 s
+  const HEARTBEAT_MS = 30 * 1000;      // 30 s
 
   // datum ve formátu YYYY-MM-DD podle lokálního času návštěvníka
   function todayKey() {
@@ -3528,10 +3534,10 @@
       if (lastCountedDay !== key) {
         runTransaction(ref(db, 'stats/totalVisits'), function (current) {
           return (current || 0) + 1;
-        });
+        }).catch(function (e) { console.warn('[Noctuary] totalVisits transaction failed:', e); });
         runTransaction(ref(db, 'stats/dailyVisits/' + key), function (current) {
           return (current || 0) + 1;
-        });
+        }).catch(function (e) { console.warn('[Noctuary] dailyVisits transaction failed:', e); });
         localStorage.setItem('noctuary_visit_day', key);
       }
     } catch (e) { /* localStorage nemusí být dostupný (např. v inkognito) */ }
@@ -3544,18 +3550,58 @@
       if (todayEl) todayEl.textContent = (snap.val() || 0).toLocaleString('cs-CZ');
     });
 
-    // Online právě teď — presence přes onDisconnect
+    // Online právě teď — presence s heartbeatem a filtrem "zombie" záznamů.
+    // Pokud onDisconnect z nějakého důvodu nesmaže záznam (zabitá záložka,
+    // výpadek sítě, uspaný telefon…), zůstal by v presence navždy a "online"
+    // by se navěky "zaseklo" na tomhle přebytečném čísle. Proto si každé
+    // připojení pravidelně obnovuje vlastní timestamp (heartbeat) a do
+    // počtu online se počítají jen záznamy novější než PRESENCE_TTL_MS.
+    let myPresenceRef = null;
+    let latestPresenceSnapshot = null;
+    let heartbeatTimer = null;
+
+    function renderOnlineCount() {
+      if (!onlineEl || !latestPresenceSnapshot) return;
+      const now = Date.now();
+      let count = 0;
+      latestPresenceSnapshot.forEach(function (child) {
+        const ts = child.val();
+        if (typeof ts === 'number' && (now - ts) < PRESENCE_TTL_MS) count++;
+      });
+      onlineEl.textContent = count;
+    }
+
     onValue(ref(db, '.info/connected'), function (snap) {
       if (snap.val() === true) {
-        const myPresenceRef = push(ref(db, 'presence'));
+        myPresenceRef = push(ref(db, 'presence'));
         onDisconnect(myPresenceRef).remove();
-        set(myPresenceRef, serverTimestamp());
+        set(myPresenceRef, Date.now());
+
+        if (heartbeatTimer) clearInterval(heartbeatTimer);
+        heartbeatTimer = setInterval(function () {
+          if (myPresenceRef) set(myPresenceRef, Date.now());
+        }, HEARTBEAT_MS);
       }
     });
 
     onValue(ref(db, 'presence'), function (snap) {
-      if (onlineEl) onlineEl.textContent = snap.size;
+      latestPresenceSnapshot = snap;
+      renderOnlineCount();
+
+      // Průběžný úklid starých ("zombie") záznamů, ať se presence
+      // nehromadí donekonečna, i kdyby je nikdo jiný nesmazal.
+      const now = Date.now();
+      snap.forEach(function (child) {
+        const ts = child.val();
+        if (typeof ts === 'number' && (now - ts) > PRESENCE_TTL_MS) {
+          remove(child.ref).catch(function () {});
+        }
+      });
     });
+
+    // Přepočet i bez nové Firebase události — jinak by "online" viselo na
+    // staré hodnotě, dokud se v presence něco nezmění.
+    setInterval(renderOnlineCount, 15000);
   } catch (e) {
     console.warn('[Noctuary] Firebase se nepodařilo inicializovat:', e);
     const statsBox = document.getElementById('site-stats');
