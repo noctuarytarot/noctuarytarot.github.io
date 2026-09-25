@@ -77,7 +77,7 @@
       "name": "Co je Noctuary Tarot?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Noctuary Tarot je webová aplikace pro karetu dne. Vylož si jednu kartu z klasického 78kartového tarotu, Cosmic Whisper Oracle nebo mystického Night Tarotu a nech si k ní zobrazit výklad v angličtině i češtině."
+        "text": "Noctuary Tarot je webová aplikace pro kartu dne. Vylož si jednu kartu z klasického 78kartového tarotu, Cosmic Whisper Oracle nebo mystického Night Tarotu a nech si k ní zobrazit výklad v angličtině i češtině."
       }
     },
     {
@@ -109,7 +109,7 @@
       "name": "Ukládá si aplikace historii vytažených karet?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ano, Noctuary Tarot si v prohlížeči ukládá historii tažených karet, ke které se lze kdykoliv vrátit a podívat se, jaké karty a výklady padly v předchozích dnech."
+        "text": "Ano, Noctuary Tarot si v prohlížeči pamatuje karty tažené za posledních 60 minut, takže se můžeš ohlédnout za celým výkladem a uložit ho do PDF."
       }
     },
     {
@@ -155,6 +155,7 @@
     text-align: center;
   }
   button { font-family: inherit; }
+  html { overflow-x: clip; } /* jiskry při otočení karty nesmí na mobilu rozhoupat stránku do strany */
 
   /* twinkling starfield */
   body::before {
@@ -1333,8 +1334,8 @@
 <div id="contact-overlay">
   <div class="contact-panel">
     <button class="history-close" id="btn-contact-close" aria-label="Close">✕</button>
-    <h2>CONTACT</h2>
-    <p class="history-sub">Have a question or feedback? Send a message below.</p>
+    <h2 data-i18n="contact_title">CONTACT</h2>
+    <p class="history-sub" data-i18n="contact_sub">Have a question or feedback? Send a message below.</p>
     <form class="tarot-contact-form" id="tarot-contact-form" action="https://api.web3forms.com/submit" method="POST">
       <input type="hidden" name="access_key" value="705e3776-a3bb-44fd-bf3b-d10edd766beb">
       <input type="hidden" name="subject" value="New message from Noctuary Tarot website">
@@ -1342,7 +1343,7 @@
       <input type="text" name="name" class="tarot-contact-input" placeholder="Your name" required>
       <input type="email" name="email" class="tarot-contact-input" placeholder="Your email" required>
       <textarea name="message" class="tarot-contact-textarea" placeholder="Your message" rows="4" required></textarea>
-      <button type="submit" class="tarot-contact-submit">SEND MESSAGE</button>
+      <button type="submit" class="tarot-contact-submit" data-i18n="contact_send">SEND MESSAGE</button>
       <p class="tarot-contact-status" id="tarot-contact-status" aria-live="polite"></p>
     </form>
   </div>
@@ -1417,7 +1418,7 @@
 
   <h2 data-i18n="seo_h_howworks">How Noctuary Tarot Works</h2>
   <p data-i18n="seo_p_howworks1">Tap "Draw Again" and let the app pull one card from the deck you've chosen. The card flips over to reveal its symbol and name, and below it you'll find the meaning in both English and Czech — for both the upright and reversed position. Each card also comes with a short reflection question to sit with for a moment.</p>
-  <p data-i18n="seo_p_howworks2">The app keeps a history of your drawn cards right in the browser, so you can look back anytime and notice how themes repeat or shift over time. Everything runs in the browser, with no registration and nothing to download.</p>
+  <p data-i18n="seo_p_howworks2">The app keeps the cards you’ve drawn in the last 60 minutes right in the browser, so you can look back over a whole session and notice how themes repeat or shift. Everything runs in the browser, with no registration and nothing to download.</p>
   <p class="seo-player-note"><span data-i18n="seo_player_pre">Want something quiet playing while you draw and reflect? Try the </span><a href="https://synthlucida.com/player.html" target="_blank" rel="noopener noreferrer" data-i18n="seo_player_link">SYNTHLUCIDA ambient &amp; chillout player</a><span data-i18n="seo_player_post">.</span></p>
 
   <h2 data-i18n="seo_h_decks">Three Decks</h2>
@@ -1457,7 +1458,7 @@
   </div>
   <div class="seo-faq-item">
     <h3 data-i18n="seo_faq4_q">Does the app save my card history?</h3>
-    <p data-i18n="seo_faq4_a">Yes, your drawn card history stays saved in the browser and is always available through the clock icon.</p>
+    <p data-i18n="seo_faq4_a">Yes — your drawn cards stay on the table in the History panel (clock icon) for 60 minutes, then they fade away.</p>
   </div>
   <div class="seo-faq-item">
     <h3 data-i18n="seo_faq5_q">Does Noctuary Tarot also have a horoscope?</h3>
@@ -2640,7 +2641,7 @@
     seo_toggle_less: { en: 'Show less', cz: 'Zobrazit méně' },
     seo_h_howworks: { en: 'How Noctuary Tarot Works', cz: 'Jak Noctuary Tarot funguje' },
     seo_p_howworks1: { en: 'Tap "Draw Again" and let the app pull one card from the deck you\u2019ve chosen. The card flips over to reveal its symbol and name, and below it you\u2019ll find the meaning in both English and Czech — for both the upright and reversed position. Each card also comes with a short reflection question to sit with for a moment.', cz: 'Klikni na tlačítko „Draw again" a nech aplikaci vytáhnout jednu kartu ze zvoleného balíčku. Karta se otočí, ukáže svůj symbol a jméno a pod ní se objeví výklad v angličtině i v češtině — jak ve vzpřímené, tak v obrácené poloze. Ke každé kartě je navíc krátká reflexní otázka, u které se můžeš na chvíli zastavit.' },
-    seo_p_howworks2: { en: 'The app keeps a history of your drawn cards right in the browser, so you can look back anytime and notice how themes repeat or shift over time. Everything runs in the browser, with no registration and nothing to download.', cz: 'Aplikace si v prohlížeči ukládá historii tažených karet, takže se kdykoliv můžeš podívat, co ti padlo dřív, a sledovat, jak se témata v čase opakují nebo proměňují. Vše funguje v prohlížeči, bez registrace a bez nutnosti cokoliv stahovat.' },
+    seo_p_howworks2: { en: 'The app keeps the cards you’ve drawn in the last 60 minutes right in the browser, so you can look back over a whole session and notice how themes repeat or shift. Everything runs in the browser, with no registration and nothing to download.', cz: 'Aplikace si v prohlížeči pamatuje karty tažené za posledních 60 minut, takže se můžeš ohlédnout za celým výkladem a sledovat, jak se témata opakují nebo proměňují. Vše funguje v prohlížeči, bez registrace a bez nutnosti cokoliv stahovat.' },
     seo_h_decks: { en: 'Three Decks', cz: 'Tři balíčky karet' },
     seo_deck_tarot_title: { en: '🃏 Tarot', cz: '🃏 Tarot' },
     seo_deck_tarot_desc: { en: 'The classic 78-card tarot deck — Major and Minor Arcana with their traditional meanings and symbolism.', cz: 'Klasický 78kartový tarotový balíček — velká i malá arkána se svým tradičním výkladem a symbolikou.' },
@@ -2662,7 +2663,7 @@
     seo_faq3_q: { en: 'What\u2019s the difference between the decks?', cz: 'Jaký je rozdíl mezi balíčky?' },
     seo_faq3_a: { en: 'Tarot is the classic 78-card deck with traditional meanings, Oracle is looser and more intuitive, and Night Tarot is an original mystical deck with a darker atmosphere.', cz: 'Tarot je klasický 78kartový balíček s tradičním výkladem, Oracle je volnější a intuitivnější, Night Tarot je autorský mystický balíček s temnější atmosférou.' },
     seo_faq4_q: { en: 'Does the app save my card history?', cz: 'Ukládá si aplikace historii karet?' },
-    seo_faq4_a: { en: 'Yes, your drawn card history stays saved in the browser and is always available through the clock icon.', cz: 'Ano, historie vytažených karet zůstává uložená v prohlížeči a je kdykoliv dostupná přes ikonu hodin.' },
+    seo_faq4_a: { en: 'Yes \u2014 your drawn cards stay on the table in the History panel (clock icon) for 60 minutes, then they fade away.', cz: 'Ano \u2014 vytažené karty zůstávají na stole v panelu Historie (ikona hodin) 60 minut, pak zmizí.' },
     seo_faq5_q: { en: 'Does Noctuary Tarot also have a horoscope?', cz: 'Má Noctuary Tarot i horoskop?' },
     seo_faq5_a: { en: 'Yes — tap the ✦ icon or visit the horoscope page for a free monthly horoscope covering all 12 zodiac signs.', cz: 'Ano — klikni na ikonu ✦ nebo navštiv stránku s horoskopem, kde najdeš zdarma měsíční horoskop pro všech 12 znamení.' },
     seo_disclaimer: { en: 'Noctuary Tarot is offered as a daily space for pause, reflection, and atmosphere — it is not fortune-telling, a prediction of the future, or a substitute for professional guidance on important life decisions.', cz: 'Noctuary Tarot slouží jako každodenní prostor pro zastavení, reflexi a atmosféru — nejde o věštění, předpověď budoucnosti ani náhradu odborné pomoci při důležitých životních rozhodnutích.' },
@@ -2672,6 +2673,15 @@
     seo_footer_copy_pre: { en: '© ', cz: '© ' },
     seo_footer_copy_post: { en: ' Noctuary Tarot — free card of the day', cz: ' Noctuary Tarot — karta dne zdarma online' },
     seo_footer_link_privacy: { en: 'Privacy Policy', cz: 'Zásady ochrany soukromí' },
+    contact_title: { en: 'CONTACT', cz: 'KONTAKT' },
+    contact_sub: { en: 'Have a question or feedback? Send a message below.', cz: 'Máš dotaz nebo připomínku? Napiš nám zprávu.' },
+    contact_send: { en: 'SEND MESSAGE', cz: 'ODESLAT ZPRÁVU' },
+    contact_ph_name: { en: 'Your name', cz: 'Tvoje jméno' },
+    contact_ph_email: { en: 'Your email', cz: 'Tvůj e-mail' },
+    contact_ph_message: { en: 'Your message', cz: 'Tvoje zpráva' },
+    contact_sending: { en: 'Sending\u2026', cz: 'Odesílám\u2026' },
+    contact_thanks: { en: '\u2714 Thank you! Your message has been sent.', cz: '\u2714 Děkujeme! Zpráva byla odeslána.' },
+    contact_error: { en: 'Something went wrong, please try again.', cz: 'Něco se nepovedlo, zkus to prosím znovu.' },
     seo_footer_stats_visits: { en: 'Total visits:', cz: 'Návštěv celkem:' },
     seo_footer_stats_today: { en: 'Today:', cz: 'Dnes:' },
     seo_footer_stats_online: { en: 'Online:', cz: 'Online:' },
@@ -2978,6 +2988,13 @@
     if (entry) seoLabel.textContent = entry[guideLang] || entry.en;
   }
 
+  function tr(key) { var e = i18nText[key]; return e ? (e[guideLang] || e.en) : key; }
+  function applyContactLanguage() {
+    var f = document.getElementById('tarot-contact-form');
+    if (!f) return;
+    var map = { name: 'contact_ph_name', email: 'contact_ph_email', message: 'contact_ph_message' };
+    Object.keys(map).forEach(function (n) { var el = f.querySelector('[name="' + n + '"]'); if (el) el.placeholder = tr(map[n]); });
+  }
   function applyGuideLanguage() {
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var entry = i18nText[el.getAttribute('data-i18n')];
@@ -2992,6 +3009,15 @@
     if (articlesBtn) articlesBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
     var cornerLangBtn = document.getElementById('btn-lang-toggle');
     if (cornerLangBtn) cornerLangBtn.innerText = guideLang === 'en' ? 'CZ' : 'EN';
+    /* Odkazy na horoskop, Noční liják, Hvězdnou oblohu a úvodní stránku podle jazyka
+       (dřív česká verze posílala na anglický horoskop i hru a naopak) */
+    var LANG_PAGES = { 'horoscope': 1, 'night-rain': 1, 'hvezdna_obloha': 1, 'landing': 1 };
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      var m = /^(horoscope|night-rain|hvezdna_obloha|landing)(-en)?\.html(#.*)?$/.exec(a.getAttribute('href'));
+      if (m && LANG_PAGES[m[1]]) a.setAttribute('href', m[1] + (guideLang === 'en' ? '-en' : '') + '.html' + (m[3] || ''));
+    });
+    if (typeof articlesData !== 'undefined' && articlesData.a13 && articlesData.a13.link) articlesData.a13.link.url = guideLang === 'en' ? 'night-rain-en.html' : 'night-rain.html';
+    applyContactLanguage();
     var homeBtn = document.getElementById('btn-home');
     if (homeBtn) {
       homeBtn.href = guideLang === 'en' ? 'landing-en.html' : 'landing.html';
@@ -3102,7 +3128,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       submitBtn.disabled = true;
-      statusEl.textContent = 'Sending…';
+      statusEl.textContent = tr('contact_sending');
       statusEl.className = 'tarot-contact-status sending';
 
       var formData = new FormData(form);
@@ -3115,17 +3141,18 @@
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (!data.success) throw new Error('Send failed');
-          form.innerHTML = '<p class="tarot-contact-thanks">✔ Thank you! Your message has been sent.</p>';
+          form.innerHTML = '<p class="tarot-contact-thanks"></p>';
+          form.querySelector('.tarot-contact-thanks').textContent = tr('contact_thanks');
         })
         .catch(function () {
-          statusEl.textContent = 'Something went wrong, please try again.';
+          statusEl.textContent = tr('contact_error');
           statusEl.className = 'tarot-contact-status error';
           submitBtn.disabled = false;
         });
     });
   })();
   document.getElementById('article-detail-back').addEventListener('click', function () { showArticlesMenu(); });
-  document.querySelectorAll('.articles-menu-item').forEach(function (btn) {
+  document.querySelectorAll('.articles-menu-item[data-article]').forEach(function (btn) {
     btn.addEventListener('click', function () { showArticleDetail(btn.getAttribute('data-article')); });
   });
 
@@ -3721,7 +3748,7 @@
   var COUNT_KEY = 'noctuary_support_draw_count';
   var UNLOCK_KEY = 'noctuary_support_unlocked';
   var EVERY_N = 3;
-  // FNV-1a hash 'SynthlucidaTarot2026@' (přesně tak, včetně velkých písmen a @)
+  // FNV-1a hash odemykacího kódu (samotný kód sem nepatří – zdroj stránky si může přečíst kdokoliv)
   var CODE_HASH = 'e5e5a5ef';
 
   function simpleHash(str) {

@@ -844,6 +844,7 @@
   var state = null;
 
   function newGame(mode) {
+    moveBusy = false;
     var resolvedMode = mode || (state ? state.mode : 'pc');
     var deck = shuffle(buildDeck());
     var player = deck.splice(0, 7);
@@ -1234,7 +1235,8 @@
     renderStatus();
     updateHideButton(humanMode && !needsPass && !state.winner);
 
-    if (state.winner) {
+    if (state.winner && !state.resultShown) {
+      state.resultShown = true;
       showResult(state.winner);
     }
   }
@@ -1287,8 +1289,11 @@
     }
   }
 
+  /* Během animace hodu/líznutí se další klepnutí ignoruje – dřív šlo rychlým
+     klepáním vyhodit v jednom tahu víc karet najednou (nebo líznout dvakrát). */
+  var moveBusy = false;
   function onHandCardClick(who, index) {
-    if (!state || state.winner || state.turn !== who) return;
+    if (!state || state.winner || state.turn !== who || moveBusy) return;
     if (state.mode === 'human' && !state.revealed) return;
     var hand = who === 'player' ? state.player : state.ai;
     var card = hand[index];
@@ -1302,8 +1307,11 @@
     var fromEl = handWrap.children[index];
     var toEl = document.getElementById('discard-top');
 
+    moveBusy = true;
     function finishPlay(chosenSuit) {
       animateThrow(card, fromEl, toEl, function () {
+        moveBusy = false;
+        if (!state || state.turn !== who) { render(); return; }
         var ok = playCard(who, index, chosenSuit);
         if (!ok) { render(); return; }
         afterManualMove(who);
@@ -1318,13 +1326,16 @@
   }
 
   document.getElementById('draw-pile').addEventListener('click', function () {
-    if (!state || state.winner) return;
+    if (!state || state.winner || moveBusy) return;
     if (state.mode === 'pc' && state.turn !== 'player') return;
     if (state.mode === 'human' && !state.revealed) return;
     var who = state.turn;
     var drawPileEl = document.getElementById('draw-pile');
     var handWrap = document.getElementById('player-hand');
+    moveBusy = true;
     animateDraw(drawPileEl, handWrap, function () {
+      moveBusy = false;
+      if (!state || state.turn !== who) { render(); return; }
       drawTurn(who);
       afterManualMove(who);
     });
